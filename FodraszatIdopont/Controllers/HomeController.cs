@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using FodraszatIdopont.Models;
 using Microsoft.AspNetCore.Mvc;
+//yesssssss
 
 namespace FodraszatIdopont.Controllers
 {
