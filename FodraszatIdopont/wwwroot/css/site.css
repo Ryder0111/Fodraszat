@@ -18,5 +18,14 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+
+#mainNavbar {
+    will-change: transform;
+}
+
+#pageContent {
+    padding-top: 4rem; 
+}
+

@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav id="mainNavbar" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 fixed-top">
             <div class="container-fluid">
                 <img src="~/fodraszikon.png" style="width:80px"/>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Wild Cut</a>
@@ -32,7 +32,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" id="pageContent">
             @RenderBody()
         </main>
     </div>
