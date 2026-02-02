@@ -29,3 +29,13 @@ body {
     padding-top: 4rem; 
 }
 
+@media (max-width: 576px) {
+    .navbar-brand-img {
+        height: 3.8rem;
+    }
+}
+
+.navbar-brand-img {
+    height: 6.2rem; 
+    width: auto;
+}
