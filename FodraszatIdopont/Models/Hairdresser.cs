@@ -1,6 +1,4 @@
-﻿using Microsoft.Build.Framework;
-
-namespace FodraszatIdopont.Models
+﻿namespace FodraszatIdopont.Models
 {
     public class Hairdresser
     {
