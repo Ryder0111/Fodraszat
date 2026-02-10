@@ -1,20 +1,19 @@
-﻿namespace FodraszatIdopont.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FodraszatIdopont.Models
 {
     public class User
     {
-        PasswordHelper passwordHelper;
-        public int UserId {  get; set; }
+        public int UserId { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Email { get; set; }
+
+        [Required]
         public string PasswordHash { get; set; }
         public string Sex { get; set; }
-        public User(int userId, string name, string email, string passwordHash, string sex)
-        {
-            UserId = userId;
-            Name = name;
-            Email = email;
-            PasswordHash = passwordHelper.HashPassword(passwordHash);
-            Sex = sex;
-        }
     }
 }
