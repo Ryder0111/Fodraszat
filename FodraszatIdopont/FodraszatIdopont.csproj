@@ -15,4 +15,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ViewModels\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>
