@@ -6,7 +6,7 @@ namespace FodraszatIdopont.Models
     {
         private const int SaltSize = 16;
         private const int HashSize = 32;
-        private const int Iterations = 100_000;
+        private const int Iterations = 100000;
 
         public static string HashPassword(string password)
         {
@@ -20,7 +20,7 @@ namespace FodraszatIdopont.Models
             );
 
             byte[] hash = pbkdf2.GetBytes(HashSize);
-
+            
             // egy stringbe csomagoljuk
             return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
         }

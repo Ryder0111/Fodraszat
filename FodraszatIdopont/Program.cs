@@ -1,3 +1,5 @@
+using FodraszatIdopont.Models;
+
 namespace FodraszatIdopont
 {
     public class Program

@@ -5,15 +5,18 @@ namespace FodraszatIdopont.Models
     public class User
     {
         public int UserId { get; set; }
-
-        [Required]
         public string Name { get; set; }
-
-        [Required]
         public string Email { get; set; }
-
-        [Required]
         public string PasswordHash { get; set; }
         public string Sex { get; set; }
+
+        public User(int userId, string name, string email, string password, string sex)
+        {
+            UserId = userId;
+            Name = name;
+            Email = email;
+            PasswordHash =  PasswordHelper.HashPassword(password);
+            Sex = sex;
+        }
     }
 }
