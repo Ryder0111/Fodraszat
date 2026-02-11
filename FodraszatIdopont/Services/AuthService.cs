@@ -25,9 +25,10 @@ namespace FodraszatIdopont.Services
                 {
                     return user;
                 }
-                return null;
             }
             return null;
         }
+
+
     }
 }
