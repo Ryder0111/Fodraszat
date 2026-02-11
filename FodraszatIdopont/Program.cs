@@ -1,4 +1,6 @@
+using FodraszatIdopont.Data;
 using FodraszatIdopont.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont
 {
@@ -10,6 +12,10 @@ namespace FodraszatIdopont
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<BarberDbContext>(
+                options => options
+                .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
 
             var app = builder.Build();
 
