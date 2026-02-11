@@ -1,12 +1,12 @@
 ﻿using FodraszatIdopont.Models.Entities;
 
-namespace FodraszatIdopont.Services.Interfaces
+namespace FodraszatIdopont.Repositories.Interfaces
 {
     public interface IUserRepository
     {
         Task<List<User>> GetAll();
 
-        Task<User?> GetUserByEamil(string eamil);
+        Task<User?> GetUserByEamil(string email);
 
         Task<User?> GetById(int id);
 
