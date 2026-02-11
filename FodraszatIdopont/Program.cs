@@ -1,5 +1,7 @@
 using FodraszatIdopont.Data;
 using FodraszatIdopont.Models;
+using FodraszatIdopont.Services;
+using FodraszatIdopont.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont
@@ -16,6 +18,7 @@ namespace FodraszatIdopont
             builder.Services.AddDbContext<BarberDbContext>(
                 options => options
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();
 
