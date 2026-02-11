@@ -1,6 +1,7 @@
 ﻿using FodraszatIdopont.Data;
 using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont.Repositories
@@ -30,18 +31,22 @@ namespace FodraszatIdopont.Repositories
         }
 
         public async Task Add(User felhasznalo)
-        {
-            throw new NotImplementedException();
+        {   
+            _db.Add(felhasznalo);
+            await _db.SaveChangesAsync();
+
         }
 
-        public Task Delete(User felhasznalo)
+        public async Task Delete(User felhasznalo)
         {
-            throw new NotImplementedException();
+            _db.Remove(felhasznalo);
+            await _db.SaveChangesAsync();
         }
 
-        public Task Update(User felhasznalo)
+        public async Task Update(User felhasznalo)
         {
-            throw new NotImplementedException();
+            _db.Update(felhasznalo);
+            await _db.SaveChangesAsync();
         }
     }
 }
