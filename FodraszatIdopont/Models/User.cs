@@ -15,6 +15,7 @@ namespace FodraszatIdopont.Models
         [Required(ErrorMessage = "A jelszó megadása kötelező!")]
         public string PasswordHash { get; set; }
         public string Sex { get; set; }
+        public string Role { get; set; }
 
         public User(int userId, string name, string email, string password, string sex)
         {

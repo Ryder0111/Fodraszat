@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FodraszatIdopont.Models
 {
-    public class Appointments
+    public class Appointment
     {
         public int AppointmentId { get; set; }
         [Required]
@@ -13,7 +13,7 @@ namespace FodraszatIdopont.Models
         [Required]
         public int ServiceId { get; set; }
         public DateTime DateTime { get; set; }
-        public Appointments(int appointmentId, int userId, int hairdresserId, int serviceId, DateTime dateTime)
+        public Appointment(int appointmentId, int userId, int hairdresserId, int serviceId, DateTime dateTime)
         {
             AppointmentId = appointmentId;
             UserId = userId;
