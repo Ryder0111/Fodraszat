@@ -29,6 +29,17 @@ namespace FodraszatIdopont.Services
             return null;
         }
 
-
+        public async Task<User?> RegisterAsync(User felhasznalo,string password)
+        {
+            var user = await _user.GetUserByEamil(felhasznalo.Email);
+            if (user == null)
+            {
+                felhasznalo.PasswordHash = PasswordHelper.HashPassword(password);
+                felhasznalo.Role = Models.Enums.UserRole.User;
+                await _user.Add(felhasznalo);
+                return felhasznalo;
+            }
+            return null;
+        }
     }
 }
