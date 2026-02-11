@@ -7,16 +7,17 @@ namespace FodraszatIdopont.Models.Entities
     {
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "A név megadása kötelező!")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = "Az email megadása kötelező!")]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
-        [Required(ErrorMessage = "A jelszó megadása kötelező!")]
-        public string PasswordHash { get; set; }
-        public string Sex { get; set; }
+        public string PasswordHash { get; set; } = null!;
+
+        public Gender Sex { get; set; }
+
         public UserRole Role { get; set; }
+
+        public List<Appointment> Appointments { get; set; } = new();
 
     }
 }

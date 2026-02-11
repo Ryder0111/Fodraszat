@@ -6,14 +6,13 @@ namespace FodraszatIdopont.Models.Entities
     {
         public int ServiceId { get; set; }
 
-        [Required(ErrorMessage = "Add meg a szolgáltatás nevét!")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = "Add meg a szolgáltatás időtartamát!")]
-        public int Duration { get; set; }
+        public int DurationInMinute { get; set; }
 
-        [Required(ErrorMessage = "Add meg a szolgáltatás árát!")]
         public int Price { get; set; }
+
+        public List<Appointment> Appointments { get; set; } = new();
 
     }
 }

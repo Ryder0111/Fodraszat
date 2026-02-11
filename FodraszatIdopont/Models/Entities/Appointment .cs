@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FodraszatIdopont.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace FodraszatIdopont.Models.Entities
@@ -7,19 +8,18 @@ namespace FodraszatIdopont.Models.Entities
     {
         public int AppointmentId { get; set; }
 
-        [Required]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
-        [Required]
         public int HairdresserId { get; set; }
-        public Hairdresser Hairdresser { get; set; }
+        public Hairdresser Hairdresser { get; set; } = null!;
 
-        [Required]
         public int ServiceId { get; set; }
-        public Service Service { get; set; }
+        public Service Service { get; set; } = null!;
 
-        public DateTime DateTime { get; set; }
+        public DateTime StartTime { get; set; }
+
+        public AppointmentStatus AppointmentStatus { get; set; }
 
     }
 }

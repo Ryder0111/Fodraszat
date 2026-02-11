@@ -4,6 +4,5 @@ namespace FodraszatIdopont.Services
 {
     public class AuthService : IAuthService
     {
-        pr
     }
 }

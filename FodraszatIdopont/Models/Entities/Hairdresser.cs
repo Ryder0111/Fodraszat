@@ -6,11 +6,11 @@ namespace FodraszatIdopont.Models.Entities
     {
         public int HairdresserId { get; set; }
 
-        [Required(ErrorMessage = "A fodrász nevének megadása kötelező!")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = "A telefonszám megadása kötelező!")]
-        public string Phone { get; set; }
+        public string Phone { get; set; } = null!;
+
+        public List<Appointment> Appointments { get; set; } = new();
 
     }
 }
