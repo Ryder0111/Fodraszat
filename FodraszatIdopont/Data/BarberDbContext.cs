@@ -1,4 +1,4 @@
-﻿using FodraszatIdopont.Models;
+﻿using FodraszatIdopont.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont.Data

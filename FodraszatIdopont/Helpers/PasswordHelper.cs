@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace FodraszatIdopont.Models
+namespace FodraszatIdopont.Helpers
 {
     public static class PasswordHelper
     {

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FodraszatIdopont.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
-namespace FodraszatIdopont.Models
+namespace FodraszatIdopont.Models.Entities
 {
     public class User
     {
@@ -15,15 +16,7 @@ namespace FodraszatIdopont.Models
         [Required(ErrorMessage = "A jelszó megadása kötelező!")]
         public string PasswordHash { get; set; }
         public string Sex { get; set; }
-        public string Role { get; set; }
+        public UserRole Role { get; set; }
 
-        public User(int userId, string name, string email, string password, string sex)
-        {
-            UserId = userId;
-            Name = name;
-            Email = email;
-            PasswordHash =  PasswordHelper.HashPassword(password);
-            Sex = sex;
-        }
     }
 }
