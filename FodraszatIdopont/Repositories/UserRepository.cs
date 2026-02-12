@@ -1,7 +1,6 @@
 ﻿using FodraszatIdopont.Data;
 using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont.Repositories
@@ -31,10 +30,9 @@ namespace FodraszatIdopont.Repositories
         }
 
         public async Task Add(User felhasznalo)
-        {   
+        {
             _db.Add(felhasznalo);
             await _db.SaveChangesAsync();
-
         }
 
         public async Task Delete(User felhasznalo)
