@@ -25,17 +25,17 @@ namespace FodraszatIdopont.Controllers
         {
             var user = await _authService.AuthenticateAsync(email, password);
 
-            if (user == null)
+            if (!user.Success)
             {
-                TempData["error_msg"] = "Hibás jelszó vagy email cím!";
+                TempData["error_msg"] = user.Error;
                 return View();
             }
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Data.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Data.Name),
+                new Claim(ClaimTypes.Email, user.Data.Email),
+                new Claim(ClaimTypes.Role, user.Data.Role.ToString())
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
