@@ -14,7 +14,7 @@ namespace FodraszatIdopont.Models.ViewModels
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "A jelszó megadása kötelező!")]
-        [StringLength(7,ErrorMessage = "A jelszó minimum 7, maximum 50 karakter lehet!")]
+        [StringLength(7,ErrorMessage = "A jelszó minimum 7 karakter lehet!")]
         public string Password { get; set; } = null!;
 
         [Required(ErrorMessage = "A jelszó újboli megadása kötelező!")]
