@@ -4,6 +4,6 @@
     {
         None = 0,
         Male = 1,
-        Famele = 2,
+        Famale = 2,
     }
 }
