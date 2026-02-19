@@ -21,6 +21,12 @@ namespace FodraszatIdopont
                 options => options
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
             
+            builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/Login";
+            });
+            
             //Szolgáltatások (interface,class)
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -40,6 +46,7 @@ namespace FodraszatIdopont
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
