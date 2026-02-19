@@ -1,4 +1,6 @@
-﻿using FodraszatIdopont.Models.Entities;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,21 +23,21 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] //CSRF elleni védelem; CSRF-Cross-site request forgery
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginViewModel felhasznalo)
         {
-            var user = await _authService.AuthenticateAsync(email, password);
+            var user = await _authService.AuthenticateAsync(felhasznalo.Email, felhasznalo.Password);
 
-            if (user == null)
+            if (!user.Success)
             {
-                TempData["error_msg"] = "Hibás jelszó vagy email cím!";
+                TempData["error_msg"] = user.Error;
                 return View();
             }
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Data.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Data.Name),
+                new Claim(ClaimTypes.Email, user.Data.Email),
+                new Claim(ClaimTypes.Role, user.Data.Role.ToString())
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -58,9 +60,30 @@ namespace FodraszatIdopont.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registration(User nUser)
+        public async Task<IActionResult> Registration(RegisterViewModel felhasznalo)
         {
-            return View();
+            if(!ModelState.IsValid) return View(model: felhasznalo);
+            User user = new User()
+            {
+                Name = felhasznalo.Name,
+                Email = felhasznalo.Email,
+                PasswordHash = PasswordHelper.HashPassword(felhasznalo.Password),
+                Sex = felhasznalo.Sex,
+            };
+            var result = await _authService.RegisterAsync(user, felhasznalo.Password);
+            if (!result.Success)
+            {
+                TempData["error_msg"] = result.Error;
+                return View(felhasznalo); 
+            }
+
+
+            LoginViewModel bejelent = new LoginViewModel()
+            {
+                Email = felhasznalo.Email,
+                Password = felhasznalo.Password
+            };
+            return Ok(Login(bejelent));
         }
     }
 }

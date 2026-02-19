@@ -16,30 +16,31 @@ namespace FodraszatIdopont.Services
             _user = user;
         }
 
-        public async Task<User?> AuthenticateAsync(string email, string password)
+        public async Task<Results<User>> AuthenticateAsync(string email, string password)
         {
             var user = await _user.GetUserByEamil(email);
             if (user != null)
             {
                 if (PasswordHelper.VerifyPassword(password, user.PasswordHash))
                 {
-                    return user;
+                    return Results<User>.Ok(user);
                 }
             }
-            return null;
+            return Results<User>.Fail("Hibás jelszó vagy email cím");
         }
 
-        public async Task<User?> RegisterAsync(User felhasznalo,string password)
+        public async Task<Results<User>> RegisterAsync(User felhasznalo,string password)
         {
             var user = await _user.GetUserByEamil(felhasznalo.Email);
-            if (user == null)
+            if (user != null)
             {
-                felhasznalo.PasswordHash = PasswordHelper.HashPassword(password);
-                felhasznalo.Role = Models.Enums.UserRole.User;
-                await _user.Add(felhasznalo);
-                return felhasznalo;
+                return Results<User>.Fail("Email már foglalt");
             }
-            return null;
+            felhasznalo.PasswordHash = PasswordHelper.HashPassword(password);
+            felhasznalo.Role = Models.Enums.UserRole.User;
+            await _user.Add(felhasznalo);
+            return Results<User>.Ok(felhasznalo);
+            
         }
     }
 }
