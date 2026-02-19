@@ -76,7 +76,14 @@ namespace FodraszatIdopont.Controllers
                 TempData["error_msg"] = result.Error;
                 return View(felhasznalo); 
             }
-            return View();
+
+
+            LoginViewModel bejelent = new LoginViewModel()
+            {
+                Email = felhasznalo.Email,
+                Password = felhasznalo.Password
+            };
+            return Ok(Login(bejelent));
         }
     }
 }
