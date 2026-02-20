@@ -21,6 +21,8 @@ namespace FodraszatIdopont
                 options => options
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
             
+
+
             builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>
             {
                 options.LoginPath = "/Account/Login";
@@ -32,6 +34,12 @@ namespace FodraszatIdopont
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<BarberDbContext>();
+                db.Database.Migrate();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
