@@ -1,9 +1,11 @@
 ﻿namespace FodraszatIdopont.Models.Enums
 {
+    [Flags]
     public enum UserRole
     {
-        User = 0,
-        Hairdresser = 1,
-        Admin = 2
+        None = 0,
+        User = 1,
+        Hairdresser = 2,
+        Admin = 4
     }
 }

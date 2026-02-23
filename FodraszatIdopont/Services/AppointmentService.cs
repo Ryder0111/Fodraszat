@@ -49,7 +49,7 @@ namespace FodraszatIdopont.Services
         public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)
         {
             var hairdresser = await _Userrepo.GetById(appointment.HairdresserId);
-            if (hairdresser == null || hairdresser.Role != UserRole.Hairdresser)
+            if (hairdresser == null || !hairdresser.Role.HasFlag(UserRole.Hairdresser))
                 return Results<Appointment>.Fail("Érvénytelen fodrász.");
 
             if (appointment.UserId == appointment.HairdresserId)
@@ -79,7 +79,7 @@ namespace FodraszatIdopont.Services
 
             var fodrasz = await _Userrepo.GetById(hairdresser.UserId);
 
-            if (fodrasz == null || fodrasz.Role != UserRole.Hairdresser)
+            if (fodrasz == null || !fodrasz.Role.HasFlag(UserRole.Hairdresser))
                 return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");
 
             else
