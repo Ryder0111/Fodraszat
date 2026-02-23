@@ -67,6 +67,7 @@ namespace FodraszatIdopont.Services
         {
             throw new NotImplementedException();
         }
+
         public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
         {
             if (user == null)
