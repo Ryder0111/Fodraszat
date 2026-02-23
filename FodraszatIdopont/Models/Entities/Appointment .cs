@@ -12,7 +12,7 @@ namespace FodraszatIdopont.Models.Entities
         public User User { get; set; } = null!;
 
         public int HairdresserId { get; set; }
-        public Hairdresser Hairdresser { get; set; } = null!;
+        public User Hairdresser { get; set; } = null!;
 
         public int ServiceId { get; set; }
         public Service Service { get; set; } = null!;
@@ -21,6 +21,8 @@ namespace FodraszatIdopont.Models.Entities
         public DateTime EndTime { get; set; }
 
         public AppointmentStatus AppointmentStatus { get; set; }
+
+
 
     }
 }

@@ -14,17 +14,9 @@ namespace FodraszatIdopont.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Service> Services { get; set; }
 
-        public DbSet<Hairdresser> Hairdressers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Kapcsolatok beállítása
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Hairdresser)
-                .WithMany(h => h.Appointments)
-                .HasForeignKey(a => a.HairdresserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.User)
                 .WithMany(u => u.Appointments)
@@ -36,6 +28,13 @@ namespace FodraszatIdopont.Data
                 .WithMany(s => s.Appointments)
                 .HasForeignKey(a => a.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Hairdresser)
+                .WithMany(u => u.HairdresserAppointments)
+                .HasForeignKey(a => a.HairdresserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             //Email egyediség
             modelBuilder.Entity<User>()

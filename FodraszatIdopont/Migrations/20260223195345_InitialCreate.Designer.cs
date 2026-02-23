@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260223183645_InitialCreate")]
+    [Migration("20260223195345_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -60,27 +60,6 @@ namespace FodraszatIdopont.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("FodraszatIdopont.Models.Entities.Hairdresser", b =>
-                {
-                    b.Property<int>("HairdresserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HairdresserId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("HairdresserId");
-
-                    b.ToTable("Hairdressers");
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Service", b =>
@@ -142,8 +121,8 @@ namespace FodraszatIdopont.Migrations
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Appointment", b =>
                 {
-                    b.HasOne("FodraszatIdopont.Models.Entities.Hairdresser", "Hairdresser")
-                        .WithMany("Appointments")
+                    b.HasOne("FodraszatIdopont.Models.Entities.User", "Hairdresser")
+                        .WithMany("HairdresserAppointments")
                         .HasForeignKey("HairdresserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -167,11 +146,6 @@ namespace FodraszatIdopont.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FodraszatIdopont.Models.Entities.Hairdresser", b =>
-                {
-                    b.Navigation("Appointments");
-                });
-
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Service", b =>
                 {
                     b.Navigation("Appointments");
@@ -180,6 +154,8 @@ namespace FodraszatIdopont.Migrations
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.User", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("HairdresserAppointments");
                 });
 #pragma warning restore 612, 618
         }
