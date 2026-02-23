@@ -18,6 +18,7 @@ namespace FodraszatIdopont.Models.Entities
         public Service Service { get; set; } = null!;
 
         public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public AppointmentStatus AppointmentStatus { get; set; }
 
