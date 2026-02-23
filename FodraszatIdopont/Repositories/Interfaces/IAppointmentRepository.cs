@@ -20,6 +20,7 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date);
 
+        Task<bool> ExistsInTimeRange(int id, DateTime start, DateTime end);
 
     }
 }
