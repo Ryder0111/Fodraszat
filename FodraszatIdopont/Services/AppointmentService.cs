@@ -7,21 +7,36 @@ namespace FodraszatIdopont.Services
 {
     public class AppointmentService : IAppointmentService
     {
-        private readonly IAppointmentRepository _repo;
+        private readonly IAppointmentRepository _Appointmentrepo;
+        private readonly IServiceRepository _Servicerepo;
 
-        public AppointmentService(IAppointmentRepository repo)
+        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2)
         {
-            _repo = repo;
+            _Appointmentrepo = repo1;
+            _Servicerepo = repo2;
         }
 
         public Task<Results<Appointment>> CancelAppointment(Appointment appointment)
         {
-            throw new NotImplementedException();
+
         }
 
-        public Task<Results<Appointment>> CreateAppointment(Appointment appointment)
+        public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)
         {
-            throw new NotImplementedException();
+            var szolgaltatas = await _Servicerepo.GetServiceById(ServiceId);
+            if (szolgaltatas == null)
+            {
+                return Results<Appointment>.Fail("Nem létezik ilyen szolgáltatás");
+            }
+
+            appointment.EndTime = appointment.StartTime + TimeSpan.FromMinutes(szolgaltatas.DurationInMinute);
+
+            if (await _Appointmentrepo.ExistsInTimeRange(appointment.HairdresserId,appointment.StartTime,appointment.EndTime))
+            {
+                return Results<Appointment>.Fail($"{appointment.StartTime.ToString("MM-dd. HH:mm")} már foglalt");
+            }
+            await _Appointmentrepo.Create(appointment);
+            return Results<Appointment>.Ok(appointment);
         }
 
         public Task<Results<List<Appointment>>> GetHairdresseSchedule(Hairdresser hairdresser)

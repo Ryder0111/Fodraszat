@@ -5,7 +5,7 @@ namespace FodraszatIdopont.Services.Interface
 {
     public interface IAppointmentService
     {
-        Task<Results<Appointment>> CreateAppointment(Appointment appointment);
+        Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId);
 
         Task<Results<Appointment>> CancelAppointment(Appointment appointment);
 
