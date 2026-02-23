@@ -4,11 +4,11 @@ namespace FodraszatIdopont.Repositories.Interfaces
 {
     public interface IAppointmentRepository
     {
-        Task<Appointment> Creat(Appointment appointment);
+        Task<Appointment> Create(Appointment appointment);
 
-        Task<Appointment> Update(Appointment appointment);
+        Task Update(Appointment appointment);
 
-        Task<Appointment> GetById(int id);
+        Task<Appointment?> GetById(int id);
 
         Task<List<Appointment>> GetByUserId(int id);
 
