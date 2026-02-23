@@ -18,9 +18,31 @@ namespace FodraszatIdopont.Services
             _Userrepo = repo3;
         }
 
-        public Task<Results<Appointment>> CancelAppointment(Appointment appointment)
+        public async Task<Results<Appointment>> CancelAppointment(Appointment appointment)
         {
+            var idopont = await _Appointmentrepo.GetById(appointment.AppointmentId);
 
+            if (idopont == null)
+            {
+                return Results<Appointment>.Fail("Nincs ilyen időpontfoglalás!");
+
+            }
+
+            else if (idopont.AppointmentStatus == Models.Enums.AppointmentStatus.Cancelled)
+            {
+                return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
+
+            }
+
+            else if (DateTime.Now.AddDays(1) > idopont.StartTime)
+            {
+                return Results<Appointment>.Fail("Ezt az időpontot már nem lehet lemondani.");
+            }
+            else
+            {
+                await _Appointmentrepo.Update(idopont);
+                return Results<Appointment>.Ok(idopont);
+            }
         }
 
         public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)
@@ -44,7 +66,6 @@ namespace FodraszatIdopont.Services
         public Task<Results<List<Appointment>>> GetHairdresseSchedule(Hairdresser hairdresser)
         {
             throw new NotImplementedException();
-        }
 
         public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
         {
