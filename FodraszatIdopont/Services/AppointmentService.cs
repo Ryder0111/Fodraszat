@@ -1,5 +1,6 @@
 ﻿using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services.Interface;
 
@@ -47,6 +48,14 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)
         {
+            var hairdresser = await _Userrepo.GetById(appointment.HairdresserId);
+            if (hairdresser == null || hairdresser.Role != UserRole.Hairdresser)
+                return Results<Appointment>.Fail("Érvénytelen fodrász.");
+
+            if (appointment.UserId == appointment.HairdresserId)
+                return Results<Appointment>.Fail("A fodrász nem lehet saját maga vendége.");
+
+
             var szolgaltatas = await _Servicerepo.GetServiceById(ServiceId);
             if (szolgaltatas == null)
             {
@@ -63,24 +72,35 @@ namespace FodraszatIdopont.Services
             return Results<Appointment>.Ok(appointment);
         }
 
-        public Task<Results<List<Appointment>>> GetHairdresseSchedule(Hairdresser hairdresser)
+        public async Task<Results<List<Appointment>>> GetHairdresseSchedule(User hairdresser)
         {
-            throw new NotImplementedException();
+            if (hairdresser == null)
+                return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");
+
+            var fodrasz = await _Userrepo.GetById(hairdresser.UserId);
+
+            if (fodrasz == null || fodrasz.Role != UserRole.Hairdresser)
+                return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");
+
+            else
+            {
+                var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now));
+                return Results<List<Appointment>>.Ok(idopontok);
+            }
         }
 
         public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
         {
             if (user == null)
-            {
                 return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
-            }
 
-            else if (await _Userrepo.GetById(user.UserId) == null)
-            {
+            var dbUser = await _Userrepo.GetById(user.UserId);
+
+            if (dbUser == null)
                 return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
-            }
 
-            return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(user.UserId));
+            return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(dbUser.UserId));
+
 
         }
     }

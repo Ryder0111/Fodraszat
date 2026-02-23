@@ -19,5 +19,7 @@ namespace FodraszatIdopont.Models.Entities
 
         public List<Appointment> Appointments { get; set; } = new();
 
+        public List<Appointment> HairdresserAppointments { get; set; } = new();
+
     }
 }
