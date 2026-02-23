@@ -83,7 +83,7 @@ namespace FodraszatIdopont.Controllers
                 Email = felhasznalo.Email,
                 Password = felhasznalo.Password
             };
-            return Ok(Login(bejelent));
+            return await Login(bejelent);
         }
     }
 }
