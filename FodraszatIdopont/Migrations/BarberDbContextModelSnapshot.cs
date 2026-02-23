@@ -33,6 +33,9 @@ namespace FodraszatIdopont.Migrations
                     b.Property<int>("AppointmentStatus")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("HairdresserId")
                         .HasColumnType("int");
 

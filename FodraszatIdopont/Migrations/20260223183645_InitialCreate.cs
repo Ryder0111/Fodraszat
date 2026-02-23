@@ -67,6 +67,7 @@ namespace FodraszatIdopont.Migrations
                     HairdresserId = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

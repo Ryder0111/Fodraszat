@@ -66,7 +66,7 @@ namespace FodraszatIdopont.Services
         public Task<Results<List<Appointment>>> GetHairdresseSchedule(Hairdresser hairdresser)
         {
             throw new NotImplementedException();
-
+        }
         public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
         {
             if (user == null)
