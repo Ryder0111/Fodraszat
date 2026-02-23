@@ -9,11 +9,13 @@ namespace FodraszatIdopont.Services
     {
         private readonly IAppointmentRepository _Appointmentrepo;
         private readonly IServiceRepository _Servicerepo;
+        private readonly IUserRepository _Userrepo;
 
-        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2)
+        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2, IUserRepository repo3)
         {
             _Appointmentrepo = repo1;
             _Servicerepo = repo2;
+            _Userrepo = repo3;
         }
 
         public Task<Results<Appointment>> CancelAppointment(Appointment appointment)
@@ -44,9 +46,20 @@ namespace FodraszatIdopont.Services
             throw new NotImplementedException();
         }
 
-        public Task<Results<List<Appointment>>> GetUserAppointments(User user)
+        public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
+            }
+
+            else if (await _Userrepo.GetById(user.UserId) == null)
+            {
+                return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
+            }
+
+            return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(user.UserId));
+
         }
     }
 }
