@@ -33,6 +33,9 @@ namespace FodraszatIdopont
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())

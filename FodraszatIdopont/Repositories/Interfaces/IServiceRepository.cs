@@ -7,7 +7,7 @@ namespace FodraszatIdopont.Repositories.Interfaces
     {
         Task<Service?> GetById(int id);
 
-        Task<Service?> ExistsByName(string name);
+        Task<bool> ExistsByName(string name);
 
         Task<Service> Ceate(Service service);
         Task<Service> Update(Service service);

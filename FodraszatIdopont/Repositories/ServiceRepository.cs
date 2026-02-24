@@ -32,9 +32,9 @@ namespace FodraszatIdopont.Repositories
 
         }
 
-        public async Task<Service?> ExistsByName(string name)
+        public async Task<bool> ExistsByName(string name)
         {
-            return await _db.Services.SingleOrDefaultAsync(s => s.Name == name);
+            return await _db.Services.AnyAsync(s => s.Name == name);
         }
 
         public async Task<List<Service>> GetAll()
