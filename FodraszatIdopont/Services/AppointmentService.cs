@@ -56,7 +56,7 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("A fodrász nem lehet saját maga vendége.");
 
 
-            var szolgaltatas = await _Servicerepo.GetServiceById(ServiceId);
+            var szolgaltatas = await _Servicerepo.GetById(ServiceId);
             if (szolgaltatas == null)
             {
                 return Results<Appointment>.Fail("Nem létezik ilyen szolgáltatás");

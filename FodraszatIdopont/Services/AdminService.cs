@@ -22,13 +22,21 @@ namespace FodraszatIdopont.Services
             if (service.Name != "")
                 return Results<Service>.Fail("A név megadása kötelező");
 
-            if (!(service.DurationInMinute > 0))
+            else if (!(service.DurationInMinute > 0))
                 return Results<Service>.Fail("Az időtartam megadása kötelező");
 
-            if (!(service.Price > 0))
+            else if (!(service.Price > 0))
                 return Results<Service>.Fail("Az ér megadása kötelező");
 
-            _ServiceRepo.
+            else if (_ServiceRepo.ExistsByName(service.Name) != null)
+            {
+                return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
+            }
+            else
+            {
+                await _ServiceRepo.Ceate(service);
+                return Results<Service>.Ok(service);
+            }
 
 
         }
@@ -65,9 +73,25 @@ namespace FodraszatIdopont.Services
             return Results<User>.Ok(fodrasz);
         }
 
-        public Task<Results<Service>> UpdateService(int serviceid)
+        public async Task<Results<Service>> UpdateService(Service service)
         {
-            throw new NotImplementedException();
+            var szolgaltatas = await _ServiceRepo.GetById(service.ServiceId);
+            if (szolgaltatas == null)
+            {
+                return Results<Service>.Fail("Nincs ilyen szolgáltatás!");
+            }
+            else if (service.Price <= 0)
+            {
+                return Results<Service>.Fail("A szolgáltatás ára hibásan lett megadva!");
+            }
+            else if (service.DurationInMinute <= 0)
+            {
+                return Results<Service>.Fail("A szolgáltatás időtartama nem megfelelő!");
+            }
+            else
+            {
+                return Results<Service>.Ok(await _ServiceRepo.Update(service));
+            }
         }
     }
 }
