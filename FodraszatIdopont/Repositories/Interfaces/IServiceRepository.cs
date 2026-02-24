@@ -11,9 +11,9 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<Service> Ceate(Service service);
         Task<Service> Update(Service service);
-        Task<Service> DeavtiveService(Service service);
+        Task<Service?> DeavtiveService(Service service);
 
-        Task<List<Service>> GetAll(int id);
+        Task<List<Service>> GetAll();
 
 
     }

@@ -14,14 +14,22 @@ namespace FodraszatIdopont.Repositories
             _db = db;
         }
 
-        public Task<Service> Ceate(Service service)
+        public async Task<Service> Ceate(Service service)
         {
-            throw new NotImplementedException();
+            _db.Services.Add(service);
+            await _db.SaveChangesAsync();
+            return service;
         }
 
-        public Task<Service> DeavtiveService(Service service)
+        public async Task<Service?> DeavtiveService(Service service)
         {
-            throw new NotImplementedException();
+            var szolgaltatas = await _db.Services.FirstOrDefaultAsync(s=>s.ServiceId==service.ServiceId);
+
+            szolgaltatas.isActive = false;
+
+            await _db.SaveChangesAsync();
+            return szolgaltatas;
+
         }
 
         public async Task<Service?> ExistsByName(string name)
@@ -29,9 +37,9 @@ namespace FodraszatIdopont.Repositories
             return await _db.Services.SingleOrDefaultAsync(s => s.Name == name);
         }
 
-        public Task<List<Service>> GetAll(int id)
+        public async Task<List<Service>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Services.ToListAsync();
         }
 
         public async Task<Service?> GetById(int id)
@@ -41,9 +49,11 @@ namespace FodraszatIdopont.Repositories
 
 
 
-        public Task<Service> Update(Service service)
+        public async Task<Service> Update(Service service)
         {
-            throw new NotImplementedException();
+            _db.Services.Update(service);
+            await _db.SaveChangesAsync();
+            return service;
         }
     }
 }
