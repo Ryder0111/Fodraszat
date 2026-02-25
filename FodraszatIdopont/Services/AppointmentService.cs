@@ -11,39 +11,50 @@ namespace FodraszatIdopont.Services
         private readonly IAppointmentRepository _Appointmentrepo;
         private readonly IServiceRepository _Servicerepo;
         private readonly IUserRepository _Userrepo;
+        private readonly ICurrentUserService _CurrentUser;
 
-        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2, IUserRepository repo3)
+        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2, IUserRepository repo3, ICurrentUserService currentUser)
         {
             _Appointmentrepo = repo1;
             _Servicerepo = repo2;
             _Userrepo = repo3;
+            _CurrentUser = currentUser;
         }
 
         public async Task<Results<Appointment>> CancelAppointment(Appointment appointment)
         {
             var idopont = await _Appointmentrepo.GetById(appointment.AppointmentId);
-
             if (idopont == null)
             {
                 return Results<Appointment>.Fail("Nincs ilyen időpontfoglalás!");
 
             }
 
-            else if (idopont.AppointmentStatus == Models.Enums.AppointmentStatus.Cancelled)
+            if (!_CurrentUser.Roles.HasFlag(UserRole.Admin))
             {
-                return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
-
+                if (_CurrentUser.UserId != idopont.UserId)
+                {
+                    if (_CurrentUser.UserId != idopont.HairdresserId)
+                    {
+                        return Results<Appointment>.Fail("Nincs jogod törölni az időpontot");
+                    }
+                }
             }
 
-            else if (DateTime.Now.AddDays(1) > idopont.StartTime)
+            if (idopont.AppointmentStatus == AppointmentStatus.Cancelled)
+            {
+                return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
+            }
+
+            if (DateTime.Now.AddDays(1) > idopont.StartTime)
             {
                 return Results<Appointment>.Fail("Ezt az időpontot már nem lehet lemondani.");
             }
-            else
-            {
-                await _Appointmentrepo.Update(idopont);
-                return Results<Appointment>.Ok(idopont);
-            }
+
+            idopont.AppointmentStatus = AppointmentStatus.Cancelled;
+            await _Appointmentrepo.Update(idopont);
+            return Results<Appointment>.Ok(idopont);
+
         }
 
         public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)

@@ -10,23 +10,15 @@ namespace FodraszatIdopont.Services
     {
         private readonly IUserRepository _UserRepo;
         private readonly IServiceRepository _ServiceRepo;
-        private readonly ICurrentUserService _CurrentUser;
 
-        public AdminService(IUserRepository repo1, IServiceRepository repo2, ICurrentUserService repo3)
+        public AdminService(IUserRepository repo1, IServiceRepository repo2)
         {
             _UserRepo = repo1;
             _ServiceRepo = repo2;
-            _CurrentUser = repo3;
         }
 
         public async Task<Results<Service>> CreateService(Service service)
         {
-
-            if (!_CurrentUser.IsAuthenticated)
-                return Results<Service>.Fail("Nincs hozzá jogosultságod");
-
-            if (!_CurrentUser.Roles.HasFlag(UserRole.Admin))
-                return Results<Service>.Fail("Nincs hozzá jogosultságod");
 
             if (string.IsNullOrWhiteSpace(service.Name))
                 return Results<Service>.Fail("A név megadása kötelező");
@@ -48,11 +40,6 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> PromoteToHairdresser(string email)
         {
-            if (!_CurrentUser.IsAuthenticated)
-                return Results<User>.Fail("Nincs hozzá jogosultságod");
-
-            if (!_CurrentUser.Roles.HasFlag(UserRole.Admin))
-                return Results<User>.Fail("Nincs hozzá jogosultságod");
 
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
@@ -69,12 +56,6 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> RemoveHairdresserRole(string email)
         {
-            if (!_CurrentUser.IsAuthenticated)
-                return Results<User>.Fail("Nincs hozzá jogosultságod");
-
-            if (!_CurrentUser.Roles.HasFlag(UserRole.Admin))
-                return Results<User>.Fail("Nincs hozzá jogosultságod");
-
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
                 return Results<User>.Fail("Nincs ilyen felhasználó");
@@ -91,12 +72,6 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Service>> UpdateService(Service service)
         {
-            if (!_CurrentUser.IsAuthenticated)
-                return Results<Service>.Fail("Nincs hozzá jogosultságod");
-
-            if (!_CurrentUser.Roles.HasFlag(UserRole.Admin))
-                return Results<Service>.Fail("Nincs hozzá jogosultságod");
-
             var szolgaltatas = await _ServiceRepo.GetById(service.ServiceId);
             if (szolgaltatas == null)
             {
