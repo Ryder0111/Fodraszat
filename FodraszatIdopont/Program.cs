@@ -4,6 +4,7 @@ using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont
@@ -22,9 +23,9 @@ namespace FodraszatIdopont
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
 
 
-
-            builder.Services.AddAuthentication("Cookies")
-                .AddCookie("Cookies", options =>
+            //Süti hozzáadása alap séma alapján
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
                     options.Cookie.Name = "FodraszatAuth";
                     options.LoginPath = "/Account/Login";

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260226095431_Initial-Create")]
+    [Migration("20260226175903_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

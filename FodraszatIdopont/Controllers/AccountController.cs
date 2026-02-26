@@ -87,8 +87,8 @@ namespace FodraszatIdopont.Controllers
             {
                 IsPersistent = model.RememberMe,
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
-                IssuedUtc  = DateTimeOffset.UtcNow
+                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
+                IssuedUtc  = model.RememberMe ? DateTimeOffset.UtcNow : null    
             };
 
             await HttpContext.SignInAsync(
