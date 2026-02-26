@@ -1,4 +1,4 @@
-using FodraszatIdopont.Data;
+Ôªøusing FodraszatIdopont.Data;
 using FodraszatIdopont.Models;
 using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
@@ -20,16 +20,18 @@ namespace FodraszatIdopont
             builder.Services.AddDbContext<BarberDbContext>(
                 options => options
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
-            
 
 
-            builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>
-            {
-                options.LoginPath = "/Account/Login";
-                options.AccessDeniedPath = "/Account/Login";
+
+            builder.Services.AddAuthentication("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Cookie.Name = "FodraszatAuth";
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Account/Login";
             });
-            
-            //Szolg·ltat·sok (interface,class)
+
+            //Szolg√°ltat√°sok (interface,class)
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -56,6 +58,8 @@ namespace FodraszatIdopont
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseAntiforgery();
 
             app.MapControllerRoute(
                 name: "default",
