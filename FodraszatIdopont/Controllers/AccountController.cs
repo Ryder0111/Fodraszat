@@ -4,6 +4,7 @@ using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -136,6 +137,12 @@ namespace FodraszatIdopont.Controllers
                 Password = felhasznalo.Password
             };
             return await Login(bejelent);
+        }
+
+        [Authorize]
+        public IActionResult MAAppointment()
+        {
+            return View();
         }
     }
 }

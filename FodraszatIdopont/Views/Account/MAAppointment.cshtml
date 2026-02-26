@@ -2,26 +2,27 @@
 @{
     if (TempData["error_msg"] != null)
     {
-        <div class="alert alert-danger">@TempData</div>
+        <div class="alert alert-danger">@TempData["error_msg"]</div>
     }
 }
 
-<h1 class="display-4 fw-bold text-center">Bejelentkezés</h1>
+<h1 class="display-4 fw-bold text-center">Időpontfoglalás</h1>
 
 <form action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
     @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-            <input type="text" asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com">
-            <span asp-validation-for="Email" class="invalid-feedback"></span>@* Hibaüzenet helye *@
+            <input type="text" asp-for="Email" class="form-control" placeholder="email@pelda.com">
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label">Jelszó</label>
         <div class="col-sm-10">
-            <input type="password" asp-for="Password" class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó"> 
-            <span asp-validation-for="Password" class="invalid-feedback"></span>
+            <input type="password" asp-for="Password" class="form-control" placeholder="Jelszó">
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
     </div>
     <div class="col-sm-10">

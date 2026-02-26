@@ -1,35 +1,42 @@
 ﻿@model FodraszatIdopont.Models.ViewModels.RegisterViewModel;
-@{if(TempData["error_msg"]!=null){
-	<div class="alert alert-danger">@TempData</div>
-}
-}
 
 <h1 class="display-4 fw-bold text-center">Regisztráció</h1>
 <div class="fs-5 text-center">Hozzon létre fiókot, hogy egyszerűbben foglalhasson időpontot!</div>
 
 <form action="Registration" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+    @{
+        if (TempData["error_msg"] != null)
+        {
+            <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
+        }
+    
+}
     <div class="form-group row mb-3 mt-3">
         <label class="col-sm-2 col-form-label">Teljes név</label>
         <div class="col-sm-10">
-            <input type="text" asp-for="Name" class="form-control" placeholder="Példa Béla">
+            <input type="text" asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Példa Béla">
+            <span asp-validation-for="Name" class="invalid-feedback"></span>
         </div>
     </div>
     <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label">Email cím</label>
         <div class="col-sm-10">
-            <input type="text" asp-for="Email" class="form-control" placeholder="email@pelda.com">
+            <input type="text" asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com">
+            <span asp-validation-for="Email" class="invalid-feedback"></span>
         </div>
     </div>
     <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label">Jelszó</label>
         <div class="col-sm-10">
-            <input type="password" asp-for="Password" class="form-control" placeholder="Jelszó">
+            <input type="password" asp-for="Password" class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó">
+            <span asp-validation-for="Password" class="invalid-feedback"></span>
         </div>
     </div>
     <div class="form-group row mb-3">
         <label class="col-sm-2 col-form-label">Jelszó mégegyszer</label>
         <div class="col-sm-10">
-            <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Jelszó">
+            <input type="password" asp-for="ConfirmPassword" class="form-control @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó">
+            <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
         </div>
     </div>
     <div class="form-group row">
@@ -53,6 +60,7 @@
                     Egyéb
                 </label>
             </div>
+            <span asp-validation-for="Sex" class="invalid-feedback"></span>
         </div>
     </div>
     <button type="submit" class="btn btn-primary w-100 mt-3">Regisztráció</button>
