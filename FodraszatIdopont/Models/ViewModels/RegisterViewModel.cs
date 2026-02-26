@@ -18,6 +18,7 @@ namespace FodraszatIdopont.Models.ViewModels
         [MinLength(7,ErrorMessage = "A jelszónak minimum 7 karakterből kell állnia!")]
         public string Password { get; set; } = null!;
 
+        [Required(ErrorMessage ="Töltsd ki a mezőt!")]
         [Compare("Password", ErrorMessage = "A két jelszó nem egyezik!")]
         public string ConfirmPassword { get; set; } = null!;
 
