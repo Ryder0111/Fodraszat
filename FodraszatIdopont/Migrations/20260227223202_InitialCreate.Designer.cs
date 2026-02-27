@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260227202850_InitialCreate")]
+    [Migration("20260227223202_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,6 +35,10 @@ namespace FodraszatIdopont.Migrations
 
                     b.Property<int>("AppointmentStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -83,6 +87,43 @@ namespace FodraszatIdopont.Migrations
                     b.HasKey("ServiceId");
 
                     b.ToTable("Services");
+
+                    b.HasData(
+                        new
+                        {
+                            ServiceId = 1,
+                            DurationInMinute = 60,
+                            Name = "Női hajvágás",
+                            Price = 6000
+                        },
+                        new
+                        {
+                            ServiceId = 2,
+                            DurationInMinute = 45,
+                            Name = "Férfi hajvágás",
+                            Price = 4000
+                        },
+                        new
+                        {
+                            ServiceId = 3,
+                            DurationInMinute = 120,
+                            Name = "Hajfestés",
+                            Price = 15000
+                        },
+                        new
+                        {
+                            ServiceId = 4,
+                            DurationInMinute = 90,
+                            Name = "Melírozás",
+                            Price = 12000
+                        },
+                        new
+                        {
+                            ServiceId = 5,
+                            DurationInMinute = 60,
+                            Name = "Frizura készítés",
+                            Price = 7000
+                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.User", b =>
@@ -124,9 +165,45 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.hdZxn70nDyTeuEzHnQ05/w==./yYzte7SOK/Kz4Yuk5aaxiPiR8RAI9edIR+yCYAh+90=",
+                            PasswordHash = "100000.6YFQZ6J+lVWqcBctci7tIQ==.rCPygzMi1eob49Ndnozt2njnD8O1JkJc2xTZ49baO+8=",
                             Role = 2,
                             Sex = 0
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "anna.kovacs@gmail.com",
+                            Name = "Anna Kovács",
+                            PasswordHash = "100000.eOuscjKTUNHED2jbnAhrWA==.nipl31YGWL7G1O+AHwTM/Z1laedRA3212br6NE+s5pU=",
+                            Role = 0,
+                            Sex = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "peter.nagy@gmail.com",
+                            Name = "Péter Nagy",
+                            PasswordHash = "100000.uJR+H/l+NwRwXy/KdbEnRA==.5LNooTqMzu6ri43J8JiaAa5ljk5kNa3u8K+cVPUX2xI=",
+                            Role = 0,
+                            Sex = 1
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "eszter.fodrasz@gmail.com",
+                            Name = "Eszter Fodrász",
+                            PasswordHash = "100000.+yNb/wdo1b8SFrlHThVd3w==.kKeChxn+2j64SqPTdp7UEXyrY/B0j5PuTeo3FNvaK7w=",
+                            Role = 1,
+                            Sex = 2
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Email = "gabor.fodrasz@gmail.com",
+                            Name = "Gábor Fodrász",
+                            PasswordHash = "100000.DXZHv03qlhOQVgwNp0y6iA==.jXb7MzwnOqHCWmj01nZtReEei9tVx9G3/L6rHHZhhQY=",
+                            Role = 1,
+                            Sex = 1
                         });
                 });
 

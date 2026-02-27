@@ -171,16 +171,16 @@ namespace FodraszatIdopont.Controllers
             return View(appointmentDTO);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public Task<IActionResult> MAAppointment(MAAppointmentViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["error_msg"] = "Hiba történt!";
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public Task<IActionResult> MAAppointment(MAAppointmentViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        TempData["error_msg"] = "Hiba történt!";
+        //    }
 
 
-        }
+        //}
     }
 }

@@ -35,6 +35,10 @@ namespace FodraszatIdopont
             //Szolgáltatások (interface,class)
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
             var app = builder.Build();
 

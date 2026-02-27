@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace FodraszatIdopont.Migrations
 {
     /// <inheritdoc />
@@ -54,7 +56,8 @@ namespace FodraszatIdopont.Migrations
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppointmentStatus = table.Column<int>(type: "int", nullable: false)
+                    AppointmentStatus = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,9 +83,28 @@ namespace FodraszatIdopont.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Services",
+                columns: new[] { "ServiceId", "DurationInMinute", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, 60, "Női hajvágás", 6000 },
+                    { 2, 45, "Férfi hajvágás", 4000 },
+                    { 3, 120, "Hajfestés", 15000 },
+                    { 4, 90, "Melírozás", 12000 },
+                    { 5, 60, "Frizura készítés", 7000 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
-                values: new object[] { 1, "admin", "admin", "100000.hdZxn70nDyTeuEzHnQ05/w==./yYzte7SOK/Kz4Yuk5aaxiPiR8RAI9edIR+yCYAh+90=", 2, 0 });
+                values: new object[,]
+                {
+                    { 1, "admin", "admin", "100000.6YFQZ6J+lVWqcBctci7tIQ==.rCPygzMi1eob49Ndnozt2njnD8O1JkJc2xTZ49baO+8=", 2, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.eOuscjKTUNHED2jbnAhrWA==.nipl31YGWL7G1O+AHwTM/Z1laedRA3212br6NE+s5pU=", 0, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.uJR+H/l+NwRwXy/KdbEnRA==.5LNooTqMzu6ri43J8JiaAa5ljk5kNa3u8K+cVPUX2xI=", 0, 1 },
+                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.+yNb/wdo1b8SFrlHThVd3w==.kKeChxn+2j64SqPTdp7UEXyrY/B0j5PuTeo3FNvaK7w=", 1, 2 },
+                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.DXZHv03qlhOQVgwNp0y6iA==.jXb7MzwnOqHCWmj01nZtReEei9tVx9G3/L6rHHZhhQY=", 1, 1 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_HairdresserId",
