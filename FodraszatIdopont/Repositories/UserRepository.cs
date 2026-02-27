@@ -46,5 +46,9 @@ namespace FodraszatIdopont.Repositories
             _db.Update(felhasznalo);
             await _db.SaveChangesAsync();
         }
+        public async Task<List<User>?> GetAllHairdresser()
+        {
+            return await _db.Users.Where(h=>h.Role.HasFlag(Models.Enums.UserRole.Hairdresser)).ToListAsync();
+        }
     }
 }

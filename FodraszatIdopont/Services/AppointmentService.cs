@@ -100,8 +100,33 @@ namespace FodraszatIdopont.Services
                 return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
 
             return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(dbUser.UserId));
-
-
         }
+        public async Task<Results<List<User>>> GetAllHairdressers()
+        {
+            var fodraszok = await _Userrepo.GetAllHairdresser();
+            if (fodraszok.Count == 0)
+            {
+                return Results<List<User>>.Fail("Még nincsenek fodrászok!");
+            }
+            else
+            {
+                
+                return Results<List<User>>.Ok(fodraszok);
+            }
+        }
+
+        public async Task<Results<List<Service>>> GetAllServices()
+        {
+            var szolgaltatasok = await _Servicerepo.GetAllService();
+            if (szolgaltatasok.Count == 0)
+            {
+                return Results<List<Service>>.Fail("Még nincsenek szolgáltatások!");
+            }
+            else
+            {
+                return Results<List<Service>>.Ok(szolgaltatasok);
+            }
+        }
+
     }
 }

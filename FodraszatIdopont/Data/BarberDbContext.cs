@@ -1,5 +1,7 @@
-﻿using FodraszatIdopont.Models.Entities;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection.Emit;
 
 namespace FodraszatIdopont.Data
@@ -40,6 +42,23 @@ namespace FodraszatIdopont.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<User>().HasData
+            (
+                new User
+                {
+                    UserId = 1,
+                    Name = "admin",
+                    Email = "admin",
+                    PasswordHash = PasswordHelper.HashPassword("admin"),
+                    Role = Models.Enums.UserRole.Admin,
+                    Sex = Models.Enums.Gender.None,
+                }
+            );
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
         }
     }
 }

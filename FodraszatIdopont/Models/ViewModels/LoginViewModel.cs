@@ -6,7 +6,6 @@ namespace FodraszatIdopont.Models.ViewModels
     {
 
         [Required(ErrorMessage = "Az email cím megadása kötelező!")]
-        [EmailAddress]
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "A jelszó megadása kötelező!")]

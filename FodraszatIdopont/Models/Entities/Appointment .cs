@@ -21,6 +21,7 @@ namespace FodraszatIdopont.Models.Entities
         public DateTime EndTime { get; set; }
 
         public AppointmentStatus AppointmentStatus { get; set; }
+        public string Comment { get; set; }
 
 
 

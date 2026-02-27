@@ -1,4 +1,5 @@
 ﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models;
 using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services.Interface;
@@ -7,15 +8,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
-        public AccountController(IAuthService authService)
+        private readonly IAppointmentService _appointService;
+        public AccountController(IAuthService authService, IAppointmentService appointService)
         {
             _authService = authService;
+            _appointService = appointService;
         }
         public IActionResult Login()
         {
@@ -113,6 +117,7 @@ namespace FodraszatIdopont.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registration(RegisterViewModel felhasznalo)
         {
             if(!ModelState.IsValid) return View(model: felhasznalo);
@@ -140,9 +145,42 @@ namespace FodraszatIdopont.Controllers
         }
 
         [Authorize]
-        public IActionResult MAAppointment()
+        public  async Task<IActionResult> MAAppointment()
         {
-            return View();
+            var fodraszok = await _appointService.GetAllHairdressers();
+            var szolgaltatasok = await _appointService.GetAllServices();
+
+            if (!fodraszok.Success)
+            {
+                TempData["error_msg"] = fodraszok.Error;
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (!szolgaltatasok.Success)
+            {
+                TempData["error_msg"] = szolgaltatasok.Error;
+                return RedirectToAction("Index", "Home");
+            }
+
+            AppointmentDTO appointmentDTO = new AppointmentDTO
+            {
+                Hairdressers = fodraszok.Data,
+                Services = szolgaltatasok.Data,
+                Appointment = new MAAppointmentViewModel()
+            };
+            return View(appointmentDTO);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public Task<IActionResult> MAAppointment(MAAppointmentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["error_msg"] = "Hiba történt!";
+            }
+
+
         }
     }
 }

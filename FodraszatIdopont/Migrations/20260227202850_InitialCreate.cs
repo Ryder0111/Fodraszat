@@ -79,6 +79,11 @@ namespace FodraszatIdopont.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
+                values: new object[] { 1, "admin", "admin", "100000.hdZxn70nDyTeuEzHnQ05/w==./yYzte7SOK/Kz4Yuk5aaxiPiR8RAI9edIR+yCYAh+90=", 2, 0 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_HairdresserId",
                 table: "Appointments",

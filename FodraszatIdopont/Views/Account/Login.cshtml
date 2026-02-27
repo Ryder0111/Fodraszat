@@ -3,8 +3,8 @@
 <h1 class="display-4 fw-bold text-center">Bejelentkezés</h1>
 
 <form action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
-    @Html.AntiForgeryToken()
     @{
+        Html.AntiForgeryToken();
         if (TempData["error_msg"] != null)
         {
             <div class="alert alert-danger text-center">@TempData["error_msg"]</div>

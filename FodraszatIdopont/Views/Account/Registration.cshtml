@@ -5,6 +5,7 @@
 
 <form action="Registration" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
     @{
+        Html.AntiForgeryToken();
         if (TempData["error_msg"] != null)
         {
             <div class="alert alert-danger text-center">@TempData["error_msg"]</div>

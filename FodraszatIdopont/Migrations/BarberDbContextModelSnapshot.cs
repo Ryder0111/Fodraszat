@@ -114,6 +114,17 @@ namespace FodraszatIdopont.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "admin",
+                            Name = "admin",
+                            PasswordHash = "100000.hdZxn70nDyTeuEzHnQ05/w==./yYzte7SOK/Kz4Yuk5aaxiPiR8RAI9edIR+yCYAh+90=",
+                            Role = 2,
+                            Sex = 0
+                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Appointment", b =>
