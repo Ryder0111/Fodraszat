@@ -12,6 +12,8 @@ namespace FodraszatIdopont.Models.Entities
 
         public int Price { get; set; }
 
+        public bool isActive { get; set; } = true;
+
         public List<Appointment> Appointments { get; set; } = new();
 
     }

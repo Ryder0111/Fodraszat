@@ -77,6 +77,9 @@ namespace FodraszatIdopont.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("ServiceId");
 
                     b.ToTable("Services");
