@@ -6,6 +6,8 @@ namespace FodraszatIdopont.Repositories.Interfaces
     {
         Task<List<User>> GetAll();
 
+        Task<List<User>> GetAllHairdresser();
+
         Task<User?> GetUserByEamil(string email);
 
         Task<User?> GetById(int id);
