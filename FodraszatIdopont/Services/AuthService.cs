@@ -34,7 +34,7 @@ namespace FodraszatIdopont.Services
             var user = await _user.GetUserByEamil(felhasznalo.Email);
             if (user != null)
             {
-                return Results<User>.Fail("Email már foglalt");
+                return Results<User>.Fail("Ez az email cím már foglalt!");
             }
             felhasznalo.PasswordHash = PasswordHelper.HashPassword(password);
             felhasznalo.Role = Models.Enums.UserRole.User;

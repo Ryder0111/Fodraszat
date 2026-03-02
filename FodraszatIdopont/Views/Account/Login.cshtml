@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model FodraszatIdopont.Models.ViewModels.LoginViewModel;
+
+<h1 class="display-4 fw-bold text-center">Bejelentkezés</h1>
+
+<form action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+    @{
+        Html.AntiForgeryToken();
+        if (TempData["error_msg"] != null)
+        {
+            <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
+        }
+
+    }
+    <div class="form-group row mb-3">
+        <label class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input type="text" asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com">
+            <span asp-validation-for="Email" class="invalid-feedback"></span>@* Hibaüzenet helye *@
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-sm-2 col-form-label">Jelszó</label>
+        <div class="col-sm-10">
+            <input type="password" asp-for="Password" class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó"> 
+            <span asp-validation-for="Password" class="invalid-feedback"></span>
+        </div>
+    </div>
+    <div class="col-sm-10">
+        <div class="form-">
+            <input class="form-check-input" asp-for="RememberMe" type="checkbox">
+            <label class="form-check-label">
+                Emlékezz rám
+            </label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mt-3">Bejelentkezés</button>
+</form>

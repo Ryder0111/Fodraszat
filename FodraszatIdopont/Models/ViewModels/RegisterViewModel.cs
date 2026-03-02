@@ -11,14 +11,14 @@ namespace FodraszatIdopont.Models.ViewModels
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Az email megadása kötelező!")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage ="Nem megfelelő az email formátuma!")]
         public string Email { get; set; } = null!;
 
         [Required(ErrorMessage = "A jelszó megadása kötelező!")]
-        [MinLength(7,ErrorMessage = "A jelszó minimum 7 karakter lehet!")]
+        [MinLength(7,ErrorMessage = "A jelszónak minimum 7 karakterből kell állnia!")]
         public string Password { get; set; } = null!;
 
-        [Required(ErrorMessage = "A jelszó újboli megadása kötelező!")]
+        [Required(ErrorMessage ="Töltsd ki a mezőt!")]
         [Compare("Password", ErrorMessage = "A két jelszó nem egyezik!")]
         public string ConfirmPassword { get; set; } = null!;
 

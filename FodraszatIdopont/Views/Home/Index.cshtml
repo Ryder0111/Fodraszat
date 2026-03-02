@@ -1,5 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Főoldal";
+    if (TempData["error_msg"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error_msg"]</div>
+    }
 }
 
 <div class="text-center">

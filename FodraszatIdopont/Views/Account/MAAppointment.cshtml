@@ -1,0 +1,48 @@
+﻿@model FodraszatIdopont.Models.AppointmentDTO;
+@{
+    if (TempData["error_msg"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error_msg"]</div>
+    }
+}
+
+<h1 class="display-4 fw-bold text-center">Időpontfoglalás</h1>
+
+<form action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+    @{
+        Html.AntiForgeryToken();
+        if (TempData["error_msg"] != null)
+        {
+            <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
+        }
+        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value; //Kiszedjük a sütiből a felhasználó id-jét
+        int? userId = string.IsNullOrEmpty(userIdString) ? null : int.Parse(userIdString); 
+    }
+    <input type="number" asp-for="@Model.Appointment.UserId" value="@userId" hidden/>
+    
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label class="form-label fw-bold fs-5">Válassz fodrászt</label>
+            <select class="form-select form-select-lg shadow-sm"
+                    asp-for="Appointment.HairdresserId"
+                    asp-items="@(new SelectList(Model.Hairdressers, "UserId", "Name"))"> @* a selectlist létrehoz egy legördülő listát a Model.Hairdressers elemeivel *@
+                <option value="">Válassz fodrászt</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold fs-5">Válassz szolgáltatást</label>
+            <select class="form-select form-select-lg shadow-sm"
+                    asp-for="Appointment.ServiceId"
+                    asp-items="@(new SelectList(Model.Services, "ServiceId", "Name"))">
+                <option value="">Válassz szolgáltatást</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <label class="form-label fw-bold fs-5">Időpont</label>
+        <input type="datetime-local" class="form-control form-control-lg shadow-sm" asp-for="Appointment.StartTime" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mt-3">Időpont lefoglalása</button>
+</form>

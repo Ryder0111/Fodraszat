@@ -1,9 +1,10 @@
-using FodraszatIdopont.Data;
+﻿using FodraszatIdopont.Data;
 using FodraszatIdopont.Models;
 using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont
@@ -20,18 +21,24 @@ namespace FodraszatIdopont
             builder.Services.AddDbContext<BarberDbContext>(
                 options => options
                 .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BarberDB;Trusted_Connection=True"));
-            
 
 
-            builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>
-            {
-                options.LoginPath = "/Account/Login";
-                options.AccessDeniedPath = "/Account/Login";
+            //Süti hozzáadása alap séma alapján
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "FodraszatAuth";
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Account/Login";
             });
-            
-            //Szolg�ltat�sok (interface,class)
+
+            //Szolgáltatások (interface,class)
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -59,6 +66,8 @@ namespace FodraszatIdopont
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseAntiforgery();
 
             app.MapControllerRoute(
                 name: "default",
