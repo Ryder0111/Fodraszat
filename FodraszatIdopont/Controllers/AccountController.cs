@@ -166,21 +166,35 @@ namespace FodraszatIdopont.Controllers
             {
                 Hairdressers = fodraszok.Data,
                 Services = szolgaltatasok.Data,
-                Appointment = new MAAppointmentViewModel()
+                Appointment = new Appointment()
             };
             return View(appointmentDTO);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public Task<IActionResult> MAAppointment(MAAppointmentViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        TempData["error_msg"] = "Hiba történt!";
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MAAppointment(AppointmentDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+                TempData["error_msg"] = "Hiba történt!";
+            }
+            Console.WriteLine("\n"+model.Appointment.HairdresserId);
+            var idopont = await _appointService.CreateAppointment(model.Appointment);
+            if (!idopont.Success)
+            {
+                TempData["error_msg"] = idopont.Error;
+            }
+            TempData["msg"] = "Sikeres időpontfoglalás!";
+            return RedirectToAction("Index", "Home");
 
-
-        //}
+        }
     }
 }

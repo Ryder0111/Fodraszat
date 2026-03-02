@@ -9,7 +9,7 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<List<Service>>> GetAllServices();
 
-        Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId);
+        Task<Results<Appointment>> CreateAppointment(Appointment appointment);
 
         Task<Results<Appointment>> CancelAppointment(Appointment appointment);
 

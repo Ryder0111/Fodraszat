@@ -77,7 +77,7 @@ namespace FodraszatIdopont.Services
 
         }
 
-        public async Task<Results<Appointment>> CreateAppointment(Appointment appointment, int ServiceId)
+        public async Task<Results<Appointment>> CreateAppointment(Appointment appointment)
         {
             var hairdresser = await _Userrepo.GetById(appointment.HairdresserId);
             if (hairdresser == null || !hairdresser.Role.HasFlag(UserRole.Hairdresser))
@@ -87,7 +87,7 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("A fodrász nem lehet saját maga vendége.");
 
 
-            var szolgaltatas = await _Servicerepo.GetById(ServiceId);
+            var szolgaltatas = await _Servicerepo.GetById(appointment.ServiceId);
             if (szolgaltatas == null)
             {
                 return Results<Appointment>.Fail("Nem létezik ilyen szolgáltatás");

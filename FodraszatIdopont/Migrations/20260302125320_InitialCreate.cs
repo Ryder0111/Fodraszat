@@ -57,8 +57,7 @@ namespace FodraszatIdopont.Migrations
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppointmentStatus = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AppointmentStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,11 +99,11 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.mEabUMHOzNcI9WB/KT4VdA==.FfYF1tCJo/1N3JhTsxMgoy9aMa4JnMizC/2V7kDek2E=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.yuczWUwlLNtGQPeeRALcSw==.69camw4RQIwaFLC0Nja0rr/CvHFZMwTFuFX7kE2sT4M=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.cmaT/7+hSczl/Vljd1RhpA==.yRICHU0JRKIfFEnnnOXqCclxaXJHSAyhC0gLGOaDWK8=", 1, 1 },
-                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.u0cbJvNnlmVBSs4kqmduAg==./ZEYmSE1468c2pBJp27DcH6XD3Nh2/eov2dIUf5QDaE=", 2, 2 },
-                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.F3hEuPibdr8ARoeuVj1V+A==.MZ6TIHP0hV6O6wxzmL1jRpsm4fypz8WUhb8sChK78LY=", 2, 1 }
+                    { 1, "admin", "admin", "100000.uIQCkKIytRzQzmnWr149Eg==.eRs1py3glW0wYeeLhhibO01obWvhPAYXhCq0SiJVKZA=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.l4KQxN+h2ZK0FtSfLqYCig==.GbjF/jnaMEuSPAnLGINvG1x+y/7uuL8ICr0sf/4vzRc=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.iUvYEck75icum7zeWwOAmw==.LjDxnXNQlRluprVW8EiKJql5SH1wJErJRickDnG53pA=", 1, 1 },
+                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.AO/PktcrFjnlcfYiz/souA==.s1H04A/7lq9wwkRYLGxCPmb3ad6Mhu0bYqveAYN9NaA=", 2, 2 },
+                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.VavK9K+Hf2tVqx88HNJP+w==.PWqfHTJ503VZ+LFgRj2862b3Tg0kmfMKMBo3+sK6evQ=", 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -24,18 +24,25 @@
         <div class="col-md-6">
             <label class="form-label fw-bold fs-5">Válassz fodrászt</label>
             <select class="form-select form-select-lg shadow-sm"
-                    asp-for="Appointment.HairdresserId"
-                    asp-items="@(new SelectList(Model.Hairdressers, "UserId", "Name"))"> @* a selectlist létrehoz egy legördülő listát a Model.Hairdressers elemeivel *@
-                <option value="">Válassz fodrászt</option>
+                    asp-for="Appointment.HairdresserId">
+                <option value="">--Válassz fodrászt--</option>
+
+                @foreach(var item in Model.Hairdressers)
+                {
+                    <option value="@item.UserId" asp>@item.Name</option>
+                }
             </select>
         </div>
 
         <div class="col-md-6">
             <label class="form-label fw-bold fs-5">Válassz szolgáltatást</label>
             <select class="form-select form-select-lg shadow-sm"
-                    asp-for="Appointment.ServiceId"
-                    asp-items="@(new SelectList(Model.Services, "ServiceId", "Name"))">
-                <option value="">Válassz szolgáltatást</option>
+                    asp-for="Appointment.ServiceId">
+                <option value="">--Válassz szolgáltatást--</option>
+                @foreach (var item in Model.Services)
+                {
+                    <option value="@item.ServiceId">@item.Name</option>
+                }
             </select>
         </div>
     </div>

@@ -9,19 +9,18 @@ namespace FodraszatIdopont.Models.Entities
         public int AppointmentId { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public User? User { get; set; }
 
         public int HairdresserId { get; set; }
-        public User Hairdresser { get; set; } = null!;
+        public User? Hairdresser { get; set; }
 
         public int ServiceId { get; set; }
-        public Service Service { get; set; } = null!;
+        public Service? Service { get; set; }
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
         public AppointmentStatus AppointmentStatus { get; set; }
-        public string Comment { get; set; }
 
 
 

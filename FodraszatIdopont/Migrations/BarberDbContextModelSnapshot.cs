@@ -33,10 +33,6 @@ namespace FodraszatIdopont.Migrations
                     b.Property<int>("AppointmentStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -170,7 +166,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.mEabUMHOzNcI9WB/KT4VdA==.FfYF1tCJo/1N3JhTsxMgoy9aMa4JnMizC/2V7kDek2E=",
+                            PasswordHash = "100000.uIQCkKIytRzQzmnWr149Eg==.eRs1py3glW0wYeeLhhibO01obWvhPAYXhCq0SiJVKZA=",
                             Role = 4,
                             Sex = 0
                         },
@@ -179,7 +175,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 2,
                             Email = "anna.kovacs@gmail.com",
                             Name = "Anna Kovács",
-                            PasswordHash = "100000.yuczWUwlLNtGQPeeRALcSw==.69camw4RQIwaFLC0Nja0rr/CvHFZMwTFuFX7kE2sT4M=",
+                            PasswordHash = "100000.l4KQxN+h2ZK0FtSfLqYCig==.GbjF/jnaMEuSPAnLGINvG1x+y/7uuL8ICr0sf/4vzRc=",
                             Role = 1,
                             Sex = 2
                         },
@@ -188,7 +184,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 3,
                             Email = "peter.nagy@gmail.com",
                             Name = "Péter Nagy",
-                            PasswordHash = "100000.cmaT/7+hSczl/Vljd1RhpA==.yRICHU0JRKIfFEnnnOXqCclxaXJHSAyhC0gLGOaDWK8=",
+                            PasswordHash = "100000.iUvYEck75icum7zeWwOAmw==.LjDxnXNQlRluprVW8EiKJql5SH1wJErJRickDnG53pA=",
                             Role = 1,
                             Sex = 1
                         },
@@ -197,7 +193,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 4,
                             Email = "eszter.fodrasz@gmail.com",
                             Name = "Eszter Fodrász",
-                            PasswordHash = "100000.u0cbJvNnlmVBSs4kqmduAg==./ZEYmSE1468c2pBJp27DcH6XD3Nh2/eov2dIUf5QDaE=",
+                            PasswordHash = "100000.AO/PktcrFjnlcfYiz/souA==.s1H04A/7lq9wwkRYLGxCPmb3ad6Mhu0bYqveAYN9NaA=",
                             Role = 2,
                             Sex = 2
                         },
@@ -206,7 +202,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 5,
                             Email = "gabor.fodrasz@gmail.com",
                             Name = "Gábor Fodrász",
-                            PasswordHash = "100000.F3hEuPibdr8ARoeuVj1V+A==.MZ6TIHP0hV6O6wxzmL1jRpsm4fypz8WUhb8sChK78LY=",
+                            PasswordHash = "100000.VavK9K+Hf2tVqx88HNJP+w==.PWqfHTJ503VZ+LFgRj2862b3Tg0kmfMKMBo3+sK6evQ=",
                             Role = 2,
                             Sex = 1
                         });
