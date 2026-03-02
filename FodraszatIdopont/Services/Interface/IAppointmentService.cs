@@ -16,7 +16,5 @@ namespace FodraszatIdopont.Services.Interface
         Task<Results<List<Appointment>>> GetUserAppointments(User user);
 
         Task<Results<List<Appointment>>> GetHairdresseSchedule(User hairdresser);
-        Task<Results<List<User>>> GetAllHairdressers();
-        Task<Results<List<Service>>> GetAllServices();
     }
 }
