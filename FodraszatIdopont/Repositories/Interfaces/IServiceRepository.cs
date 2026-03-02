@@ -5,14 +5,14 @@ namespace FodraszatIdopont.Repositories.Interfaces
 {
     public interface IServiceRepository
     {
-        Task<Service?> GetServiceById(int id);
-        Task<List<Service>?> GetAllService();
         Task<Service?> GetById(int id);
 
         Task<bool> ExistsByName(string name);
 
         Task<Service> Ceate(Service service);
+
         Task<Service> Update(Service service);
+
         Task<Service?> DeavtiveService(Service service);
 
         Task<List<Service>> GetAll();

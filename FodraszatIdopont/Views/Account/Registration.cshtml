@@ -3,7 +3,7 @@
 <h1 class="display-4 fw-bold text-center">Regisztráció</h1>
 <div class="fs-5 text-center">Hozzon létre fiókot, hogy egyszerűbben foglalhasson időpontot!</div>
 
-<form action="Registration" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+<form asp-action="Registration" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
     @{
         Html.AntiForgeryToken();
         if (TempData["error_msg"] != null)

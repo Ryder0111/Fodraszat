@@ -2,7 +2,7 @@
 
 <h1 class="display-4 fw-bold text-center">Bejelentkezés</h1>
 
-<form action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+<form asp-action="Login" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
     @{
         Html.AntiForgeryToken();
         if (TempData["error_msg"] != null)

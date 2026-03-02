@@ -17,7 +17,6 @@ namespace FodraszatIdopont.Repositories.Interfaces
         Task Delete(User felhasznalo);
 
         Task Update(User felhasznalo);
-        Task<List<User>?> GetAllHairdresser();
 
     }
 }

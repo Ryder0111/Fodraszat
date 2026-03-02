@@ -47,9 +47,11 @@ namespace FodraszatIdopont.Repositories
             return await _db.Services.SingleOrDefaultAsync(s => s.ServiceId == id);
         }
 
-        public async Task<List<Service>?> GetAllService()
+        public async Task<Service> Update(Service service)
         {
-            return await _db.Services.ToListAsync();
+            _db.Services.Update(service);
+            await _db.SaveChangesAsync();
+            return service;
         }
 
     }

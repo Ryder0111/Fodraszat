@@ -94,35 +94,40 @@ namespace FodraszatIdopont.Migrations
                             ServiceId = 1,
                             DurationInMinute = 60,
                             Name = "Női hajvágás",
-                            Price = 6000
+                            Price = 6000,
+                            isActive = true
                         },
                         new
                         {
                             ServiceId = 2,
                             DurationInMinute = 45,
                             Name = "Férfi hajvágás",
-                            Price = 4000
+                            Price = 4000,
+                            isActive = true
                         },
                         new
                         {
                             ServiceId = 3,
                             DurationInMinute = 120,
                             Name = "Hajfestés",
-                            Price = 15000
+                            Price = 15000,
+                            isActive = true
                         },
                         new
                         {
                             ServiceId = 4,
                             DurationInMinute = 90,
                             Name = "Melírozás",
-                            Price = 12000
+                            Price = 12000,
+                            isActive = true
                         },
                         new
                         {
                             ServiceId = 5,
                             DurationInMinute = 60,
                             Name = "Frizura készítés",
-                            Price = 7000
+                            Price = 7000,
+                            isActive = true
                         });
                 });
 
@@ -165,8 +170,8 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.6YFQZ6J+lVWqcBctci7tIQ==.rCPygzMi1eob49Ndnozt2njnD8O1JkJc2xTZ49baO+8=",
-                            Role = 2,
+                            PasswordHash = "100000.mEabUMHOzNcI9WB/KT4VdA==.FfYF1tCJo/1N3JhTsxMgoy9aMa4JnMizC/2V7kDek2E=",
+                            Role = 4,
                             Sex = 0
                         },
                         new
@@ -174,8 +179,8 @@ namespace FodraszatIdopont.Migrations
                             UserId = 2,
                             Email = "anna.kovacs@gmail.com",
                             Name = "Anna Kovács",
-                            PasswordHash = "100000.eOuscjKTUNHED2jbnAhrWA==.nipl31YGWL7G1O+AHwTM/Z1laedRA3212br6NE+s5pU=",
-                            Role = 0,
+                            PasswordHash = "100000.yuczWUwlLNtGQPeeRALcSw==.69camw4RQIwaFLC0Nja0rr/CvHFZMwTFuFX7kE2sT4M=",
+                            Role = 1,
                             Sex = 2
                         },
                         new
@@ -183,8 +188,8 @@ namespace FodraszatIdopont.Migrations
                             UserId = 3,
                             Email = "peter.nagy@gmail.com",
                             Name = "Péter Nagy",
-                            PasswordHash = "100000.uJR+H/l+NwRwXy/KdbEnRA==.5LNooTqMzu6ri43J8JiaAa5ljk5kNa3u8K+cVPUX2xI=",
-                            Role = 0,
+                            PasswordHash = "100000.cmaT/7+hSczl/Vljd1RhpA==.yRICHU0JRKIfFEnnnOXqCclxaXJHSAyhC0gLGOaDWK8=",
+                            Role = 1,
                             Sex = 1
                         },
                         new
@@ -192,8 +197,8 @@ namespace FodraszatIdopont.Migrations
                             UserId = 4,
                             Email = "eszter.fodrasz@gmail.com",
                             Name = "Eszter Fodrász",
-                            PasswordHash = "100000.+yNb/wdo1b8SFrlHThVd3w==.kKeChxn+2j64SqPTdp7UEXyrY/B0j5PuTeo3FNvaK7w=",
-                            Role = 1,
+                            PasswordHash = "100000.u0cbJvNnlmVBSs4kqmduAg==./ZEYmSE1468c2pBJp27DcH6XD3Nh2/eov2dIUf5QDaE=",
+                            Role = 2,
                             Sex = 2
                         },
                         new
@@ -201,8 +206,8 @@ namespace FodraszatIdopont.Migrations
                             UserId = 5,
                             Email = "gabor.fodrasz@gmail.com",
                             Name = "Gábor Fodrász",
-                            PasswordHash = "100000.DXZHv03qlhOQVgwNp0y6iA==.jXb7MzwnOqHCWmj01nZtReEei9tVx9G3/L6rHHZhhQY=",
-                            Role = 1,
+                            PasswordHash = "100000.F3hEuPibdr8ARoeuVj1V+A==.MZ6TIHP0hV6O6wxzmL1jRpsm4fypz8WUhb8sChK78LY=",
+                            Role = 2,
                             Sex = 1
                         });
                 });

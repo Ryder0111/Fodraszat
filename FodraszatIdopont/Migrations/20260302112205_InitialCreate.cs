@@ -21,7 +21,8 @@ namespace FodraszatIdopont.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DurationInMinute = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,14 +85,14 @@ namespace FodraszatIdopont.Migrations
 
             migrationBuilder.InsertData(
                 table: "Services",
-                columns: new[] { "ServiceId", "DurationInMinute", "Name", "Price" },
+                columns: new[] { "ServiceId", "DurationInMinute", "Name", "Price", "isActive" },
                 values: new object[,]
                 {
-                    { 1, 60, "Női hajvágás", 6000 },
-                    { 2, 45, "Férfi hajvágás", 4000 },
-                    { 3, 120, "Hajfestés", 15000 },
-                    { 4, 90, "Melírozás", 12000 },
-                    { 5, 60, "Frizura készítés", 7000 }
+                    { 1, 60, "Női hajvágás", 6000, true },
+                    { 2, 45, "Férfi hajvágás", 4000, true },
+                    { 3, 120, "Hajfestés", 15000, true },
+                    { 4, 90, "Melírozás", 12000, true },
+                    { 5, 60, "Frizura készítés", 7000, true }
                 });
 
             migrationBuilder.InsertData(
@@ -99,11 +100,11 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.6YFQZ6J+lVWqcBctci7tIQ==.rCPygzMi1eob49Ndnozt2njnD8O1JkJc2xTZ49baO+8=", 2, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.eOuscjKTUNHED2jbnAhrWA==.nipl31YGWL7G1O+AHwTM/Z1laedRA3212br6NE+s5pU=", 0, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.uJR+H/l+NwRwXy/KdbEnRA==.5LNooTqMzu6ri43J8JiaAa5ljk5kNa3u8K+cVPUX2xI=", 0, 1 },
-                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.+yNb/wdo1b8SFrlHThVd3w==.kKeChxn+2j64SqPTdp7UEXyrY/B0j5PuTeo3FNvaK7w=", 1, 2 },
-                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.DXZHv03qlhOQVgwNp0y6iA==.jXb7MzwnOqHCWmj01nZtReEei9tVx9G3/L6rHHZhhQY=", 1, 1 }
+                    { 1, "admin", "admin", "100000.mEabUMHOzNcI9WB/KT4VdA==.FfYF1tCJo/1N3JhTsxMgoy9aMa4JnMizC/2V7kDek2E=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.yuczWUwlLNtGQPeeRALcSw==.69camw4RQIwaFLC0Nja0rr/CvHFZMwTFuFX7kE2sT4M=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.cmaT/7+hSczl/Vljd1RhpA==.yRICHU0JRKIfFEnnnOXqCclxaXJHSAyhC0gLGOaDWK8=", 1, 1 },
+                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.u0cbJvNnlmVBSs4kqmduAg==./ZEYmSE1468c2pBJp27DcH6XD3Nh2/eov2dIUf5QDaE=", 2, 2 },
+                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.F3hEuPibdr8ARoeuVj1V+A==.MZ6TIHP0hV6O6wxzmL1jRpsm4fypz8WUhb8sChK78LY=", 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(
