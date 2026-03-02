@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260302125320_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260302163147_InitilCreate")]
+    partial class InitilCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,7 +169,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.uIQCkKIytRzQzmnWr149Eg==.eRs1py3glW0wYeeLhhibO01obWvhPAYXhCq0SiJVKZA=",
+                            PasswordHash = "100000.6dFbp8r5FRlLPbrmED2JWA==.hU9lcNtCig7U7oeusbXsfN32sDhXFIgVw+084P/NqCM=",
                             Role = 4,
                             Sex = 0
                         },
@@ -178,7 +178,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 2,
                             Email = "anna.kovacs@gmail.com",
                             Name = "Anna Kovács",
-                            PasswordHash = "100000.l4KQxN+h2ZK0FtSfLqYCig==.GbjF/jnaMEuSPAnLGINvG1x+y/7uuL8ICr0sf/4vzRc=",
+                            PasswordHash = "100000.DTcXGyTwPm9N5SdL5OLD7w==.ciWAFveZSuQGFpTU82gMInqo5T6jZZnDQaDSeEEKVak=",
                             Role = 1,
                             Sex = 2
                         },
@@ -187,25 +187,25 @@ namespace FodraszatIdopont.Migrations
                             UserId = 3,
                             Email = "peter.nagy@gmail.com",
                             Name = "Péter Nagy",
-                            PasswordHash = "100000.iUvYEck75icum7zeWwOAmw==.LjDxnXNQlRluprVW8EiKJql5SH1wJErJRickDnG53pA=",
+                            PasswordHash = "100000.7kgeQgQIQ4n4L0pYVLaD3Q==.pSaaNjPeNo0VZskW+EYcT0oPoAV3VWPTWHUGXOAI8oo=",
                             Role = 1,
                             Sex = 1
                         },
                         new
                         {
                             UserId = 4,
-                            Email = "eszter.fodrasz@gmail.com",
-                            Name = "Eszter Fodrász",
-                            PasswordHash = "100000.AO/PktcrFjnlcfYiz/souA==.s1H04A/7lq9wwkRYLGxCPmb3ad6Mhu0bYqveAYN9NaA=",
+                            Email = "gabor.fodrasz@gmail.com",
+                            Name = "Nagy Gábor",
+                            PasswordHash = "100000.zcwmQBDiSa3x9JJ8McJ3ZQ==.uSp3XCg+H5zSWXU7pXShwCTlaVqWcjIwTgKD6iOg7mY=",
                             Role = 2,
                             Sex = 2
                         },
                         new
                         {
                             UserId = 5,
-                            Email = "gabor.fodrasz@gmail.com",
-                            Name = "Gábor Fodrász",
-                            PasswordHash = "100000.VavK9K+Hf2tVqx88HNJP+w==.PWqfHTJ503VZ+LFgRj2862b3Tg0kmfMKMBo3+sK6evQ=",
+                            Email = "marcell.fodrasz@gmail.com",
+                            Name = "Belák Marcell",
+                            PasswordHash = "100000.3vpnyJ0gLS3Yx07cQ5v16w==.ICYDUCec3bDLjXqbnA5ptWJgm2JUtukT+XW34L4h/rw=",
                             Role = 2,
                             Sex = 1
                         });

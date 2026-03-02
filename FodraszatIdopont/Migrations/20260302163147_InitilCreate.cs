@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FodraszatIdopont.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitilCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -99,11 +99,11 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.uIQCkKIytRzQzmnWr149Eg==.eRs1py3glW0wYeeLhhibO01obWvhPAYXhCq0SiJVKZA=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.l4KQxN+h2ZK0FtSfLqYCig==.GbjF/jnaMEuSPAnLGINvG1x+y/7uuL8ICr0sf/4vzRc=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.iUvYEck75icum7zeWwOAmw==.LjDxnXNQlRluprVW8EiKJql5SH1wJErJRickDnG53pA=", 1, 1 },
-                    { 4, "eszter.fodrasz@gmail.com", "Eszter Fodrász", "100000.AO/PktcrFjnlcfYiz/souA==.s1H04A/7lq9wwkRYLGxCPmb3ad6Mhu0bYqveAYN9NaA=", 2, 2 },
-                    { 5, "gabor.fodrasz@gmail.com", "Gábor Fodrász", "100000.VavK9K+Hf2tVqx88HNJP+w==.PWqfHTJ503VZ+LFgRj2862b3Tg0kmfMKMBo3+sK6evQ=", 2, 1 }
+                    { 1, "admin", "admin", "100000.6dFbp8r5FRlLPbrmED2JWA==.hU9lcNtCig7U7oeusbXsfN32sDhXFIgVw+084P/NqCM=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.DTcXGyTwPm9N5SdL5OLD7w==.ciWAFveZSuQGFpTU82gMInqo5T6jZZnDQaDSeEEKVak=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.7kgeQgQIQ4n4L0pYVLaD3Q==.pSaaNjPeNo0VZskW+EYcT0oPoAV3VWPTWHUGXOAI8oo=", 1, 1 },
+                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.zcwmQBDiSa3x9JJ8McJ3ZQ==.uSp3XCg+H5zSWXU7pXShwCTlaVqWcjIwTgKD6iOg7mY=", 2, 2 },
+                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.3vpnyJ0gLS3Yx07cQ5v16w==.ICYDUCec3bDLjXqbnA5ptWJgm2JUtukT+XW34L4h/rw=", 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(

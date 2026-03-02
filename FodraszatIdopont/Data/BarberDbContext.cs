@@ -75,18 +75,18 @@ namespace FodraszatIdopont.Data
                 new User
                 {
                     UserId = 4,
-                    Name = "Eszter Fodrász",
-                    Email = "eszter.fodrasz@gmail.com",
-                    PasswordHash = PasswordHelper.HashPassword("eszter123"),
+                    Name = "Nagy Gábor",
+                    Email = "gabor.fodrasz@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("gabor123"),
                     Role = Models.Enums.UserRole.Hairdresser,
                     Sex = Models.Enums.Gender.Famale,
                 },
                 new User
                 {
                     UserId = 5,
-                    Name = "Gábor Fodrász",
-                    Email = "gabor.fodrasz@gmail.com",
-                    PasswordHash = PasswordHelper.HashPassword("gabor123"),
+                    Name = "Belák Marcell",
+                    Email = "marcell.fodrasz@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("marcell123"),
                     Role = Models.Enums.UserRole.Hairdresser,
                     Sex = Models.Enums.Gender.Male,
                 }

@@ -5,7 +5,7 @@ namespace FodraszatIdopont.Models
 {
     public class AppointmentDTO
     {
-        public Appointment? Appointment {  get; set; }
+        public MAAppointmentViewModel? Appointment {  get; set; }
         public List<Service>? Services { get; set; }
         public List<User>? Hairdressers { get; set; }
        

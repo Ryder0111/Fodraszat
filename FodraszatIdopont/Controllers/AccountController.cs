@@ -1,12 +1,14 @@
 ﻿using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Models;
 using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
 using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,43 +18,17 @@ namespace FodraszatIdopont.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
-        public AccountController(IAuthService authService, IAppointmentService appointService)
+        private readonly ICurrentUserService _currentUserService;
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService)
         {
             _authService = authService;
             _appointService = appointService;
+            _currentUserService = currentUserService;
         }
         public IActionResult Login()
         {
             return View();
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken] //CSRF elleni védelem; CSRF-Cross-site request forgery
-        //public async Task<IActionResult> Login(LoginViewModel felhasznalo)
-        //{
-        //    var user = await _authService.AuthenticateAsync(felhasznalo.Email, felhasznalo.Password);
-
-        //    if (!user.Success)
-        //    {
-        //        TempData["error_msg"] = user.Error;
-        //        return View();
-        //    }
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.NameIdentifier, user.Data.UserId.ToString()),
-        //        new Claim(ClaimTypes.Name, user.Data.Name),
-        //        new Claim(ClaimTypes.Email, user.Data.Email),
-        //        new Claim(ClaimTypes.Role, user.Data.Role.ToString())
-        //    };
-        //    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        //    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-        //    await HttpContext.SignInAsync(
-        //        CookieAuthenticationDefaults.AuthenticationScheme,
-        //        claimsPrincipal
-        //    );
-        //    return RedirectToAction("Index", "Home");
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken] //CSRF elleni védelem; CSRF-Cross-site request forgery
@@ -93,7 +69,7 @@ namespace FodraszatIdopont.Controllers
                 IsPersistent = model.RememberMe,
 
                 ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
-                IssuedUtc  = model.RememberMe ? DateTimeOffset.UtcNow : null    
+                IssuedUtc = model.RememberMe ? DateTimeOffset.UtcNow : null
             };
 
             await HttpContext.SignInAsync(
@@ -120,7 +96,7 @@ namespace FodraszatIdopont.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registration(RegisterViewModel felhasznalo)
         {
-            if(!ModelState.IsValid) return View(model: felhasznalo);
+            if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()
             {
                 Name = felhasznalo.Name,
@@ -132,7 +108,7 @@ namespace FodraszatIdopont.Controllers
             if (!result.Success)
             {
                 TempData["error_msg"] = result.Error;
-                return View(felhasznalo); 
+                return View(felhasznalo);
             }
 
 
@@ -145,7 +121,7 @@ namespace FodraszatIdopont.Controllers
         }
 
         [Authorize]
-        public  async Task<IActionResult> MAAppointment()
+        public async Task<IActionResult> MAAppointment()
         {
             var fodraszok = await _appointService.GetAllHairdressers();
             var szolgaltatasok = await _appointService.GetAllServices();
@@ -162,39 +138,73 @@ namespace FodraszatIdopont.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            AppointmentDTO appointmentDTO = new AppointmentDTO
+            var model = new AppointmentDTO
             {
+                Appointment = new MAAppointmentViewModel { UserId = _currentUserService.UserId ?? 0},
                 Hairdressers = fodraszok.Data,
-                Services = szolgaltatasok.Data,
-                Appointment = new Appointment()
+                Services = szolgaltatasok.Data
             };
-            return View(appointmentDTO);
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MAAppointment(AppointmentDTO model)
+        public async Task<IActionResult> CreateAppointment(AppointmentDTO model)
         {
             if (!ModelState.IsValid)
             {
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine(error.ErrorMessage);
-                    }
-                }
-                TempData["error_msg"] = "Hiba történt!";
+                var fodraszok = await _appointService.GetAllHairdressers();
+                var szolgaltatasok = await _appointService.GetAllServices();
+                model.Hairdressers = fodraszok.Data;
+                model.Services = szolgaltatasok.Data;
+                return View("MAAppointment", model);
             }
-            Console.WriteLine("\n"+model.Appointment.HairdresserId);
-            var idopont = await _appointService.CreateAppointment(model.Appointment);
-            if (!idopont.Success)
-            {
-                TempData["error_msg"] = idopont.Error;
-            }
-            TempData["msg"] = "Sikeres időpontfoglalás!";
-            return RedirectToAction("Index", "Home");
 
+            var service = model.Services.FirstOrDefault(s => s.ServiceId == model.Appointment.ServiceId);
+            if (service == null)
+            {
+                TempData["error_msg"] = "Érvénytelen szolgáltatás!";
+                return View("MAAppointment", model);
+            }
+
+            var appointment = new Appointment
+            {
+                UserId = model.Appointment.UserId,
+                HairdresserId = model.Appointment.HairdresserId,
+                StartTime = model.Appointment.StartTime,
+                EndTime = model.Appointment.StartTime.AddMinutes(service.DurationInMinute),
+                ServiceId = service.ServiceId,
+                AppointmentStatus = AppointmentStatus.Booked
+            };
+
+            var result = await _appointService.CreateAppointment(appointment);
+            if (!result.Success)
+            {
+                TempData["error_msg"] = result.Error;
+                return View("MAAppointment", model);
+            }
+
+            TempData["msg"] = "Sikeres időpontfoglalás";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)
+        {
+            var szolgaltatas = await _appointService.GetServiceById(serviceId);
+            var datum = DateOnly.Parse(date);
+            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
+            return Json(result.Data); 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBookedDays(int hairdresserId, string start, string end)
+        {
+            var kezdet = DateOnly.Parse(start);
+            var vege = DateOnly.Parse(end);
+            var result = await _appointService.GetBookedDays(hairdresserId, kezdet, vege);
+            return Json(result.Data);
         }
     }
 }

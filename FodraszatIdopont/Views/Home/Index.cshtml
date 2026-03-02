@@ -4,6 +4,10 @@
     {
         <div class="alert alert-danger">@TempData["error_msg"]</div>
     }
+    if (TempData["msg"] != null)
+    {
+        <div class="alert alert-success w-50 text-center mx-auto">@TempData["msg"]</div>
+    }
 }
 
 <div class="text-center">

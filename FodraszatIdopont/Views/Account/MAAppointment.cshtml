@@ -1,8 +1,9 @@
 ﻿@model FodraszatIdopont.Models.AppointmentDTO;
+<body>
 @{
-    if (TempData["error_msg"] != null)
+    if (TempData["msg"] != null)
     {
-        <div class="alert alert-danger">@TempData["error_msg"]</div>
+        <div class="alert alert-success w-50 text-center mx-auto">@TempData["msg"]</div>
     }
 }
 
@@ -15,10 +16,7 @@
         {
             <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
         }
-        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value; //Kiszedjük a sütiből a felhasználó id-jét
-        int? userId = string.IsNullOrEmpty(userIdString) ? null : int.Parse(userIdString); 
     }
-    <input type="number" asp-for="@Model.Appointment.UserId" value="@userId" hidden/>
     
     <div class="row g-4">
         <div class="col-md-6">
@@ -47,9 +45,43 @@
         </div>
     </div>
 
-    <div class="mt-4">
-        <label class="form-label fw-bold fs-5">Időpont</label>
-        <input type="datetime-local" class="form-control form-control-lg shadow-sm" asp-for="Appointment.StartTime" />
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <label class="form-label fw-bold fs-5 text-primary">Válassz időpontot a naptárból</label>
+            <div id="calendar" class="shadow rounded-4 p-3 bg-white"></div>
+        </div>
     </div>
+
+    <input type="hidden" asp-for="Appointment.StartTime" id="selectedStartTime" />
+
     <button type="submit" class="btn btn-primary w-100 mt-3">Időpont lefoglalása</button>
 </form>
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'hu',
+                height: 650,
+                events: [
+                    {
+                        title: 'Teszt esemény',
+                        start: new Date().toISOString(),
+                        end: new Date(new Date().getTime() + 60*60*1000).toISOString(),
+                        color: '#198754'
+                    }
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
+<style>
+</style>
+</body>

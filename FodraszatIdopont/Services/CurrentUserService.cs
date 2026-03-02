@@ -19,7 +19,7 @@ namespace FodraszatIdopont.Services
             {
                 var user = _Http.HttpContext?.User;
 
-                if (user == null || !user.Identity?.IsAuthenticated == true)
+                if (user?.Identity?.IsAuthenticated != true)
                     return null;
 
                 var idClaim = user.FindFirst(ClaimTypes.NameIdentifier);
@@ -27,7 +27,10 @@ namespace FodraszatIdopont.Services
                 if (idClaim == null)
                     return null;
 
-                return int.Parse(idClaim.Value);
+                if (int.TryParse(idClaim.Value, out int userId))
+                    return userId;
+
+                return null;
             }
         }
 
