@@ -18,6 +18,10 @@ namespace FodraszatIdopont.Repositories
         {
             return await _db.Users.OrderBy(x => x.Name).ToListAsync();
         }
+        public async Task<List<User>> GetAllHairdresser()
+        {
+            return await _db.Users.Where(x => x.Role.HasFlag(Models.Enums.UserRole.Hairdresser)).OrderBy(x => x.Name).ToListAsync();
+        }
 
         public async Task<User?> GetById(int id)
         {

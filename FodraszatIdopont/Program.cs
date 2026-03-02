@@ -40,6 +40,9 @@ namespace FodraszatIdopont
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())

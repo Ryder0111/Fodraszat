@@ -1,4 +1,5 @@
-﻿using FodraszatIdopont.Models.Entities;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models.Entities;
 
 namespace FodraszatIdopont.Repositories.Interfaces
 {
@@ -6,5 +7,16 @@ namespace FodraszatIdopont.Repositories.Interfaces
     {
         Task<Service?> GetServiceById(int id);
         Task<List<Service>?> GetAllService();
+        Task<Service?> GetById(int id);
+
+        Task<bool> ExistsByName(string name);
+
+        Task<Service> Ceate(Service service);
+        Task<Service> Update(Service service);
+        Task<Service?> DeavtiveService(Service service);
+
+        Task<List<Service>> GetAll();
+
+
     }
 }
