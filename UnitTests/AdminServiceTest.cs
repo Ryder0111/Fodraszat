@@ -1,4 +1,4 @@
-﻿using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services;
 using Moq;
@@ -44,6 +44,20 @@ namespace UnitTests
 
             _mockServiceRepo.Verify(c => c.Create(It.IsAny<Service>()), Times.Never);
         }
+
+        [Test]
+        public async Task Existing_Name_error()
+        {
+            var ujszolgaltatas = new Service
+            {
+                Name = "teszt",
+                DurationInMinute = 30,
+                Price = 3000
+            };
+
+            _mockServiceRepo.Create(ujszolgaltatas);
+        }
+
     }
 }
 
