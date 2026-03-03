@@ -12,16 +12,38 @@ namespace UnitTests
 {
     internal class AdminServiceTest
     {
+        private Mock<IUserRepository> _mockUserRepo;
+        private Mock<IServiceRepository> _mockServiceRepo;
+        private AdminService _service;
+
         [SetUp]
         public void Setup()
         {
-            var _mockUserRepo = new Mock<IUserRepository>();
-            var _mockServiceRepo = new Mock<IServiceRepository>();
+            _mockUserRepo = new Mock<IUserRepository>();
+            _mockServiceRepo = new Mock<IServiceRepository>();
 
-            var _service = new AdminService(
+            _service = new AdminService(
                 _mockUserRepo.Object,
                 _mockServiceRepo.Object
             );
         }
+
+        [Test]
+        public async Task Hibas_Input_Name_error()
+        {
+            var ujszolgaltatas = new Service
+            {
+                Name = "",
+                DurationInMinute = 30,
+                Price = 3000
+            };
+
+            var result = await _service.CreateService( ujszolgaltatas );
+
+            Assert.That( result.Success, Is.False);
+
+            _mockServiceRepo.Verify(c => c.Create(It.IsAny<Service>()), Times.Never);
+        }
     }
 }
+

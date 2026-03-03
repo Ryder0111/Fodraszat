@@ -14,7 +14,7 @@ namespace FodraszatIdopont.Repositories
             _db = db;
         }
 
-        public async Task<Service> Ceate(Service service)
+        public async Task<Service> Create(Service service)
         {
             _db.Services.Add(service);
             await _db.SaveChangesAsync();

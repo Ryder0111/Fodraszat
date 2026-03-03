@@ -9,7 +9,7 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<bool> ExistsByName(string name);
 
-        Task<Service> Ceate(Service service);
+        Task<Service> Create(Service service);
 
         Task<Service> Update(Service service);
 

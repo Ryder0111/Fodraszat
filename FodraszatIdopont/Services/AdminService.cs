@@ -34,7 +34,7 @@ namespace FodraszatIdopont.Services
                 return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
             }
 
-                await _ServiceRepo.Ceate(service);
+                await _ServiceRepo.Create(service);
                 return Results<Service>.Ok(service);
         }
 
