@@ -57,6 +57,108 @@ namespace FodraszatIdopont.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            AppointmentId = 1,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 4, 10, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 2,
+                            ServiceId = 1,
+                            StartTime = new DateTime(2026, 4, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            AppointmentId = 2,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 4, 10, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 2,
+                            ServiceId = 2,
+                            StartTime = new DateTime(2026, 4, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AppointmentId = 3,
+                            AppointmentStatus = 2,
+                            EndTime = new DateTime(2025, 12, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 3,
+                            ServiceId = 1,
+                            StartTime = new DateTime(2025, 12, 15, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AppointmentId = 4,
+                            AppointmentStatus = 1,
+                            EndTime = new DateTime(2025, 11, 20, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 3,
+                            ServiceId = 3,
+                            StartTime = new DateTime(2025, 11, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 4
+                        },
+                        new
+                        {
+                            AppointmentId = 5,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 4, 12, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 2,
+                            ServiceId = 2,
+                            StartTime = new DateTime(2026, 4, 12, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            AppointmentId = 6,
+                            AppointmentStatus = 2,
+                            EndTime = new DateTime(2025, 10, 5, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 3,
+                            ServiceId = 1,
+                            StartTime = new DateTime(2025, 10, 5, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 5
+                        },
+                        new
+                        {
+                            AppointmentId = 7,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 4, 13, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            ServiceId = 3,
+                            StartTime = new DateTime(2026, 4, 13, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AppointmentId = 8,
+                            AppointmentStatus = 2,
+                            EndTime = new DateTime(2025, 9, 18, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            ServiceId = 2,
+                            StartTime = new DateTime(2025, 9, 18, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AppointmentId = 9,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 4, 14, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 2,
+                            ServiceId = 1,
+                            StartTime = new DateTime(2026, 4, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 4
+                        },
+                        new
+                        {
+                            AppointmentId = 10,
+                            AppointmentStatus = 1,
+                            EndTime = new DateTime(2025, 8, 22, 12, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 3,
+                            ServiceId = 3,
+                            StartTime = new DateTime(2025, 8, 22, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 5
+                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Service", b =>
@@ -166,7 +268,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.6dFbp8r5FRlLPbrmED2JWA==.hU9lcNtCig7U7oeusbXsfN32sDhXFIgVw+084P/NqCM=",
+                            PasswordHash = "100000.N2u9Ytm/+h17JxxBZHgyKg==.45Qb88rM+mjEbCCwjyxXKyxtRExahnaLPO/QOtxfYi8=",
                             Role = 4,
                             Sex = 0
                         },
@@ -175,7 +277,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 2,
                             Email = "anna.kovacs@gmail.com",
                             Name = "Anna Kovács",
-                            PasswordHash = "100000.DTcXGyTwPm9N5SdL5OLD7w==.ciWAFveZSuQGFpTU82gMInqo5T6jZZnDQaDSeEEKVak=",
+                            PasswordHash = "100000.clx32FeirbAjWwF9thxz6w==.vCMU7ZuAQIEzQtb4svDByiBfzAdRoq0E4EBSKhoRSBk=",
                             Role = 1,
                             Sex = 2
                         },
@@ -184,7 +286,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 3,
                             Email = "peter.nagy@gmail.com",
                             Name = "Péter Nagy",
-                            PasswordHash = "100000.7kgeQgQIQ4n4L0pYVLaD3Q==.pSaaNjPeNo0VZskW+EYcT0oPoAV3VWPTWHUGXOAI8oo=",
+                            PasswordHash = "100000.lg2qwi6lAll6TWCHQxh3aA==.6p8UAfn1l2wCWoTnMr9pTbjJLJRDoy2BLzh1ADGanEY=",
                             Role = 1,
                             Sex = 1
                         },
@@ -193,7 +295,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 4,
                             Email = "gabor.fodrasz@gmail.com",
                             Name = "Nagy Gábor",
-                            PasswordHash = "100000.zcwmQBDiSa3x9JJ8McJ3ZQ==.uSp3XCg+H5zSWXU7pXShwCTlaVqWcjIwTgKD6iOg7mY=",
+                            PasswordHash = "100000.bTTyZUi0jj6aPQ2q53n7Mg==.702A+Wu9tnbpvC0I2WEvmzkxktMSunXWezOoqKQfLQs=",
                             Role = 2,
                             Sex = 2
                         },
@@ -202,7 +304,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 5,
                             Email = "marcell.fodrasz@gmail.com",
                             Name = "Belák Marcell",
-                            PasswordHash = "100000.3vpnyJ0gLS3Yx07cQ5v16w==.ICYDUCec3bDLjXqbnA5ptWJgm2JUtukT+XW34L4h/rw=",
+                            PasswordHash = "100000.7/kIc+smoq/Q+kH6K2lcGw==.rDGaTVLARvmEX/HXqcCrFch1mfTUygUDYdZa4NGt8UE=",
                             Role = 2,
                             Sex = 1
                         });

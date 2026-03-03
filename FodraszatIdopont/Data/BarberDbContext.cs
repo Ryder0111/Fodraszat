@@ -1,5 +1,6 @@
 ﻿using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection.Emit;
@@ -91,6 +92,110 @@ namespace FodraszatIdopont.Data
                     Sex = Models.Enums.Gender.Male,
                 }
             );
+
+            //Időpontok
+            modelBuilder.Entity<Appointment>().HasData(
+            new Appointment
+            {
+                AppointmentId = 1,
+                UserId = 1,
+                HairdresserId = 2,
+                ServiceId = 1,
+                StartTime = new DateTime(2026, 4, 10, 9, 0, 0),
+                EndTime = new DateTime(2026, 4, 10, 9, 30, 0),
+                AppointmentStatus = AppointmentStatus.Booked
+            },
+            new Appointment
+            {
+                AppointmentId = 2,
+                UserId = 2,
+                HairdresserId = 2,
+                ServiceId = 2,
+                StartTime = new DateTime(2026, 4, 10, 10, 0, 0),
+                EndTime = new DateTime(2026, 4, 10, 11, 0, 0),
+                AppointmentStatus = AppointmentStatus.Booked
+            },
+            new Appointment
+            {
+                AppointmentId = 3,
+                UserId = 3,
+                HairdresserId = 3,
+                ServiceId = 1,
+                StartTime = new DateTime(2025, 12, 15, 8, 30, 0),
+                EndTime = new DateTime(2025, 12, 15, 9, 0, 0),
+                AppointmentStatus = AppointmentStatus.Completed
+            },
+            new Appointment
+            {
+                AppointmentId = 4,
+                UserId = 4,
+                HairdresserId = 3,
+                ServiceId = 3,
+                StartTime = new DateTime(2025, 11, 20, 9, 30, 0),
+                EndTime = new DateTime(2025, 11, 20, 10, 30, 0),
+                AppointmentStatus = AppointmentStatus.Cancelled
+            },
+            new Appointment
+            {
+                AppointmentId = 5,
+                UserId = 1,
+                HairdresserId = 2,
+                ServiceId = 2,
+                StartTime = new DateTime(2026, 4, 12, 13, 0, 0),
+                EndTime = new DateTime(2026, 4, 12, 14, 0, 0),
+                AppointmentStatus = AppointmentStatus.Booked
+            },
+            new Appointment
+            {
+                AppointmentId = 6,
+                UserId = 5,
+                HairdresserId = 3,
+                ServiceId = 1,
+                StartTime = new DateTime(2025, 10, 5, 14, 30, 0),
+                EndTime = new DateTime(2025, 10, 5, 15, 0, 0),
+                AppointmentStatus = AppointmentStatus.Completed
+            },
+            new Appointment
+            {
+                AppointmentId = 7,
+                UserId = 2,
+                HairdresserId = 4,
+                ServiceId = 3,
+                StartTime = new DateTime(2026, 4, 13, 10, 0, 0),
+                EndTime = new DateTime(2026, 4, 13, 11, 30, 0),
+                AppointmentStatus = AppointmentStatus.Booked
+            },
+            new Appointment
+            {
+                AppointmentId = 8,
+                UserId = 3,
+                HairdresserId = 4,
+                ServiceId = 2,
+                StartTime = new DateTime(2025, 9, 18, 12, 0, 0),
+                EndTime = new DateTime(2025, 9, 18, 13, 0, 0),
+                AppointmentStatus = AppointmentStatus.Completed
+            },
+            new Appointment
+            {
+                AppointmentId = 9,
+                UserId = 4,
+                HairdresserId = 2,
+                ServiceId = 1,
+                StartTime = new DateTime(2026, 4, 14, 9, 0, 0),
+                EndTime = new DateTime(2026, 4, 14, 9, 30, 0),
+                AppointmentStatus = AppointmentStatus.Booked
+            },
+            new Appointment
+            {
+                AppointmentId = 10,
+                UserId = 5,
+                HairdresserId = 3,
+                ServiceId = 3,
+                StartTime = new DateTime(2025, 8, 22, 11, 0, 0),
+                EndTime = new DateTime(2025, 8, 22, 12, 30, 0),
+                AppointmentStatus = AppointmentStatus.Cancelled
+            }
+        );
 
             // Services
             modelBuilder.Entity<Service>().HasData(
