@@ -57,7 +57,8 @@ namespace FodraszatIdopont.Migrations
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppointmentStatus = table.Column<int>(type: "int", nullable: false)
+                    AppointmentStatus = table.Column<int>(type: "int", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,28 +100,31 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.N2u9Ytm/+h17JxxBZHgyKg==.45Qb88rM+mjEbCCwjyxXKyxtRExahnaLPO/QOtxfYi8=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.clx32FeirbAjWwF9thxz6w==.vCMU7ZuAQIEzQtb4svDByiBfzAdRoq0E4EBSKhoRSBk=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.lg2qwi6lAll6TWCHQxh3aA==.6p8UAfn1l2wCWoTnMr9pTbjJLJRDoy2BLzh1ADGanEY=", 1, 1 },
-                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.bTTyZUi0jj6aPQ2q53n7Mg==.702A+Wu9tnbpvC0I2WEvmzkxktMSunXWezOoqKQfLQs=", 2, 2 },
-                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.7/kIc+smoq/Q+kH6K2lcGw==.rDGaTVLARvmEX/HXqcCrFch1mfTUygUDYdZa4NGt8UE=", 2, 1 }
+                    { 1, "admin", "admin", "100000.Fk+V7UqR3ephyKsrx4lu0Q==.gsgVTgqgy8LLt5CqHNiWk6GQC/sImTzyjqgg5utRG8A=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.ufrmGB1uSmAHwckh6kZIJQ==.Z6eevlWHr/+T+EA7XOQnwZeXbZpMJ8hzy/nacdRWpcY=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.rAd0pY9TNmdjeC5gAfgDSw==.vxpheCw+2EP5/2Zfs9+GvpYp5/FUQC/s5NU4RSeEPNE=", 1, 1 },
+                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.JKSUZwd1zXgBGKjsUkfPVg==.VCW7MKAvOxhmRIck8wQ8hNGN9n0nbvxhhQGHj/InAQ8=", 2, 2 },
+                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.0WYLlnXBmW4XBaK4sDmDuA==.NO7nl2WwcghDMEILwIwE6k+vSWoq1Wh3NHf/913AjX4=", 2, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Appointments",
-                columns: new[] { "AppointmentId", "AppointmentStatus", "EndTime", "HairdresserId", "ServiceId", "StartTime", "UserId" },
+                columns: new[] { "AppointmentId", "AppointmentStatus", "EndTime", "HairdresserId", "Notes", "ServiceId", "StartTime", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 0, new DateTime(2026, 4, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), 2, 1, new DateTime(2026, 4, 10, 9, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, 0, new DateTime(2026, 4, 10, 11, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, new DateTime(2026, 4, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 3, 2, new DateTime(2025, 12, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), 3, 1, new DateTime(2025, 12, 15, 8, 30, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 4, 1, new DateTime(2025, 11, 20, 10, 30, 0, 0, DateTimeKind.Unspecified), 3, 3, new DateTime(2025, 11, 20, 9, 30, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 5, 0, new DateTime(2026, 4, 12, 14, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, new DateTime(2026, 4, 12, 13, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 6, 2, new DateTime(2025, 10, 5, 15, 0, 0, 0, DateTimeKind.Unspecified), 3, 1, new DateTime(2025, 10, 5, 14, 30, 0, 0, DateTimeKind.Unspecified), 5 },
-                    { 7, 0, new DateTime(2026, 4, 13, 11, 30, 0, 0, DateTimeKind.Unspecified), 4, 3, new DateTime(2026, 4, 13, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 8, 2, new DateTime(2025, 9, 18, 13, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, new DateTime(2025, 9, 18, 12, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 9, 0, new DateTime(2026, 4, 14, 9, 30, 0, 0, DateTimeKind.Unspecified), 2, 1, new DateTime(2026, 4, 14, 9, 0, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 10, 1, new DateTime(2025, 8, 22, 12, 30, 0, 0, DateTimeKind.Unspecified), 3, 3, new DateTime(2025, 8, 22, 11, 0, 0, 0, DateTimeKind.Unspecified), 5 }
+                    { 1, 0, new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified), 4, "Férfi hajvágás", 2, new DateTime(2026, 3, 5, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 2, 0, new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), 4, "Női hajvágás", 1, new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 3, 0, new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified), 4, "Hajfestés", 3, new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 4, 0, new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified), 4, "Melírozás", 4, new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 5, 0, new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified), 4, "Frizura készítés", 5, new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 6, 0, new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified), 4, "Férfi hajvágás", 2, new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 7, 0, new DateTime(2026, 3, 5, 18, 0, 0, 0, DateTimeKind.Unspecified), 4, "Női hajvágás", 1, new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 8, 0, new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified), 5, "Hajfestés délután", 3, new DateTime(2026, 3, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 9, 0, new DateTime(2026, 3, 10, 17, 30, 0, 0, DateTimeKind.Unspecified), 5, "Melírozás", 4, new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 10, 0, new DateTime(2026, 3, 20, 12, 0, 0, 0, DateTimeKind.Unspecified), 4, "Reggeli hajfestés", 3, new DateTime(2026, 3, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 11, 0, new DateTime(2026, 3, 20, 14, 0, 0, 0, DateTimeKind.Unspecified), 4, "Délutáni női hajvágás", 1, new DateTime(2026, 3, 20, 13, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 12, 0, new DateTime(2026, 3, 15, 11, 0, 0, 0, DateTimeKind.Unspecified), 5, "Frizura reggel", 5, new DateTime(2026, 3, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 13, 0, new DateTime(2026, 3, 15, 14, 45, 0, 0, DateTimeKind.Unspecified), 5, "Férfi hajvágás délután", 2, new DateTime(2026, 3, 15, 14, 0, 0, 0, DateTimeKind.Unspecified), 2 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -95,107 +95,28 @@ namespace FodraszatIdopont.Data
 
             //Időpontok
             modelBuilder.Entity<Appointment>().HasData(
-            new Appointment
-            {
-                AppointmentId = 1,
-                UserId = 1,
-                HairdresserId = 2,
-                ServiceId = 1,
-                StartTime = new DateTime(2026, 4, 10, 9, 0, 0),
-                EndTime = new DateTime(2026, 4, 10, 9, 30, 0),
-                AppointmentStatus = AppointmentStatus.Booked
-            },
-            new Appointment
-            {
-                AppointmentId = 2,
-                UserId = 2,
-                HairdresserId = 2,
-                ServiceId = 2,
-                StartTime = new DateTime(2026, 4, 10, 10, 0, 0),
-                EndTime = new DateTime(2026, 4, 10, 11, 0, 0),
-                AppointmentStatus = AppointmentStatus.Booked
-            },
-            new Appointment
-            {
-                AppointmentId = 3,
-                UserId = 3,
-                HairdresserId = 3,
-                ServiceId = 1,
-                StartTime = new DateTime(2025, 12, 15, 8, 30, 0),
-                EndTime = new DateTime(2025, 12, 15, 9, 0, 0),
-                AppointmentStatus = AppointmentStatus.Completed
-            },
-            new Appointment
-            {
-                AppointmentId = 4,
-                UserId = 4,
-                HairdresserId = 3,
-                ServiceId = 3,
-                StartTime = new DateTime(2025, 11, 20, 9, 30, 0),
-                EndTime = new DateTime(2025, 11, 20, 10, 30, 0),
-                AppointmentStatus = AppointmentStatus.Cancelled
-            },
-            new Appointment
-            {
-                AppointmentId = 5,
-                UserId = 1,
-                HairdresserId = 2,
-                ServiceId = 2,
-                StartTime = new DateTime(2026, 4, 12, 13, 0, 0),
-                EndTime = new DateTime(2026, 4, 12, 14, 0, 0),
-                AppointmentStatus = AppointmentStatus.Booked
-            },
-            new Appointment
-            {
-                AppointmentId = 6,
-                UserId = 5,
-                HairdresserId = 3,
-                ServiceId = 1,
-                StartTime = new DateTime(2025, 10, 5, 14, 30, 0),
-                EndTime = new DateTime(2025, 10, 5, 15, 0, 0),
-                AppointmentStatus = AppointmentStatus.Completed
-            },
-            new Appointment
-            {
-                AppointmentId = 7,
-                UserId = 2,
-                HairdresserId = 4,
-                ServiceId = 3,
-                StartTime = new DateTime(2026, 4, 13, 10, 0, 0),
-                EndTime = new DateTime(2026, 4, 13, 11, 30, 0),
-                AppointmentStatus = AppointmentStatus.Booked
-            },
-            new Appointment
-            {
-                AppointmentId = 8,
-                UserId = 3,
-                HairdresserId = 4,
-                ServiceId = 2,
-                StartTime = new DateTime(2025, 9, 18, 12, 0, 0),
-                EndTime = new DateTime(2025, 9, 18, 13, 0, 0),
-                AppointmentStatus = AppointmentStatus.Completed
-            },
-            new Appointment
-            {
-                AppointmentId = 9,
-                UserId = 4,
-                HairdresserId = 2,
-                ServiceId = 1,
-                StartTime = new DateTime(2026, 4, 14, 9, 0, 0),
-                EndTime = new DateTime(2026, 4, 14, 9, 30, 0),
-                AppointmentStatus = AppointmentStatus.Booked
-            },
-            new Appointment
-            {
-                AppointmentId = 10,
-                UserId = 5,
-                HairdresserId = 3,
-                ServiceId = 3,
-                StartTime = new DateTime(2025, 8, 22, 11, 0, 0),
-                EndTime = new DateTime(2025, 8, 22, 12, 30, 0),
-                AppointmentStatus = AppointmentStatus.Cancelled
-            }
-        );
+    // Teljesen foglalt nap UserId=4 fodrásznak: 2026. március 5. (10:00 - 18:00 folyamatos)
+    new Appointment { AppointmentId = 1, UserId = 2, HairdresserId = 4, ServiceId = 2, StartTime = new DateTime(2026, 3, 5, 10, 0, 0), EndTime = new DateTime(2026, 3, 5, 10, 45, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Férfi hajvágás" },
+    new Appointment { AppointmentId = 2, UserId = 3, HairdresserId = 4, ServiceId = 1, StartTime = new DateTime(2026, 3, 5, 10, 45, 0), EndTime = new DateTime(2026, 3, 5, 11, 45, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Női hajvágás" },
+    new Appointment { AppointmentId = 3, UserId = 2, HairdresserId = 4, ServiceId = 3, StartTime = new DateTime(2026, 3, 5, 11, 45, 0), EndTime = new DateTime(2026, 3, 5, 13, 45, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Hajfestés" },
+    new Appointment { AppointmentId = 4, UserId = 3, HairdresserId = 4, ServiceId = 4, StartTime = new DateTime(2026, 3, 5, 13, 45, 0), EndTime = new DateTime(2026, 3, 5, 15, 15, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Melírozás" },
+    new Appointment { AppointmentId = 5, UserId = 2, HairdresserId = 4, ServiceId = 5, StartTime = new DateTime(2026, 3, 5, 15, 15, 0), EndTime = new DateTime(2026, 3, 5, 16, 15, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Frizura készítés" },
+    new Appointment { AppointmentId = 6, UserId = 3, HairdresserId = 4, ServiceId = 2, StartTime = new DateTime(2026, 3, 5, 16, 15, 0), EndTime = new DateTime(2026, 3, 5, 17, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Férfi hajvágás" },
+    new Appointment { AppointmentId = 7, UserId = 2, HairdresserId = 4, ServiceId = 1, StartTime = new DateTime(2026, 3, 5, 17, 0, 0), EndTime = new DateTime(2026, 3, 5, 18, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Női hajvágás" },
+
+    // Részben foglalt nap UserId=5 fodrásznak: március 10. (csak délután foglalt)
+    new Appointment { AppointmentId = 8, UserId = 3, HairdresserId = 5, ServiceId = 3, StartTime = new DateTime(2026, 3, 10, 14, 0, 0), EndTime = new DateTime(2026, 3, 10, 16, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Hajfestés délután" },
+    new Appointment { AppointmentId = 9, UserId = 2, HairdresserId = 5, ServiceId = 4, StartTime = new DateTime(2026, 3, 10, 16, 0, 0), EndTime = new DateTime(2026, 3, 10, 17, 30, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Melírozás" },
+
+    // Tolódásos nap UserId=4 fodrásznak: március 20. (reggel 120 perc, utána tolódik)
+    new Appointment { AppointmentId = 10, UserId = 3, HairdresserId = 4, ServiceId = 3, StartTime = new DateTime(2026, 3, 20, 10, 0, 0), EndTime = new DateTime(2026, 3, 20, 12, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Reggeli hajfestés" },
+    new Appointment { AppointmentId = 11, UserId = 2, HairdresserId = 4, ServiceId = 1, StartTime = new DateTime(2026, 3, 20, 13, 0, 0), EndTime = new DateTime(2026, 3, 20, 14, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Délutáni női hajvágás" },
+
+    // Szabad napok: március 12., 17. – nincs semmi (automatikusan szabad)
+    // Extra részben foglalt nap UserId=5 fodrásznak: március 15.
+    new Appointment { AppointmentId = 12, UserId = 3, HairdresserId = 5, ServiceId = 5, StartTime = new DateTime(2026, 3, 15, 10, 0, 0), EndTime = new DateTime(2026, 3, 15, 11, 0, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Frizura reggel" },
+    new Appointment { AppointmentId = 13, UserId = 2, HairdresserId = 5, ServiceId = 2, StartTime = new DateTime(2026, 3, 15, 14, 0, 0), EndTime = new DateTime(2026, 3, 15, 14, 45, 0), AppointmentStatus = AppointmentStatus.Booked, Notes = "Férfi hajvágás délután" }
+);
 
             // Services
             modelBuilder.Entity<Service>().HasData(

@@ -39,6 +39,9 @@ namespace FodraszatIdopont.Migrations
                     b.Property<int>("HairdresserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -63,101 +66,144 @@ namespace FodraszatIdopont.Migrations
                         {
                             AppointmentId = 1,
                             AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 10, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2026, 4, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
+                            EndTime = new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Férfi hajvágás",
+                            ServiceId = 2,
+                            StartTime = new DateTime(2026, 3, 5, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
                         },
                         new
                         {
                             AppointmentId = 2,
                             AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 10, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2026, 4, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        },
-                        new
-                        {
-                            AppointmentId = 3,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 12, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
+                            EndTime = new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Női hajvágás",
                             ServiceId = 1,
-                            StartTime = new DateTime(2025, 12, 15, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
-                            AppointmentId = 4,
-                            AppointmentStatus = 1,
-                            EndTime = new DateTime(2025, 11, 20, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
+                            AppointmentId = 3,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Hajfestés",
                             ServiceId = 3,
-                            StartTime = new DateTime(2025, 11, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 4
+                            StartTime = new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AppointmentId = 4,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Melírozás",
+                            ServiceId = 4,
+                            StartTime = new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
                         },
                         new
                         {
                             AppointmentId = 5,
                             AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 12, 14, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2026, 4, 12, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
+                            EndTime = new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Frizura készítés",
+                            ServiceId = 5,
+                            StartTime = new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
                         },
                         new
                         {
                             AppointmentId = 6,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 10, 5, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2025, 10, 5, 14, 30, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 5
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Férfi hajvágás",
+                            ServiceId = 2,
+                            StartTime = new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
                         },
                         new
                         {
                             AppointmentId = 7,
                             AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 13, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2026, 3, 5, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             HairdresserId = 4,
-                            ServiceId = 3,
-                            StartTime = new DateTime(2026, 4, 13, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Női hajvágás",
+                            ServiceId = 1,
+                            StartTime = new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             AppointmentId = 8,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 9, 18, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 4,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2025, 9, 18, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 5,
+                            Notes = "Hajfestés délután",
+                            ServiceId = 3,
+                            StartTime = new DateTime(2026, 3, 10, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
                             AppointmentId = 9,
                             AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 14, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2026, 4, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 4
+                            EndTime = new DateTime(2026, 3, 10, 17, 30, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 5,
+                            Notes = "Melírozás",
+                            ServiceId = 4,
+                            StartTime = new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
                         },
                         new
                         {
                             AppointmentId = 10,
-                            AppointmentStatus = 1,
-                            EndTime = new DateTime(2025, 8, 22, 12, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 20, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Reggeli hajfestés",
                             ServiceId = 3,
-                            StartTime = new DateTime(2025, 8, 22, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 5
+                            StartTime = new DateTime(2026, 3, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AppointmentId = 11,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 20, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 4,
+                            Notes = "Délutáni női hajvágás",
+                            ServiceId = 1,
+                            StartTime = new DateTime(2026, 3, 20, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
+                        },
+                        new
+                        {
+                            AppointmentId = 12,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 15, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 5,
+                            Notes = "Frizura reggel",
+                            ServiceId = 5,
+                            StartTime = new DateTime(2026, 3, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AppointmentId = 13,
+                            AppointmentStatus = 0,
+                            EndTime = new DateTime(2026, 3, 15, 14, 45, 0, 0, DateTimeKind.Unspecified),
+                            HairdresserId = 5,
+                            Notes = "Férfi hajvágás délután",
+                            ServiceId = 2,
+                            StartTime = new DateTime(2026, 3, 15, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 2
                         });
                 });
 
@@ -268,7 +314,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 1,
                             Email = "admin",
                             Name = "admin",
-                            PasswordHash = "100000.N2u9Ytm/+h17JxxBZHgyKg==.45Qb88rM+mjEbCCwjyxXKyxtRExahnaLPO/QOtxfYi8=",
+                            PasswordHash = "100000.Fk+V7UqR3ephyKsrx4lu0Q==.gsgVTgqgy8LLt5CqHNiWk6GQC/sImTzyjqgg5utRG8A=",
                             Role = 4,
                             Sex = 0
                         },
@@ -277,7 +323,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 2,
                             Email = "anna.kovacs@gmail.com",
                             Name = "Anna Kovács",
-                            PasswordHash = "100000.clx32FeirbAjWwF9thxz6w==.vCMU7ZuAQIEzQtb4svDByiBfzAdRoq0E4EBSKhoRSBk=",
+                            PasswordHash = "100000.ufrmGB1uSmAHwckh6kZIJQ==.Z6eevlWHr/+T+EA7XOQnwZeXbZpMJ8hzy/nacdRWpcY=",
                             Role = 1,
                             Sex = 2
                         },
@@ -286,7 +332,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 3,
                             Email = "peter.nagy@gmail.com",
                             Name = "Péter Nagy",
-                            PasswordHash = "100000.lg2qwi6lAll6TWCHQxh3aA==.6p8UAfn1l2wCWoTnMr9pTbjJLJRDoy2BLzh1ADGanEY=",
+                            PasswordHash = "100000.rAd0pY9TNmdjeC5gAfgDSw==.vxpheCw+2EP5/2Zfs9+GvpYp5/FUQC/s5NU4RSeEPNE=",
                             Role = 1,
                             Sex = 1
                         },
@@ -295,7 +341,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 4,
                             Email = "gabor.fodrasz@gmail.com",
                             Name = "Nagy Gábor",
-                            PasswordHash = "100000.bTTyZUi0jj6aPQ2q53n7Mg==.702A+Wu9tnbpvC0I2WEvmzkxktMSunXWezOoqKQfLQs=",
+                            PasswordHash = "100000.JKSUZwd1zXgBGKjsUkfPVg==.VCW7MKAvOxhmRIck8wQ8hNGN9n0nbvxhhQGHj/InAQ8=",
                             Role = 2,
                             Sex = 2
                         },
@@ -304,7 +350,7 @@ namespace FodraszatIdopont.Migrations
                             UserId = 5,
                             Email = "marcell.fodrasz@gmail.com",
                             Name = "Belák Marcell",
-                            PasswordHash = "100000.7/kIc+smoq/Q+kH6K2lcGw==.rDGaTVLARvmEX/HXqcCrFch1mfTUygUDYdZa4NGt8UE=",
+                            PasswordHash = "100000.0WYLlnXBmW4XBaK4sDmDuA==.NO7nl2WwcghDMEILwIwE6k+vSWoq1Wh3NHf/913AjX4=",
                             Role = 2,
                             Sex = 1
                         });
