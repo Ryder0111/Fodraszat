@@ -15,8 +15,13 @@ namespace UnitTests
         [SetUp]
         public void Setup()
         {
-            var _mockRepo = new Mock<IServiceRepository>();
-            var _service = new AdminService(_mockRepo.Object);
+            var _mockUserRepo = new Mock<IUserRepository>();
+            var _mockServiceRepo = new Mock<IServiceRepository>();
+
+            var _service = new AdminService(
+                _mockUserRepo.Object,
+                _mockServiceRepo.Object
+            );
         }
     }
 }
