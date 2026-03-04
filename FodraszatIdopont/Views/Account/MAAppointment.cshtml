@@ -1,4 +1,5 @@
 ﻿@model FodraszatIdopont.Models.AppointmentDTO;
+
 @{
     if (TempData["msg"] != null)
     {
@@ -8,38 +9,41 @@
 
 <h1 class="display-4 fw-bold text-center">Időpontfoglalás</h1>
 
-<form asp-action="MAAppointment" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
-    @{
-        Html.AntiForgeryToken();
-        if (TempData["error_msg"] != null)
-        {
-            <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
-        }
+<form asp-action="CreateAppointment" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
+    @Html.AntiForgeryToken()
+
+    @if (TempData["error_msg"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
     }
-    
+
+    <!-- Kell, hogy POST-ban menjen a UserId és a StartTime -->
+    <input type="hidden" asp-for="Appointment.UserId" />
+    <input type="hidden" id="startTimeInput" asp-for="Appointment.StartTime" />
+
     <div class="row g-4">
         <div class="col-md-6">
             <label class="form-label fw-bold fs-5">Válassz fodrászt</label>
-                <select id="hairdresserSelect" class="form-select form-select-lg shadow-sm"
+            <select id="hairdresserSelect"
+                    class="form-select form-select-lg shadow-sm"
                     asp-for="Appointment.HairdresserId">
                 <option value="">--Válassz fodrászt--</option>
-
-                @foreach(var item in Model.Hairdressers)
+                @foreach (var item in Model.Hairdressers)
                 {
-                    <option value="@item.UserId" asp>@item.Name</option>
+                    <option value="@item.UserId">@item.Name</option>
                 }
             </select>
         </div>
 
         <div class="col-md-6">
             <label class="form-label fw-bold fs-5">Válassz szolgáltatást</label>
-            <select id="serviceSelect" class="form-select form-select-lg shadow-sm"
+            <select id="serviceSelect"
+                    class="form-select form-select-lg shadow-sm"
                     asp-for="Appointment.ServiceId">
                 <option value="">--Válassz szolgáltatást--</option>
                 @foreach (var item in Model.Services)
                 {
-
-                        <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
+                    <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
                 }
             </select>
         </div>
@@ -49,12 +53,13 @@
         <div id="color-calendar"></div>
     </div>
 
-
     <div id="timeSlotsContainer" class="d-none mt-4">
         <h5 class="fw-bold">Elérhető időpontok:</h5>
         <div id="timeSlots" class="list-group"></div>
+        <div id="slotHint" class="form-text mt-2 d-none">Válassz egy időpontot a listából.</div>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100 mt-3">Időpont lefoglalása</button>
+    <button id="submitBtn" type="submit" class="btn btn-primary w-100 mt-3" disabled>Időpont lefoglalása</button>
 </form>
+
 <script src="~/js/MAAppointment_Calendar.js"></script>

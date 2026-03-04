@@ -1,47 +1,44 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-
     const hairdresserSelect = document.getElementById('hairdresserSelect');
     const serviceSelect = document.getElementById('serviceSelect');
+
     const calendarWrapper = document.getElementById('calendarWrapper');
-    const calendarContainer = document.getElementById('color-calendar');
     const timeSlotsContainer = document.getElementById('timeSlotsContainer');
     const timeSlots = document.getElementById('timeSlots');
 
+    const startTimeInput = document.getElementById('startTimeInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const slotHint = document.getElementById('slotHint');
+
     let selectedHairdresserId = null;
 
-    // ===== FODRÁSZ VÁLASZTÁS =====
-    hairdresserSelect.addEventListener('change', function () {
+    function resetSlotsUI() {
+        timeSlots.innerHTML = '';
+        timeSlotsContainer.classList.add('d-none');
+        slotHint.classList.add('d-none');
+        startTimeInput.value = '';
+        submitBtn.disabled = true;
+    }
 
-        selectedHairdresserId = this.value;
+    function canShowCalendar() {
+        return !!hairdresserSelect.value && !!serviceSelect.value;
+    }
 
-        if (!selectedHairdresserId) {
-            calendarWrapper.classList.add('d-none');
-            return;
-        }
+    function ensureCalendarCreated() {
+        if (window.myCalendar) return;
 
-        calendarWrapper.classList.remove('d-none');
+        window.myCalendar = new Calendar({
+            container: '#color-calendar',
+            calendarSize: 'large',
+            initialSelectedDate: new Date(),
+            theme: 'basic',
+            disableDayClick: false,
+            eventsData: []
+        });
+    }
 
-        if (!window.myCalendar) {
-            window.myCalendar = new Calendar({
-                container: '#color-calendar',
-                calendarSize: 'large',
-                initialSelectedDate: new Date(),
-                theme: 'basic',
-                primaryColor: '#0d6efd',
-                headerColor: '#343a40',
-                headerBackgroundColor: '#f8f9fa',
-                weekdaysColor: '#6c757d',
-                disableDayClick: false,
-                eventsData: []
-            });
-        }
-
-        loadBookedDays(selectedHairdresserId);
-    });
-
-    // ===== FOGLALT NAPOK =====
+    // ====== FOGLALT NAPOK BETÖLTÉSE ======
     function loadBookedDays(hairdresserId) {
-
         const today = new Date();
         const start = today.toISOString().split('T')[0];
 
@@ -49,11 +46,10 @@
         endDate.setMonth(endDate.getMonth() + 2);
         const end = endDate.toISOString().split('T')[0];
 
-        fetch(`/Account/GetBookedDays?hairdresserId=${hairdresserId}&start=${start}&end=${end}`)
+        fetch(`/Account/GetBookedDays?hairdresserId=${encodeURIComponent(hairdresserId)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`)
             .then(r => r.json())
             .then(dates => {
-
-                const events = dates.map(date => ({
+                const events = (dates || []).map(date => ({
                     start: date,
                     end: date,
                     name: 'Teljesen foglalt',
@@ -66,54 +62,91 @@
             .catch(err => console.error(err));
     }
 
-    // ===== NAPRA KATTINTÁS =====
-    document.addEventListener('click', function (e) {
+    // ====== NAPTÁR MEGJELENÍTÉS LOGIKA ======
+    function refreshUI() {
+        resetSlotsUI();
 
-        const dayElement = e.target.closest('.calendar__day');
-        if (!dayElement) return;
-
-        if (!selectedHairdresserId) return;
-
-        const serviceId = serviceSelect.value;
-        if (!serviceId) {
-            alert("Válassz szolgáltatást!");
+        if (!canShowCalendar()) {
+            calendarWrapper.classList.add('d-none');
             return;
         }
 
-        // 📌 Dátum kinyerése aria-label-ből
-        // pl: "Wednesday, March 4, 2026"
+        calendarWrapper.classList.remove('d-none');
+        ensureCalendarCreated();
+        loadBookedDays(hairdresserSelect.value);
+    }
+
+    hairdresserSelect.addEventListener('change', function () {
+        selectedHairdresserId = this.value || null;
+        refreshUI();
+    });
+
+    serviceSelect.addEventListener('change', function () {
+        refreshUI();
+    });
+
+    // ====== NAPRA KATTINTÁS → SLOTOK LEKÉRÉSE ======
+    document.addEventListener('click', function (e) {
+        const dayElement = e.target.closest('.calendar__day');
+        if (!dayElement) return;
+
+        const hairdresserId = hairdresserSelect.value;
+        const serviceId = serviceSelect.value;
+
+        if (!hairdresserId || !serviceId) return;
+
+        // Color Calendar aria-label pl.: "Wednesday, March 4, 2026"
         const ariaLabel = dayElement.getAttribute('aria-label');
+        if (!ariaLabel) return;
+
         const clickedDate = new Date(ariaLabel);
+        if (isNaN(clickedDate.getTime())) return;
 
         const formattedDate = clickedDate.toISOString().split('T')[0];
 
-        const option = serviceSelect.querySelector(`option[value="${serviceId}"]`);
-        const duration = option ? parseInt(option.dataset.duration) : 60;
+        resetSlotsUI();
+        timeSlotsContainer.classList.remove('d-none');
+        slotHint.classList.remove('d-none');
 
-        fetch(`/Account/GetAvailableSlots?hairdresserId=${selectedHairdresserId}&date=${formattedDate}&serviceDuration=${duration}`)
+        fetch(`/Account/GetAvailableSlots?hairdresserId=${encodeURIComponent(hairdresserId)}&date=${encodeURIComponent(formattedDate)}&serviceId=${encodeURIComponent(serviceId)}`)
             .then(r => r.json())
             .then(slots => {
-
                 timeSlots.innerHTML = '';
 
                 if (!slots || slots.length === 0) {
-                    timeSlots.innerHTML = '<p class="text-danger">Nincs szabad időpont.</p>';
-                } else {
-                    slots.forEach(slot => {
-                        const time = new Date(slot)
-                            .toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
-
-                        timeSlots.innerHTML += `
-                            <button type="button" 
-                                    class="list-group-item list-group-item-action">
-                                ${time}
-                            </button>`;
-                    });
+                    timeSlots.innerHTML = '<div class="text-danger">Nincs szabad időpont.</div>';
+                    return;
                 }
 
-                timeSlotsContainer.classList.remove('d-none');
+                slots.forEach(slot => {
+                    const slotDate = new Date(slot);
+                    const timeText = isNaN(slotDate.getTime())
+                        ? String(slot)
+                        : slotDate.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'list-group-item list-group-item-action';
+                    btn.textContent = timeText;
+
+                    btn.addEventListener('click', () => {
+                        // aktív kijelölés UI
+                        [...timeSlots.querySelectorAll('button')].forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        // a hidden input-ba a backend által adott datetime stringet tesszük
+                        startTimeInput.value = slot;
+
+                        submitBtn.disabled = false;
+                        slotHint.classList.add('d-none');
+                    });
+
+                    timeSlots.appendChild(btn);
+                });
             })
             .catch(err => console.error(err));
     });
 
+    // initial
+    refreshUI();
 });
