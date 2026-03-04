@@ -12,7 +12,7 @@ namespace UnitTests
 {
     internal class AdminServiceTest
     {
-        public class CreateServicetests 
+        public class CreateServiceTests 
         {
             private Mock<IUserRepository> _mockUserRepo;
             private Mock<IServiceRepository> _mockServiceRepo;
@@ -104,6 +104,63 @@ namespace UnitTests
             }
         }   
 
+        public class PromoteToHairdresserTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private AdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService(
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task PromoteToHairdresser_ShouldFail_WhenUserDoesNotExist()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync((User?)null);
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task PromoteToHairdresser_ShouldFail_WhenUserAlreadyHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User { 
+                        Role = FodraszatIdopont.Models.Enums.UserRole.Hairdresser,
+                        Email = "teszt@gmail.com"});
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task ShouldPromoteUser_WhenUserIsValid()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = FodraszatIdopont.Models.Enums.UserRole.User});
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.True);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Once);
+            }
+        }
 
     }
 }
