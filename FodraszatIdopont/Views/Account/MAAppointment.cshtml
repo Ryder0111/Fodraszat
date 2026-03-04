@@ -1,5 +1,4 @@
 ﻿@model FodraszatIdopont.Models.AppointmentDTO;
-<body>
 @{
     if (TempData["msg"] != null)
     {
@@ -34,7 +33,7 @@
 
         <div class="col-md-6">
             <label class="form-label fw-bold fs-5">Válassz szolgáltatást</label>
-            <select class="form-select form-select-lg shadow-sm"
+            <select id="serviceSelect" class="form-select form-select-lg shadow-sm"
                     asp-for="Appointment.ServiceId">
                 <option value="">--Válassz szolgáltatást--</option>
                 @foreach (var item in Model.Services)
@@ -58,129 +57,4 @@
 
     <button type="submit" class="btn btn-primary w-100 mt-3">Időpont lefoglalása</button>
 </form>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log("Script betöltve – DOM kész"); // ← teszt log, látni fogod a konzolon
-
-            const hairdresserSelect = document.getElementById('hairdresserSelect');
-            const calendarWrapper = document.getElementById('calendarWrapper');
-
-            if (!hairdresserSelect || !calendarWrapper) {
-                console.error("Nem találom a hairdresserSelect vagy calendarWrapper elemet!");
-                return;
-            }
-
-            // Fodrász választáskor mutasd a naptárat
-            hairdresserSelect.addEventListener('change', function () {
-                const hairdresserId = this.value.trim();
-                console.log("Fodrász kiválasztva:", hairdresserId); // ← ezt kell látni konzolon!
-
-                if (!hairdresserId) {
-                    calendarWrapper.classList.add('d-none');
-                    return;
-                }
-
-                calendarWrapper.classList.remove('d-none');
-
-                // Inicializálás csak egyszer
-                if (!window.myCalendar) {
-                    console.log("Inicializálom a naptárat...");
-                    window.myCalendar = new Calendar({
-                        container: '#color-calendar',
-                        calendarSize: 'large',
-                        initialSelectedDate: new Date(),
-                        theme: 'basic',
-                        primaryColor: '#0d6efd',
-                        headerColor: '#343a40',
-                        headerBackgroundColor: '#f8f9fa',
-                        weekdaysColor: '#6c757d',
-                        eventBulletMode: 'multiple',
-                        disableDayClick: false,
-                        eventsData: [] // kezdetben üres
-                    });
-                }
-
-                // Töltsd be a foglalt napokat
-                loadBookedDays(hairdresserId);
-            });
-
-            // Foglalt napok betöltése (újra inicializálás)
-            function loadBookedDays(hairdresserId) {
-                const today = new Date();
-                const start = today.toISOString().split('T')[0];
-                const end = new Date(today.setMonth(today.getMonth() + 2)).toISOString().split('T')[0];
-
-                fetch(`/Account/GetBookedDays?hairdresserId=${hairdresserId}&start=${start}&end=${end}`)
-                    .then(r => r.json())
-                    .then(dates => {
-                        console.log("Foglalt napok:", dates);
-
-                        // Töröljük a régi tartalmat
-                        const container = document.getElementById('color-calendar');
-                        container.innerHTML = '';
-
-                        // Új naptár példány az aktuális adatokkal
-                        window.myCalendar = new Calendar({
-                            container: '#color-calendar',
-                            calendarSize: 'large',
-                            initialSelectedDate: new Date(),
-                            theme: 'basic',
-                            primaryColor: '#0d6efd',
-                            headerColor: '#343a40',
-                            headerBackgroundColor: '#f8f9fa',
-                            weekdaysColor: '#6c757d',
-                            eventBulletMode: 'multiple',
-                            disableDayClick: false,
-
-                            eventsData: dates.map(date => ({
-                                start: date,
-                                end: date,
-                                name: 'Teljesen foglalt',
-                                color: '#dc3545', // piros
-                                allDay: true
-                            }))
-                        });
-                    })
-                    .catch(err => console.error('Foglalt napok hiba:', err));
-            }
-
-            // Napra kattintás → szabad slot-ok
-            document.addEventListener('click', e => {
-                if (e.target.closest('.color-calendar-day')) {
-                    const dateEl = e.target.closest('.color-calendar-day');
-                    const date = dateEl.dataset.date; // yyyy-mm-dd formátum
-
-                    const hairdresserId = hairdresserSelect.value;
-                    const serviceId = document.getElementById('serviceSelect').value;
-
-                    if (!hairdresserId || !serviceId) {
-                        alert('Válassz fodrászt és szolgáltatást!');
-                        return;
-                    }
-
-                    const option = document.querySelector(`#serviceSelect option[value="${serviceId}"]`);
-                    const duration = option ? parseInt(option.dataset.duration) || 60 : 60;
-
-                    fetch(`/Account/GetAvailableSlots?hairdresserId=${hairdresserId}&date=${date}&serviceDuration=${duration}`)
-                        .then(r => r.json())
-                        .then(slots => {
-                            const container = document.getElementById('timeSlots');
-                            container.innerHTML = '';
-
-                            if (slots.length === 0) {
-                                container.innerHTML = '<p class="text-danger">Nincs szabad időpont.</p>';
-                            } else {
-                                slots.forEach(slot => {
-                                    const time = new Date(slot).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
-                                    container.innerHTML += `<button type="button" class="list-group-item list-group-item-action">${time}</button>`;
-                                });
-                            }
-
-                            document.getElementById('timeSlotsContainer').classList.remove('d-none');
-                        })
-                        .catch(err => console.error('Slot hiba:', err));
-                }
-            });
-        });
-    </script>
-</body>
+<script src="~/js/MAAppointment_Calendar.js"></script>
