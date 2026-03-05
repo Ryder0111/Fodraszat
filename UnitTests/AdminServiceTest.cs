@@ -174,6 +174,52 @@ namespace UnitTests
                 Assert.ThrowsAsync<Exception>(async () => await _service.PromoteToHairdresser("teszt"));
             }
         }
+
+        public class RemoveHairdresserTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private AdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService(
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldFail_WhenUserDoesNotExist()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync((User?)null);
+
+                var result = await _service.RemoveHairdresserRole("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldFail_WhenUserIsNotHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User 
+                        { Role = UserRole.User,
+                        Email = "teszt@gmail.com"});
+
+                var result = await _service.RemoveHairdresserRole("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+        }
     }
 }
 
