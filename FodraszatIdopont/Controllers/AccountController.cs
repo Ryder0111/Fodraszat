@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -152,29 +153,37 @@ namespace FodraszatIdopont.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAppointment(AppointmentDTO model)
         {
-            if (!ModelState.IsValid)
+            // 1) védekezés nullok ellen
+            if (model?.Appointment == null)
             {
-                var fodraszok = await _appointService.GetAllHairdressers();
-                var szolgaltatasok = await _appointService.GetAllServices();
-                model.Hairdressers = fodraszok.Data;
-                model.Services = szolgaltatasok.Data;
-                return View("MAAppointment", model);
+                TempData["error_msg"] = "Hibás adatok érkeztek.";
+                return RedirectToAction("MAAppointment");
             }
 
-            var service = model.Services.FirstOrDefault(s => s.ServiceId == model.Appointment.ServiceId);
+            // 2) Kötelező mezők ellenőrzése (StartTime a slot választásból jön)
+            if (model.Appointment.HairdresserId <= 0 || model.Appointment.ServiceId <= 0 || model.Appointment.StartTime == default)
+            {
+                TempData["error_msg"] = "Válassz fodrászt, szolgáltatást és időpontot!";
+                return RedirectToAction("MAAppointment");
+            }
+
+            // 3) Service betöltése DB-ből (NE model.Services-ből)
+            var service = await _appointService.GetServiceById(model.Appointment.ServiceId);
+
             if (service == null)
             {
-                TempData["error_msg"] = "Érvénytelen szolgáltatás!";
-                return View("MAAppointment", model);
+                TempData["error_msg"] = "A választott szolgáltatás nem található.";
+                return RedirectToAction("MAAppointment");
             }
+
 
             var appointment = new Appointment
             {
                 UserId = model.Appointment.UserId,
                 HairdresserId = model.Appointment.HairdresserId,
                 StartTime = model.Appointment.StartTime,
-                EndTime = model.Appointment.StartTime.AddMinutes(service.DurationInMinute),
-                ServiceId = service.ServiceId,
+                EndTime = model.Appointment.StartTime.AddMinutes(service.Data.DurationInMinute),
+                ServiceId = service.Data.ServiceId,
                 AppointmentStatus = AppointmentStatus.Booked
             };
 
