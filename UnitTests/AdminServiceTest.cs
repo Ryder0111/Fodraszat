@@ -1,4 +1,5 @@
 using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services;
 using Moq;
@@ -85,7 +86,7 @@ namespace UnitTests
             }
 
             [Test]
-            public void CreateService_ShouldThrowException_WhenRepositoryFails()
+            public async Task CreateService_ShouldThrowException_WhenRepositoryFails()
             {
                 _mockServiceRepo.Setup(s => s.ExistsByName("teszt")).ReturnsAsync(false);
 
@@ -102,7 +103,7 @@ namespace UnitTests
                     })
                 );
             }
-        }   
+        }
 
         public class PromoteToHairdresserTests
         {
@@ -138,9 +139,11 @@ namespace UnitTests
             public async Task PromoteToHairdresser_ShouldFail_WhenUserAlreadyHairdresser()
             {
                 _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
-                    new User { 
+                    new User
+                    {
                         Role = FodraszatIdopont.Models.Enums.UserRole.Hairdresser,
-                        Email = "teszt@gmail.com"});
+                        Email = "teszt@gmail.com"
+                    });
 
                 var result = await _service.PromoteToHairdresser("teszt");
 
@@ -152,7 +155,7 @@ namespace UnitTests
             [Test]
             public async Task ShouldPromoteUser_WhenUserIsValid()
             {
-                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = FodraszatIdopont.Models.Enums.UserRole.User});
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = FodraszatIdopont.Models.Enums.UserRole.User });
 
                 var result = await _service.PromoteToHairdresser("teszt");
 
@@ -160,8 +163,17 @@ namespace UnitTests
 
                 _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Once);
             }
-        }
 
+            [Test]
+            public async Task PromoteToHairdresser_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = UserRole.User });
+
+                _mockUserRepo.Setup(u => u.Update(It.IsAny<User>())).ThrowsAsync(new Exception("DB hiba"));
+
+                Assert.ThrowsAsync<Exception>(async () => await _service.PromoteToHairdresser("teszt"));
+            }
+        }
     }
 }
 
