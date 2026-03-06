@@ -2,6 +2,7 @@ using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Models.Enums;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services;
+using FodraszatIdopont.Services.Interface;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace UnitTests
         {
             private Mock<IUserRepository> _mockUserRepo;
             private Mock<IServiceRepository> _mockServiceRepo;
-            private AdminService _service;
+            private IAdminService _service;
 
             [SetUp]
             public void Setup()
@@ -109,7 +110,7 @@ namespace UnitTests
         {
             private Mock<IUserRepository> _mockUserRepo;
             private Mock<IServiceRepository> _mockServiceRepo;
-            private AdminService _service;
+            private IAdminService _service;
 
             [SetUp]
             public void Setup()
@@ -179,7 +180,7 @@ namespace UnitTests
         {
             private Mock<IUserRepository> _mockUserRepo;
             private Mock<IServiceRepository> _mockServiceRepo;
-            private AdminService _service;
+            private IAdminService _service;
 
             [SetUp]
             public void Setup()
@@ -251,7 +252,27 @@ namespace UnitTests
             }
         }
 
-        public class 
+        public class UpdateServiceTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private IAdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService
+                (
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+
+        }   
     }
 }
 

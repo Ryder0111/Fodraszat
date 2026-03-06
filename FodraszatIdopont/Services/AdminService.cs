@@ -23,12 +23,6 @@ namespace FodraszatIdopont.Services
             if (string.IsNullOrWhiteSpace(service.Name))
                 return Results<Service>.Fail("A név megadása kötelező");
 
-            if (service.DurationInMinute <= 0)
-                return Results<Service>.Fail("Az időtartam megadása kötelező");
-
-            if (service.Price <= 0)
-                return Results<Service>.Fail("Az ér megadása kötelező");
-
             if (await _ServiceRepo.ExistsByName(service.Name))
             {
                 return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
@@ -60,11 +54,10 @@ namespace FodraszatIdopont.Services
             if (fodrasz == null)
                 return Results<User>.Fail("Nincs ilyen felhasználó");
 
-            else if (!fodrasz.Role.HasFlag(UserRole.Hairdresser))
+            if (!fodrasz.Role.HasFlag(UserRole.Hairdresser))
                 return Results<User>.Fail("A felhasználó még fodrász");
 
-            else
-                fodrasz.Role &= ~UserRole.Hairdresser;
+            fodrasz.Role &= ~UserRole.Hairdresser;
 
             await _UserRepo.Update(fodrasz);
             return Results<User>.Ok(fodrasz);
@@ -77,15 +70,7 @@ namespace FodraszatIdopont.Services
             {
                 return Results<Service>.Fail("Nincs ilyen szolgáltatás!");
             }
-            if (service.Price <= 0)
-            {
-                return Results<Service>.Fail("A szolgáltatás ára hibásan lett megadva!");
-            }
-            if (service.DurationInMinute <= 0)
-            {
-                return Results<Service>.Fail("A szolgáltatás időtartama nem megfelelő!");
-            }
-
+           
             return Results<Service>.Ok(await _ServiceRepo.Update(service));
 
         }
