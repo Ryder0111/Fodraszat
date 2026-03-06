@@ -208,18 +208,50 @@ namespace UnitTests
             [Test]
             public async Task RemoveHairdresser_ShouldFail_WhenUserIsNotHairdresser()
             {
-                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt@gmail.com")).ReturnsAsync(
                     new User 
                         { Role = UserRole.User,
                         Email = "teszt@gmail.com"});
 
-                var result = await _service.RemoveHairdresserRole("teszt");
+                var result = await _service.RemoveHairdresserRole("teszt@gmail.com");
 
                 Assert.That(result.Success, Is.False);
 
                 _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
             }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldUpdateUser_WhenUserIsHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User
+                    {
+                        Role = UserRole.Hairdresser,
+                    });
+
+                var result = await _service.RemoveHairdresserRole("teszt");
+
+                Assert.That(result.Success, Is.True);
+
+                _mockUserRepo.Verify(h => h.Update(It.IsAny<User>()), Times.Once);
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User
+                    {
+                        Role = UserRole.Hairdresser
+                    });
+
+                _mockUserRepo.Setup(u => u.Update(It.IsAny<User>())).ThrowsAsync(new Exception("DB Hiba"));
+
+                Assert.ThrowsAsync<Exception>(async () => await _service.RemoveHairdresserRole("teszt"));
+            }
         }
+
+        public class 
     }
 }
 
