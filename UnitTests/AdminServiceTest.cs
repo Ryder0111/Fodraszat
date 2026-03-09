@@ -255,7 +255,74 @@ namespace UnitTests
                 );
             }
 
+            [Test]
+            public async Task UpdateService_ShouldFail_WhenServiceDoesNotExist()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync((Service?)null);
 
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 1,
+                });
+
+                Assert.That(result.Success, Is.False);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Never);
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldFail_WhenNameAlreadyExists()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(2))
+                    .ReturnsAsync(new Service { ServiceId = 2, Name = "régi" });
+
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 2))
+                    .ReturnsAsync(true);
+
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 2,
+                    Name = "teszt"
+                });
+
+                Assert.That(result.Success, Is.False);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Never);
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldUpdateService_WhenDataIsValid()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync(new Service { ServiceId = 1, Name = "régi" });
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 1)).ReturnsAsync(false);
+
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 1,
+                    Name = "teszt"
+                });
+
+                Assert.That(result.Success, Is.True);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Once);
+
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync(new Service { ServiceId = 1, Name = "teszt" });
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 1)).ReturnsAsync(false);
+
+                _mockServiceRepo.Setup(s => s.Update(It.IsAny<Service>())).ThrowsAsync(new Exception("DB Hiba"));
+
+                Assert.ThrowsAsync<Exception>( async () =>
+                    await _service.UpdateService(new Service
+                    {
+                        ServiceId = 1,
+                        Name = "teszt"
+                    }));
+            }
         }   
     }
 }
