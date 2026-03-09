@@ -184,7 +184,8 @@ namespace FodraszatIdopont.Controllers
                 StartTime = model.Appointment.StartTime,
                 EndTime = model.Appointment.StartTime.AddMinutes(service.Data.DurationInMinute),
                 ServiceId = service.Data.ServiceId,
-                AppointmentStatus = AppointmentStatus.Booked
+                AppointmentStatus = AppointmentStatus.Booked,
+                Notes = model.Appointment.Notes ?? null
             };
 
             var result = await _appointService.CreateAppointment(appointment);

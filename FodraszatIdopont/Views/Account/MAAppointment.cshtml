@@ -59,6 +59,11 @@
         <div id="slotHint" class="form-text mt-2 d-none">Válassz egy időpontot a listából.</div>
     </div>
 
+    <div class="form-floating">
+        <textarea class="form-control" placeholder="Ide írhatsz bármi géle megjegyzést" id="floatingTextarea" style="height: 100px; margin-top:30px" asp-for="Appointment.Notes"></textarea>
+        <label for="floatingTextarea">Megjegyzés</label>
+    </div>
+
     <button id="submitBtn" type="submit" class="btn btn-primary w-100 mt-3" disabled>Időpont lefoglalása</button>
 </form>
 
