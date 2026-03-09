@@ -31,6 +31,8 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> PromoteToHairdresser(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return Results<User>.Fail("Érvénytelen email!");
 
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
@@ -47,6 +49,9 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> RemoveHairdresserRole(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return Results<User>.Fail("Érvénytelen email!");
+
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
                 return Results<User>.Fail("Nincs ilyen felhasználó");
