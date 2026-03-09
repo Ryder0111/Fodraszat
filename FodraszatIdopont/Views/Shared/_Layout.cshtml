@@ -40,6 +40,12 @@
                     </ul>
                     <!-- Jobboldali menük -->
                     <ul class="navbar-nav ms-auto">
+                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Admin.ToString()))
+                        {
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" asp-controller="Admin" asp-action="Index">Adminfelület</a>
+                            </li>
+                        }
                         <li class="nav-item mx-2">
                             <a class="nav-link" asp-controller="Account" asp-action="MAAppointment">Időpontfoglalás</a>
                         </li>

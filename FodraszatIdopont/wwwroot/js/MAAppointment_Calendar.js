@@ -65,18 +65,19 @@
                 `/Account/GetAvailableSlots?hairdresserId=${encodeURIComponent(hairdresserId)}&date=${encodeURIComponent(dateStr)}&serviceId=${encodeURIComponent(serviceId)}`,
                 { signal: slotsAbort.signal }
             );
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            if (!resp.ok) throw new Error(`HTTP ${resp}`);
 
             const slots = await resp.json();
             timeSlots.innerHTML = '';
 
-            if (slots == "Vasárnap zárva vagyunk.") {
-                timeSlots.innerHTML = '<div class="text-danger">Vasárnap zárva vagyunk.</div>';
+
+            if (slots == "Nincs szabad időpont.") {
+                timeSlots.innerHTML = `<div class="text-danger">${slots}</div>`;
                 return;
             }
 
-            if (!slots || slots.length === 0) {
-                timeSlots.innerHTML = '<div class="text-danger">Nincs szabad időpont.</div>';
+            if (slots == "Vasárnap zárva vagyunk.") {
+                timeSlots.innerHTML = `<div class="text-danger">${slots}</div>`;
                 return;
             }
 
