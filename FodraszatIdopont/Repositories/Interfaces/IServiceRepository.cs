@@ -8,6 +8,7 @@ namespace FodraszatIdopont.Repositories.Interfaces
         Task<Service?> GetById(int id);
 
         Task<bool> ExistsByName(string name);
+        Task<bool> ExistsByNameExceptId(string name, int id);
 
         Task<Service> Create(Service service);
 

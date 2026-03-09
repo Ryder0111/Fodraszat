@@ -19,14 +19,11 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Service>> CreateService(Service service)
         {
-
-            if (string.IsNullOrWhiteSpace(service.Name))
-                return Results<Service>.Fail("A név megadása kötelező");
+            if (service == null)
+                return Results<Service>.Fail("Érvénytelen szolgáltatás adat!");
 
             if (await _ServiceRepo.ExistsByName(service.Name))
-            {
                 return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
-            }
 
                 await _ServiceRepo.Create(service);
                 return Results<Service>.Ok(service);
@@ -65,12 +62,16 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Service>> UpdateService(Service service)
         {
+            if (service == null)
+                return Results<Service>.Fail("Érvénytelen szolgáltatás adat!");
+
             var szolgaltatas = await _ServiceRepo.GetById(service.ServiceId);
             if (szolgaltatas == null)
-            {
                 return Results<Service>.Fail("Nincs ilyen szolgáltatás!");
-            }
-           
+
+            if (await _ServiceRepo.ExistsByNameExceptId(service.Name, service.ServiceId))
+                return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
+
             return Results<Service>.Ok(await _ServiceRepo.Update(service));
 
         }
