@@ -11,5 +11,9 @@ namespace FodraszatIdopont.Models.ViewModels
         [Required(ErrorMessage = "A időtartam megadása kötelező!")]
         [Range(10,180, ErrorMessage = "A hossz minimum 10, maximum 180 perc lehet!")]
         public int DurationInMinute { get; set; }
+
+        [Required(ErrorMessage = "Az ár megadása kötelező!")]
+        [Range(10, 30000, ErrorMessage = "Az ár 10Ft és 30.000Ft között kell lennie")]
+        public int Price { get; set; }
     }
 }
