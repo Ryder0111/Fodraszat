@@ -204,7 +204,9 @@ namespace FodraszatIdopont.Controllers
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
             var datum = DateOnly.Parse(date);
             var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
-            return Json(result.Data); 
+            if (!result.Success)
+                return Json(result.Error);
+            return Json(result.Data);
         }
 
         [HttpGet]

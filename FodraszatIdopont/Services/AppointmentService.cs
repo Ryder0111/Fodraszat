@@ -21,7 +21,7 @@ namespace FodraszatIdopont.Services
             _Userrepo = repo3;
             _CurrentUser = currentUser;
         }
-
+        
         public async Task<Results<List<User>>> GetAllHairdressers()
         {
             var fodraszok = await _Userrepo.GetAllHairdresser();
@@ -165,7 +165,7 @@ namespace FodraszatIdopont.Services
                 if (!conflict)
                 {
                     slots.Add(current);
-                    current += TimeSpan.FromMinutes(15);  // finomabb lépés, ha kell – vagy 60 perc
+                    current += TimeSpan.FromMinutes(60);
                 }
             }
 

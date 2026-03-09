@@ -49,14 +49,12 @@
     async function loadSlotsForDate(dateObj) {
         const hairdresserId = hairdresserSelect.value;
         const serviceId = serviceSelect.value;
-        console.log(encodeURIComponent(serviceId));
         if (!hairdresserId || !serviceId || !dateObj) return;
 
         const dateStr = isoDateOnly(dateObj);
 
         resetSlotsUI();
         timeSlotsContainer.classList.remove('d-none');
-        slotHint.classList.remove('d-none');
         timeSlots.innerHTML = '<div class="text-muted">Időpontok betöltése...</div>';
 
         if (slotsAbort) slotsAbort.abort();
@@ -72,10 +70,17 @@
             const slots = await resp.json();
             timeSlots.innerHTML = '';
 
+            if (slots == "Vasárnap zárva vagyunk.") {
+                timeSlots.innerHTML = '<div class="text-danger">Vasárnap zárva vagyunk.</div>';
+                return;
+            }
+
             if (!slots || slots.length === 0) {
                 timeSlots.innerHTML = '<div class="text-danger">Nincs szabad időpont.</div>';
                 return;
             }
+
+            slotHint.classList.remove('d-none');
 
             for (const slot of slots) {
                 const slotDate = new Date(slot);
