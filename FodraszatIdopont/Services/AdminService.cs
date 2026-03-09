@@ -57,7 +57,7 @@ namespace FodraszatIdopont.Services
                 return Results<User>.Fail("Nincs ilyen felhasználó");
 
             if (!fodrasz.Role.HasFlag(UserRole.Hairdresser))
-                return Results<User>.Fail("A felhasználó még fodrász");
+                return Results<User>.Fail("A felhasználó nem fodrász");
 
             fodrasz.Role &= ~UserRole.Hairdresser;
 

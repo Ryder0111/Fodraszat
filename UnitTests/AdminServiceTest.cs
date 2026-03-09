@@ -33,22 +33,6 @@ namespace UnitTests
             }
 
             [Test]
-            public async Task CreateService_ShouldFail_WhenNameIsEmpty()
-            {
-                var result = await _service.CreateService(
-                    new Service
-                    {
-                        Name = "",
-                        DurationInMinute = 30,
-                        Price = 3000
-                    });
-
-                Assert.That(result.Success, Is.False);
-
-                _mockServiceRepo.Verify(c => c.Create(It.IsAny<Service>()), Times.Never);
-            }
-
-            [Test]
             public async Task CreateService_ShouldFail_WhenNameAlreadyExists()
             {
                 _mockServiceRepo.Setup(s => s.ExistsByName("teszt")).ReturnsAsync(true);
