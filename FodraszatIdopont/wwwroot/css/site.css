@@ -40,7 +40,11 @@ body {
     width: auto;
 }
 
-.offcanvas{
-    margin-top:5.5%;
+#offcanvasScrolling {
+    top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
 }
 
+.offcanvas-start {
+    width: 280px;
+}

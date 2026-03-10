@@ -29,3 +29,13 @@ function updatePadding() {
 
 window.addEventListener("load", updatePadding);
 window.addEventListener("resize", updatePadding);
+
+function setOffcanvasOffset() {
+    const navbar = document.getElementById("mainNavbar");
+    const height = navbar.offsetHeight;
+
+    document.documentElement.style.setProperty("--navbar-height", height + "px");
+}
+
+window.addEventListener("load", setOffcanvasOffset);
+window.addEventListener("resize", setOffcanvasOffset);
