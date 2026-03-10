@@ -4,8 +4,8 @@ namespace FodraszatIdopont.Repositories.Interfaces
 {
     public interface IClosedDayRepository
     {
-        Task<ClosedDay> Add(DateOnly date);
-        Task<ClosedDay> Remove(ClosedDay closedday);
+        Task<ClosedDay> Add(ClosedDay date);
+        Task<DateOnly> DeleteByDate(DateOnly closedday);
         Task<bool> ExistsByDate(DateOnly date);
         Task<List<ClosedDay>> GettAll();
 

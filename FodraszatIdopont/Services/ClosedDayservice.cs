@@ -14,24 +14,53 @@ namespace FodraszatIdopont.Services
             _repo = repo;
         }
 
-        public Task<Results<ClosedDay>> AddClosedDay(ClosedDay closedday)
+        public async Task<Results<ClosedDay>> AddClosedDay(DateOnly closedday)
         {
-            throw new NotImplementedException();
+            if(closedday == DateOnly.MinValue)
+                return Results<ClosedDay>.Fail("Adja meg a dátumot!");
+
+            if(await _repo.ExistsByDate(closedday))
+                return Results<ClosedDay>.Fail("Ezen a napon már zárva vagyunk!");
+
+            if (closedday < DateOnly.FromDateTime(DateTime.Now.AddMonths(2)))
+                return Results<ClosedDay>.Fail("A következő 2 hónapban még lehetnek foglalások, ezért erre az időszakra nem állítható be zárás.");
+
+            ClosedDay closedDay = new ClosedDay
+            {
+                Date = closedday,
+            };
+            await _repo.Add(closedDay);
+            return Results<ClosedDay>.Ok(closedDay);
         }
 
-        public Task<Results<List<ClosedDay>>> GetClosedDays()
+        public async Task<Results<List<ClosedDay>>> GetClosedDays()
         {
-            throw new NotImplementedException();
+            var closeddays = await _repo.GettAll();
+
+            if (!closeddays.Any())
+                return Results<List<ClosedDay>>.Fail("Nincsenek napok mikor zárva vagyunk!");
+
+            return Results<List<ClosedDay>>.Ok(closeddays);
         }
 
-        public Task<Results<bool>> IsClosedDay(DateOnly closedday)
+        public async Task<Results<bool>> IsClosedDay(DateOnly closedday)
         {
-            throw new NotImplementedException();
+            if (closedday == DateOnly.MinValue)
+                return Results<bool>.Fail("Adja meg a dátumot!");
+
+            if (await _repo.ExistsByDate(closedday))
+                return Results<bool>.Ok(true);
+
+            return Results<bool>.Ok(false);
         }
 
-        public Task<Results<ClosedDay>> RemoveClosedDay(int id)
-        {
-            throw new NotImplementedException();
+        public async Task<Results<DateOnly>> RemoveClosedDay(DateOnly closedday)
+        {   
+            if (!await _repo.ExistsByDate(closedday))
+                return Results<DateOnly>.Fail("Nincs zárt nap ezen a dátumon.");
+            
+            await _repo.DeleteByDate(closedday);
+            return Results<DateOnly>.Ok(closedday);
         }
     }
 }

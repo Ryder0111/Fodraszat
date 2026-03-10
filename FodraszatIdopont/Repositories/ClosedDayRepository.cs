@@ -31,9 +31,9 @@ namespace FodraszatIdopont.Repositories
             return await _db.ClosedDays.ToListAsync();
         }
 
-        public async Task<ClosedDay> Remove(ClosedDay closedday)
+        public async Task<DateOnly> DeleteByDate(DateOnly closedday)
         {
-            _db.ClosedDays.Remove(closedday);
+            _db.ClosedDays.Remove(await _db.ClosedDays.FirstAsync(d => d.Date == closedday));
             await _db.SaveChangesAsync();
             return closedday;
         }
