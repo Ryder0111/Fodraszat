@@ -28,13 +28,21 @@ namespace FodraszatIdopont.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            return View( new LoginViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] //CSRF elleni védelem; CSRF-Cross-site request forgery
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string recaptchaToken)
         {
+            var isHuman = await VerifyRecaptcha(recaptchaToken);
+
+            if (!isHuman)
+            {
+                ModelState.AddModelError("", "Robot ellenőrzés sikertelen.");
+                return View(model);
+            }
+
             if (!ModelState.IsValid)
             {
                 TempData["error_msg"] = "Hiba történt! Prbáld újra!";
@@ -95,8 +103,16 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registration(RegisterViewModel felhasznalo)
+        public async Task<IActionResult> Registration(RegisterViewModel felhasznalo, string recaptchaToken)
         {
+            var isHuman = await VerifyRecaptcha(recaptchaToken);
+
+            if (!isHuman)
+            {
+                ModelState.AddModelError("", "Bot vagy!");
+                return View(felhasznalo);
+            }
+
             if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()
             {
@@ -112,13 +128,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-
-            LoginViewModel bejelent = new LoginViewModel()
-            {
-                Email = felhasznalo.Email,
-                Password = felhasznalo.Password
-            };
-            return await Login(bejelent);
+            return RedirectToAction("Login");
         }
 
         [Authorize]
@@ -217,6 +227,24 @@ namespace FodraszatIdopont.Controllers
             var vege = DateOnly.Parse(end);
             var result = await _appointService.GetBookedDays(hairdresserId, kezdet, vege);
             return Json(result.Data);
+        }
+
+
+        public async Task<bool> VerifyRecaptcha(string token)
+        {
+            var secret = "6LcZrYUsAAAAAKmqf7smog4u8Uw_M7b65sA90RDK";
+
+            using var client = new HttpClient();
+
+            var response = await client.PostAsync(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={token}",
+                null);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+            return result.success == "true" && result.score >= 0.5;
         }
     }
 }

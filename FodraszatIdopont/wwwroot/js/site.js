@@ -39,3 +39,23 @@ function setOffcanvasOffset() {
 
 window.addEventListener("load", setOffcanvasOffset);
 window.addEventListener("resize", setOffcanvasOffset);
+
+
+grecaptcha.ready(function () {
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        grecaptcha.execute('SITE_KEY', { action: 'login' })
+            .then(function (token) {
+
+                document.getElementById("recaptchaToken").value = token;
+
+                e.target.submit();
+
+            });
+
+    });
+
+});

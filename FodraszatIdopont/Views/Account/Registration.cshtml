@@ -64,5 +64,24 @@
             <span asp-validation-for="Sex" class="invalid-feedback"></span>
         </div>
     </div>
+
+    <input type="hidden" id="recaptchaToken" name="recaptchaToken" />
     <button type="submit" class="btn btn-primary w-100 mt-3">Regisztráció</button>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+
+            e.preventDefault();
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'registration' }).then(function (token) {
+
+                    document.getElementById("recaptchaToken").value = token;
+
+                    e.target.submit();
+                });
+            });
+
+        });
+    </script>
 </form>
