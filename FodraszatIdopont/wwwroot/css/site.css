@@ -59,13 +59,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     overflow-x: hidden; /* Fontos a teljes szélességû kilépésnél, hogy ne legyen vízszintes görgetõsáv */
+    padding-top: 85px;
 }
 
 /* --- ÚJ NAVBAR --- */
 .navbar-custom {
     background-color: var(--primary-color) !important;
-    border-bottom: 1px solid var(--accent-color);
     padding: 10px 0;
+    will-change: transform; /* Ez optimalizálja a böngészõnek az animációt */
 }
 
     .navbar-custom .navbar-brand {
@@ -92,6 +93,10 @@ body {
     .navbar-custom .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23B89151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
+
+.navbar-hidden {
+    transform: translateY(-100%); /* Ez a saját magasságával pontosan feltolja a képernyõn kívülre */
+}
 
 /* --- FRISSÍTETT HERO (TELJES SZÉLESSÉGÛ KILÉPÉSSEL) --- */
 .hero-container {

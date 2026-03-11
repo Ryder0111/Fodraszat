@@ -1,31 +1,29 @@
-﻿const navbar = document.getElementById("mainNavbar");
-const content = document.getElementById("pageContent");
-let lastScroll = window.pageYOffset;
-let offset = 0;
+﻿const navbar = document.querySelector(".navbar");
+let lastScroll = window.scrollY; // Kezdőérték beállítása az aktuális pozícióra
+let navbarY = 0; // A navbar jelenlegi függőleges eltolása (kezdetben 0, azaz teljesen látszik)
+
+// Lekérjük a navbar magasságát pixelben, hogy tudjuk, mi a maximum, ameddig elrejthetjük
 const navbarHeight = navbar.offsetHeight;
 
 window.addEventListener("scroll", () => {
-    const currentScroll = window.pageYOffset;
-    const delta = currentScroll - lastScroll;
+    let currentScroll = window.scrollY;
 
-    // lefelé: elrejt
-    if (delta > 0) {
-        offset = Math.min(offset + delta, navbarHeight);
+    let diff = currentScroll - lastScroll;
+
+    navbarY -= diff;
+
+
+    if (navbarY > 0) {
+        navbarY = 0;
     }
-    // felfelé: visszahoz
-    else {
-        offset = Math.max(offset + delta, 0);
+    else if (navbarY < -navbarHeight) {
+        navbarY = -navbarHeight;
     }
 
-    navbar.style.transform = `translateY(${-offset}px)`;
+    navbar.style.transform = `translateY(${navbarY}px)`;
+
     lastScroll = currentScroll;
 });
-
-
-
-function updatePadding() {
-    content.style.paddingTop = navbar.offsetHeight + "px";
-}
 
 window.addEventListener("load", updatePadding);
 window.addEventListener("resize", updatePadding);
