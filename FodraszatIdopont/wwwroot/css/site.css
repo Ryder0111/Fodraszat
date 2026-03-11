@@ -1,24 +1,18 @@
+/* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 #mainNavbar {
@@ -26,7 +20,7 @@ body {
 }
 
 #pageContent {
-    padding-top: 4rem; 
+    
 }
 
 @media (max-width: 576px) {
@@ -36,7 +30,7 @@ body {
 }
 
 .navbar-brand-img {
-    height: 6.2rem; 
+    height: 6.2rem;
     width: auto;
 }
 
@@ -47,4 +41,335 @@ body {
 
 .offcanvas-start {
     width: 280px;
+}
+
+/* --- WILD CUT GLOBÁLIS VÁLTOZÓK --- */
+:root {
+    --primary-color: #4A3018; /* Sötét, fás barna */
+    --accent-color: #B89151; /* Arany/bronz árnyalat */
+    --bg-light: #FDFBF7; /* Nagyon enyhe törtfehér */
+    --text-dark: #2C2C2C;
+    --text-muted: #666666;
+    --overlay-color: rgba(0, 0, 0, 0.6); /* Sötétebb overlay 60% átlátszósággal */
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    overflow-x: hidden; /* Fontos a teljes szélességû kilépésnél, hogy ne legyen vízszintes görgetõsáv */
+}
+
+/* --- ÚJ NAVBAR --- */
+.navbar-custom {
+    background-color: var(--primary-color) !important;
+    border-bottom: 1px solid var(--accent-color);
+    padding: 10px 0;
+}
+
+    .navbar-custom .navbar-brand {
+        color: var(--accent-color) !important;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .navbar-custom .nav-link {
+        color: var(--bg-light) !important;
+        font-weight: 500;
+        margin-right: 15px;
+        transition: 0.3s;
+    }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+    .navbar-custom .navbar-toggler {
+        border-color: var(--accent-color);
+    }
+
+    .navbar-custom .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23B89151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+/* --- FRISSÍTETT HERO (TELJES SZÉLESSÉGÛ KILÉPÉSSEL) --- */
+.hero-container {
+    position: relative;
+    /* Teljes szélesség: */
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    /* VÁLTOZTATÁS ITT: 100vh (képrenyõ magassága) - navbar magassága */
+    /* A korábbi kódodból látszik, hogy kb. 80-90px lehet a navbarod. 
+       Ha esetleg picit megjelenik a görgetõsáv, növeld a 85px-t (pl. 90px-re), 
+       ha pedig pici fehér sáv marad alatta, csökkentsd (pl. 75px-re)! */
+    height: calc(100vh - 85px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Itt add meg a jó képet, ami a projektben van! */
+    background: url(../lib/hero-bg.jpg) center/cover;
+    filter: blur(10px);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+    .hero-background::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--overlay-color);
+        z-index: -1;
+    }
+
+.hero-content {
+    text-align: center;
+    color: white;
+    max-width: 900px;
+    padding: 30px;
+    z-index: 1;
+}
+
+    .hero-content h1 {
+        font-size: 4rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .hero-content p {
+        font-size: 1.6rem;
+        margin-bottom: 50px;
+    }
+
+/* Gombok */
+.btn-primary-custom {
+    background-color: var(--accent-color);
+    color: white !important;
+    padding: 15px 35px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+    .btn-primary-custom:hover {
+        background-color: white;
+        color: var(--primary-color) !important;
+    }
+
+/* --- GLOBÁLIS CÍMSOROK --- */
+h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+    h2::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background-color: var(--accent-color);
+        bottom: -10px;
+        left: 25%;
+        border-radius: 2px;
+    }
+
+/* --- RESZPONZÍV SZEKCIÓK ÉS KÁRTYÁK --- */
+.features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 100px 20px;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    width: 230px;
+}
+
+.feature-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(184, 145, 81, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-circle {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+}
+
+.services-section {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.services-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    max-width: 1300px;
+    margin: 50px auto 0;
+}
+
+.service-card {
+    background: white;
+    border: 1px solid #eee;
+    border-top: 5px solid var(--primary-color);
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(74, 48, 24, 0.15);
+    }
+
+    .service-card h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .service-card .price {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-top: 20px;
+        display: block;
+    }
+
+.gallery-section {
+    padding: 100px 20px;
+    text-align: center;
+    background-color: white;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    justify-content: center;
+    gap: 20px;
+    max-width: 1300px;
+    margin: 50px auto 0;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+/* --- KAPCSOLAT (TELJES SZÉLESSÉGÛ KILÉPÉSSEL) --- */
+.contact-section {
+    position: relative;
+    /* Szintén kitör a konténerbõl, hogy a sötét sáv az egész képernyõn végigérjen: */
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 100px 20px;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: var(--bg-light);
+}
+
+    .contact-section h2 {
+        color: var(--accent-color);
+    }
+
+        .contact-section h2::after {
+            background-color: var(--bg-light);
+        }
+
+    .contact-section p {
+        color: #d1c5b4;
+    }
+
+.contact-container {
+    display: flex;
+    gap: 60px;
+    max-width: 1300px;
+    margin: 80px auto 0;
+    flex-wrap: wrap;
+    padding: 0 20px; /* Hogy a konténer tartalma ne tapadjon a szélére */
+}
+
+.contact-info, .map-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.contact-info {
+    background-color: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(184, 145, 81, 0.3);
+    text-align: left;
+}
+
+    .contact-info h3 {
+        color: var(--accent-color);
+        border-bottom: 2px solid rgba(184, 145, 81, 0.3);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .contact-info p strong {
+        color: var(--accent-color);
+    }
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+    }
+
+    .contact-container {
+        text-align: center;
+        gap: 30px;
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+
+        .contact-info h3 {
+            border-bottom: none;
+        }
 }
