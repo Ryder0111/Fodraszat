@@ -20,7 +20,6 @@ html {
 }
 
 #pageContent {
-    
 }
 
 @media (max-width: 576px) {
@@ -60,6 +59,7 @@ body {
     margin: 0;
     overflow-x: hidden; /* Fontos a teljes szélességû kilépésnél, hogy ne legyen vízszintes görgetõsáv */
     padding-top: 85px;
+    padding-bottom: 80px; /* Ez ad egy kis lélegzetvételnyi helyet az oldal alján a gombnak */
 }
 
 /* --- ÚJ NAVBAR --- */
@@ -377,4 +377,112 @@ h2 {
         .contact-info h3 {
             border-bottom: none;
         }
+}
+
+/* --- NAPTÁR STÍLUSOK --- */
+.custom-calendar {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+    .custom-calendar th {
+        text-align: center;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .custom-calendar td {
+        text-align: center;
+        padding: 15px 5px;
+        border: 1px solid #eee;
+        vertical-align: top;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .custom-calendar td:hover:not(.empty-day) {
+            background-color: #fcfbf9;
+        }
+
+        .custom-calendar td.empty-day {
+            background-color: transparent;
+            border: none;
+            cursor: default;
+        }
+
+.day-number {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 50%;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.custom-calendar td:hover:not(.empty-day) .day-number {
+    background-color: rgba(184, 145, 81, 0.2);
+}
+
+.sunday-day .day-number {
+    color: #ccc;
+}
+
+.booked-day .day-number {
+    background-color: #dc3545;
+    color: white;
+}
+
+.booked-day:hover .day-number {
+    background-color: #c82333;
+}
+
+.today .day-number {
+    border: 2px solid var(--accent-color);
+}
+
+.slots-row {
+    background-color: #fdfbf7;
+    border-bottom: 3px solid var(--accent-color);
+    animation: slideDown 0.3s ease-out;
+}
+
+.slots-container {
+    padding: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.slot-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+    .slot-btn:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

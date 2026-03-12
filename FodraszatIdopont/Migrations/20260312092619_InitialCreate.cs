@@ -100,11 +100,11 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.R1RrrOvld8KcfWjf4x1WWw==.GFV4BLT39lgssXrTUdlUVpFxAY54MAjQ6yJEvrqR83Q=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.1qPMb12lFwguMdSWkVstJw==.FwIrrG+OAI2A6pPpWCZd3UxB5mZBg4LVcxFGspBRJPY=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.kwkRVgfWIpSVBwkjIUlvwg==.2DqzP5E77N3xm4dlg1hkozrqc/sdTfbpDg9MklMYk4M=", 1, 1 },
-                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.Oteiy4OFgQqLmK9hUeVMRw==.Ucf2Oow8tnSv8Kv+kBNOd14jZdmCELWIbZHlaUma5mE=", 2, 2 },
-                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.GVp6xlrF7z6R7+LU2Rkn0A==.UsxjIIAwb70e8jsuskac+hc/ZtZTr3MMmTbUCNXma5w=", 2, 1 }
+                    { 1, "admin", "admin", "100000.kmOgVfl/e2lHs/EdMt2Pxw==.uqxHBK9PQlbu684oDDsGSWqP63n3GvKMeroXeUNJs3s=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.JIUgI91MjZ3Cp/vjYKEKhw==.7fSqAHmb5milZbq37OwFEUA1rfUPzFEW5DUCV6Z5C58=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.FBxsXu16txCJJATRo5M5jw==.jkyW9Uvw82MPuy1TDWoc4RNN9UHHo9m52DZnNd2AiTM=", 1, 1 },
+                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.6+r2kw/9VIChCTCfZE8SFg==.yisQSwmUsaAY7kJBy1riMOCP+vc9xVduKFPsvoydkVo=", 2, 2 },
+                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.6jsSREiuuyTlxYXFstXBFQ==.NvZUqIi4IcjFgQmvsoDBkekxc24q1UTqMi5oPCTooao=", 2, 1 }
                 });
 
             migrationBuilder.InsertData(

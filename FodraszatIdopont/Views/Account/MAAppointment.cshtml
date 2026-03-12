@@ -1,70 +1,92 @@
-﻿@model FodraszatIdopont.Models.AppointmentDTO;
+﻿@model FodraszatIdopont.Models.AppointmentDTO
 
 @{
-    if (TempData["msg"] != null)
-    {
-        <div class="alert alert-success w-50 text-center mx-auto">@TempData["msg"]</div>
-    }
+    ViewData["Title"] = "Időpontfoglalás";
 }
 
-<h1 class="display-4 fw-bold text-center">Időpontfoglalás</h1>
+<div class="container py-5 mt-4">
+    <div class="text-center mb-5">
+        <h2>Foglalj időpontot</h2>
+        <p style="color: var(--text-muted); font-size: 1.2rem;">Válaszd ki a fodrászt, a szolgáltatást, majd egy szabad időpontot.</p>
+    </div>
 
-<form asp-action="CreateAppointment" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
-    @Html.AntiForgeryToken()
-
-    @if (TempData["error_msg"] != null)
+    @if (TempData["msg"] != null)
     {
-        <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
+        <div class="alert alert-success text-center mx-auto shadow-sm" style="max-width: 800px; border-left: 5px solid #28a745;">
+            @TempData["msg"]
+        </div>
     }
 
-    <!-- Kell, hogy POST-ban menjen a UserId és a StartTime -->
-    <input type="hidden" asp-for="Appointment.UserId" />
-    <input type="hidden" id="startTimeInput" asp-for="Appointment.StartTime" />
+    <form asp-action="CreateAppointment" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 800px; border-top: 5px solid var(--primary-color);">
+        @Html.AntiForgeryToken()
 
-    <div class="row g-4">
-        <div class="col-md-6">
-            <label class="form-label fw-bold fs-5">Válassz fodrászt</label>
-            <select id="hairdresserSelect"
-                    class="form-select form-select-lg shadow-sm"
-                    asp-for="Appointment.HairdresserId">
-                <option value="">--Válassz fodrászt--</option>
-                @foreach (var item in Model.Hairdressers)
-                {
-                    <option value="@item.UserId">@item.Name</option>
-                }
-            </select>
+        @if (TempData["error_msg"] != null)
+        {
+            <div class="alert alert-danger text-center shadow-sm">@TempData["error_msg"]</div>
+        }
+
+        <input type="hidden" id="startTimeInput" asp-for="Appointment.ServiceId" />
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz fodrászt</label>
+                <select id="hairdresserSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.HairdresserId" style="border-color: #eee;">
+                    <option value="">-- Kérlek válassz --</option>
+                    @foreach (var item in Model.Hairdressers)
+                    {
+                        <option value="@item.UserId">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz szolgáltatást</label>
+                <select id="serviceSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.ServiceId" style="border-color: #eee;">
+                    <option value="">-- Kérlek válassz --</option>
+                    @foreach (var item in Model.Services)
+                    {
+                        <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
+                    }
+                </select>
+            </div>
         </div>
 
-        <div class="col-md-6">
-            <label class="form-label fw-bold fs-5">Válassz szolgáltatást</label>
-            <select id="serviceSelect"
-                    class="form-select form-select-lg shadow-sm"
-                    asp-for="Appointment.ServiceId">
-                <option value="">--Válassz szolgáltatást--</option>
-                @foreach (var item in Model.Services)
-                {
-                    <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
-                }
-            </select>
+        <div id="calendarSection" style="display: none;" class="mt-5 pt-3 border-top">
+            <div class="calendar-wrapper">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <button type="button" class="btn btn-outline-dark" id="btnPrevMonth">&lt; Előző</button>
+                    <h3 id="currentMonthYear" class="m-0 fw-bold" style="color: var(--primary-color);"></h3>
+                    <button type="button" class="btn btn-outline-dark" id="btnNextMonth">Következő &gt;</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-calendar w-100" id="appointmentCalendar">
+                        <thead>
+                            <tr>
+                                <th>H</th>
+                                <th>K</th>
+                                <th>Sze</th>
+                                <th>Cs</th>
+                                <th>P</th>
+                                <th>Szo</th>
+                                <th>V</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="calendarMessage" class="text-center mt-3 text-danger fw-bold fs-5"></div>
+            </div>
         </div>
-    </div>
 
-    <div id="calendarWrapper" class="d-none mt-4 shadow rounded bg-white p-3">
-        <div id="color-calendar"></div>
-    </div>
+        <div class="text-center mt-5">
+            <button id="submitBtn" type="submit" class="btn-primary-custom w-100 border-0" disabled style="opacity: 0.5; cursor: not-allowed;">
+                Időpont lefoglalása
+            </button>
+            <p id="submitHelperText" class="text-muted mt-2 small">Kérlek válassz egy pontos időpontot a naptárból a foglaláshoz.</p>
+        </div>
+    </form>
+</div>
 
-    <div id="timeSlotsContainer" class="d-none mt-4">
-        <h5 class="fw-bold">Elérhető időpontok:</h5>
-        <div id="timeSlots" class="list-group"></div>
-        <div id="slotHint" class="form-text mt-2 d-none">Válassz egy időpontot a listából.</div>
-    </div>
-
-    <div class="form-floating">
-        <textarea class="form-control" placeholder="Ide írhatsz bármi géle megjegyzést" id="floatingTextarea" style="height: 100px; margin-top:30px" asp-for="Appointment.Notes"></textarea>
-        <label for="floatingTextarea">Megjegyzés</label>
-    </div>
-
-    <button id="submitBtn" type="submit" class="btn btn-primary w-100 mt-3" disabled>Időpont lefoglalása</button>
-</form>
-
-<script src="~/js/MAAppointment_Calendar.js"></script>
+<script src="~/js/MAAppointment_Calendar.js" asp-append-version="true"></script>
