@@ -1,7 +1,7 @@
 /* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
-    position: relative;
+    position: relative; /* Ezt töröld! */
     min-height: 100%;
 }
 
@@ -9,6 +9,47 @@ html {
     html {
         font-size: 16px;
     }
+}
+
+html {
+    position: relative; /* Ezt is töröld! */
+    min-height: 100%;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    /* A LINE-HEIGHT ALAPHELYZETBE ÁLLÍTÁSA A KULCS! */
+    line-height: normal;
+    /* Itt állítod a magasságot! Fent 50px, lent 20px belsõ ûr */
+    padding: 0;
+    background-color: var(--primary-color); /* Legyen sötétbarna, mint a navbar! */
+    color: var(--bg-light); /* Világos szöveg */
+    border-top: 3px solid var(--accent-color); /* Egy szép arany vonal a tetejére */
+}
+
+/* Egy kis extra effekt a lábléc linkjeinek */
+.footer-link {
+    color: var(--bg-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .footer-link:hover {
+        color: var(--accent-color);
+    }
+
+.container,
+.container-fluid,
+main[role="main"],
+#pageContent {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.contact-section {
+    margin-bottom: 0 !important;
+    padding-bottom: 80px !important; /* Csak belsõ térköz maradjon */
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -33,10 +74,27 @@ html {
     width: auto;
 }
 
-#offcanvasScrolling {
-    top: var(--navbar-height);
-    height: calc(100vh - var(--navbar-height));
+.d-flex.border-bottom h2::after {
+    display: none !important;
 }
+
+/* --- 2. ADMIN ÉS FODRÁSZ MENÜ (OFFCANVAS) FIXÁLÁSA --- */
+#offcanvasScrolling {
+    position: fixed !important;
+    top: 85px !important; /* Pontosan a Navbar alatt kezdõdik */
+    bottom: 0 !important;
+    /* A LÉNYEG: Kõkeményen levonjuk a 85px navbart a teljes magasságból */
+    height: calc(100vh - 85px) !important;
+    max-height: calc(100vh - 85px) !important;
+    display: flex !important;
+    flex-direction: column;
+}
+
+    #offcanvasScrolling .offcanvas-body {
+        flex-grow: 1;
+        overflow-y: auto; /* Ha sok a menüpont, lehessen görgetni belül */
+        padding-bottom: 30px; /* Hogy a legalsó menüpont se tapadjon a képernyõ aljához */
+    }
 
 .offcanvas-start {
     width: 280px;
@@ -484,5 +542,46 @@ h2 {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.floating-alert {
+    position: fixed;
+    /* Eredetileg a képernyõn kívül, felül indul */
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* A navbar (1030) fölött, vagy épp alatta */
+    min-width: 350px;
+    max-width: 90%;
+    text-align: left; /* Balra zárt szöveg szebb, ha van 'Sikeres!' címke */
+    background-color: white; /* Hogy a zöld/piros bal oldali csík jól mutasson */
+    border: none;
+    border-radius: 8px;
+    /* Az animáció, ami 0.5 másodperc alatt lefut */
+    animation: slideDownAlert 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+    /* Siker és Hiba egyedi háttérszínek felülírása (hogy elegáns, letisztult legyen) */
+    .floating-alert.alert-success {
+        background-color: #f8fff9;
+        color: #155724;
+    }
+
+    .floating-alert.alert-danger {
+        background-color: #fff8f8;
+        color: #721c24;
+    }
+
+@keyframes slideDownAlert {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+
+    100% {
+        /* Ide csúszik be. 110px pont jó, ha a navbarod kb. 85px magas, így kicsivel alatta fog megállni */
+        top: 20px;
+        opacity: 1;
     }
 }

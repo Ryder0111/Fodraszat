@@ -4,28 +4,33 @@
     ViewData["Title"] = "Időpontfoglalás";
 }
 
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
 <div class="container py-5 mt-4">
     <div class="text-center mb-5">
         <h2>Foglalj időpontot</h2>
         <p style="color: var(--text-muted); font-size: 1.2rem;">Válaszd ki a fodrászt, a szolgáltatást, majd egy szabad időpontot.</p>
     </div>
 
-    @if (TempData["msg"] != null)
-    {
-        <div class="alert alert-success text-center mx-auto shadow-sm" style="max-width: 800px; border-left: 5px solid #28a745;">
-            @TempData["msg"]
-        </div>
-    }
-
     <form asp-action="CreateAppointment" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 800px; border-top: 5px solid var(--primary-color);">
         @Html.AntiForgeryToken()
 
-        @if (TempData["error_msg"] != null)
-        {
-            <div class="alert alert-danger text-center shadow-sm">@TempData["error_msg"]</div>
-        }
-
-        <input type="hidden" id="startTimeInput" asp-for="Appointment.ServiceId" />
+        <input type="hidden" asp-for="Appointment.UserId" />
+        <input type="hidden" id="startTimeInput" asp-for="Appointment.StartTime" />
 
         <div class="row g-4">
             <div class="col-md-6">

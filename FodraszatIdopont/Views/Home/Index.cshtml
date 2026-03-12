@@ -1,14 +1,22 @@
 ﻿@model List<FodraszatIdopont.Models.Entities.Service>
 @{
     ViewData["Title"] = "Főoldal";
-    if (TempData["error_msg"] != null)
-    {
-        <div class="alert alert-danger">@TempData["error_msg"]</div>
-    }
-    if (TempData["msg"] != null)
-    {
-        <div class="alert alert-success w-50 text-center mx-auto">@TempData["msg"]</div>
-    }
+}
+
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
 }
 
 <section class="hero-container">

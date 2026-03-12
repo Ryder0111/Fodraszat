@@ -14,8 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const hairdresserSelect = document.getElementById('hairdresserSelect');
     const serviceSelect = document.getElementById('serviceSelect');
 
+    // Biztonsági kilépés, ha nem a foglalás oldalon vagyunk
     if (!calendarBody || !hairdresserSelect || !serviceSelect) return;
 
+    // Csak akkor mutatjuk a naptárat, ha mindkét legördülőből választottak
     function checkSelectionsAndRender() {
         if (hairdresserSelect.value !== "" && serviceSelect.value !== "") {
             calendarSection.style.display = 'block';
@@ -91,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let end = `${year}-${String(month + 1).padStart(2, '0')}-${new Date(year, month + 1, 0).getDate()}`;
 
         try {
-            // JAVÍTVA: Fetch az Account controllerből
+            // Fetch hívás az Account controllerre!
             let response = await fetch(`/Account/GetBookedDays?hairdresserId=${hairdresserId}&start=${start}&end=${end}`);
             if (response.ok) {
                 let bookedDates = await response.json();
@@ -126,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (isBooked) {
-            messageDisplay.innerText = "Erre a napra már nincs időpont";
+            messageDisplay.innerText = "Erre a napra már nincs szabad időpont";
             return;
         }
 
@@ -145,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let serviceId = serviceSelect.value;
 
         try {
-            // JAVÍTVA: Fetch az Account controllerből
+            // Fetch hívás az Account controllerre!
             let response = await fetch(`/Account/GetAvailableSlots?hairdresserId=${hairdresserId}&date=${date}&serviceId=${serviceId}`);
             let container = document.getElementById('slotsContainer');
 
@@ -157,15 +159,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     slots.forEach(slot => {
                         let btn = document.createElement('button');
                         btn.className = 'slot-btn';
-                        btn.innerText = slot.time || slot;
+
+                        // IDŐPONT FORMÁZÁSA (csak Óra:Perc maradjon)
+                        let rawTime = slot.time || slot;
+                        let displayTime = rawTime;
+
+                        if (typeof rawTime === 'string') {
+                            if (rawTime.includes('T')) {
+                                rawTime = rawTime.split('T')[1];
+                            }
+                            displayTime = rawTime.substring(0, 5); // Pl. "10:00"
+                        }
+
+                        btn.innerText = displayTime;
 
                         btn.onclick = (e) => {
                             e.preventDefault();
 
-                            // JAVÍTVA: C#-kompatibilis dátum formátum szóközökkel!
-                            const timeString = btn.innerText.trim();
-                            document.getElementById('startTimeInput').value = `${date} ${timeString}:00`;
+                            // Rejtett input értékének beállítása ISO formátumban C# számára (YYYY-MM-DDTHH:mm:00)
+                            document.getElementById('startTimeInput').value = `${date}T${displayTime}:00`;
 
+                            // Gomb engedélyezése és vizuális formázása
                             const submitBtn = document.getElementById('submitBtn');
                             submitBtn.disabled = false;
                             submitBtn.style.opacity = "1";
@@ -225,5 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Inicializálás: Ellenőrizzük, hogy kell-e már mutatni a naptárat
     checkSelectionsAndRender();
 });

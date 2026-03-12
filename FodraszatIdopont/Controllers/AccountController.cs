@@ -45,7 +45,7 @@ namespace FodraszatIdopont.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData["error_msg"] = "Hiba történt! Prbáld újra!";
+                TempData["error_msg"] = "Próbáld újra!";
                 return View(model);
             }
 
