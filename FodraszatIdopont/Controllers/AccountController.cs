@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -27,16 +28,24 @@ namespace FodraszatIdopont.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            return View( new LoginViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] //CSRF elleni védelem; CSRF-Cross-site request forgery
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string recaptchaToken)
         {
+            var isHuman = await VerifyRecaptcha(recaptchaToken);
+
+            if (!isHuman)
+            {
+                ModelState.AddModelError("", "Robot ellenőrzés sikertelen.");
+                return View(model);
+            }
+
             if (!ModelState.IsValid)
             {
-                TempData["error_msg"] = "Hiba történt! Prbáld újra!";
+                TempData["error_msg"] = "Próbáld újra!";
                 return View(model);
             }
 
@@ -55,7 +64,7 @@ namespace FodraszatIdopont.Controllers
         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
         new Claim(ClaimTypes.Name,          user.Name),
         new Claim(ClaimTypes.Email,         user.Email),
-        //new Claim(ClaimTypes.Role,          user.Role.ToString()),
+        new Claim(ClaimTypes.Role,          user.Role.ToString()),
     };
 
             var claimsIdentity = new ClaimsIdentity(
@@ -94,8 +103,16 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registration(RegisterViewModel felhasznalo)
+        public async Task<IActionResult> Registration(RegisterViewModel felhasznalo, string recaptchaToken)
         {
+            var isHuman = await VerifyRecaptcha(recaptchaToken);
+
+            if (!isHuman)
+            {
+                ModelState.AddModelError("", "Bot vagy!");
+                return View(felhasznalo);
+            }
+
             if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()
             {
@@ -111,13 +128,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-
-            LoginViewModel bejelent = new LoginViewModel()
-            {
-                Email = felhasznalo.Email,
-                Password = felhasznalo.Password
-            };
-            return await Login(bejelent);
+            return RedirectToAction("Login");
         }
 
         [Authorize]
@@ -152,30 +163,39 @@ namespace FodraszatIdopont.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAppointment(AppointmentDTO model)
         {
-            if (!ModelState.IsValid)
+            // 1) védekezés nullok ellen
+            if (model?.Appointment == null)
             {
-                var fodraszok = await _appointService.GetAllHairdressers();
-                var szolgaltatasok = await _appointService.GetAllServices();
-                model.Hairdressers = fodraszok.Data;
-                model.Services = szolgaltatasok.Data;
-                return View("MAAppointment", model);
+                TempData["error_msg"] = "Hibás adatok érkeztek.";
+                return RedirectToAction("MAAppointment");
             }
 
-            var service = model.Services.FirstOrDefault(s => s.ServiceId == model.Appointment.ServiceId);
+            // 2) Kötelező mezők ellenőrzése (StartTime a slot választásból jön)
+            if (model.Appointment.HairdresserId <= 0 || model.Appointment.ServiceId <= 0 || model.Appointment.StartTime == default)
+            {
+                TempData["error_msg"] = "Válassz fodrászt, szolgáltatást és időpontot!";
+                return RedirectToAction("MAAppointment");
+            }
+
+            // 3) Service betöltése DB-ből (NE model.Services-ből)
+            var service = await _appointService.GetServiceById(model.Appointment.ServiceId);
+
             if (service == null)
             {
-                TempData["error_msg"] = "Érvénytelen szolgáltatás!";
-                return View("MAAppointment", model);
+                TempData["error_msg"] = "A választott szolgáltatás nem található.";
+                return RedirectToAction("MAAppointment");
             }
+
 
             var appointment = new Appointment
             {
                 UserId = model.Appointment.UserId,
                 HairdresserId = model.Appointment.HairdresserId,
                 StartTime = model.Appointment.StartTime,
-                EndTime = model.Appointment.StartTime.AddMinutes(service.DurationInMinute),
-                ServiceId = service.ServiceId,
-                AppointmentStatus = AppointmentStatus.Booked
+                EndTime = model.Appointment.StartTime.AddMinutes(service.Data.DurationInMinute),
+                ServiceId = service.Data.ServiceId,
+                AppointmentStatus = AppointmentStatus.Booked,
+                Notes = model.Appointment.Notes ?? null
             };
 
             var result = await _appointService.CreateAppointment(appointment);
@@ -195,7 +215,9 @@ namespace FodraszatIdopont.Controllers
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
             var datum = DateOnly.Parse(date);
             var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
-            return Json(result.Data); 
+            if (!result.Success)
+                return Json(result.Error);
+            return Json(result.Data);
         }
 
         [HttpGet]
@@ -205,6 +227,24 @@ namespace FodraszatIdopont.Controllers
             var vege = DateOnly.Parse(end);
             var result = await _appointService.GetBookedDays(hairdresserId, kezdet, vege);
             return Json(result.Data);
+        }
+
+
+        public async Task<bool> VerifyRecaptcha(string token)
+        {
+            var secret = "6LcZrYUsAAAAAKmqf7smog4u8Uw_M7b65sA90RDK";
+
+            using var client = new HttpClient();
+
+            var response = await client.PostAsync(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={token}",
+                null);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+            return result.success == "true" && result.score >= 0.5;
         }
     }
 }

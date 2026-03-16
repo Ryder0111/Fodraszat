@@ -1,68 +1,88 @@
-﻿@model FodraszatIdopont.Models.ViewModels.RegisterViewModel;
+﻿@model FodraszatIdopont.Models.ViewModels.RegisterViewModel
 
-<h1 class="display-4 fw-bold text-center">Regisztráció</h1>
-<div class="fs-5 text-center">Hozzon létre fiókot, hogy egyszerűbben foglalhasson időpontot!</div>
-
-<form asp-action="Registration" method="post" class="w-50 mx-auto border border-3 rounded shadow p-4 mt-4">
-    @{
-        Html.AntiForgeryToken();
-        if (TempData["error_msg"] != null)
-        {
-            <div class="alert alert-danger text-center">@TempData["error_msg"]</div>
-        }
-    
+@{
+    ViewData["Title"] = "Regisztráció";
 }
-    <div class="form-group row mb-3 mt-3">
-        <label class="col-sm-2 col-form-label">Teljes név</label>
-        <div class="col-sm-10">
-            <input type="text" asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Példa Béla">
+
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+<div class="container py-5 mt-4">
+    <div class="text-center mb-5">
+        <h2>Regisztráció</h2>
+        <p style="color: var(--text-muted); font-size: 1.2rem;">Hozz létre egy fiókot az időpontfoglaláshoz.</p>
+    </div>
+
+    <form asp-action="Register" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 500px; border-top: 5px solid var(--primary-color);">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Teljes Név</label>
+            <input type="text" asp-for="Name" class="form-control form-control-lg @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Kovács János" style="border-color: #eee;">
             <span asp-validation-for="Name" class="invalid-feedback"></span>
         </div>
-    </div>
-    <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label">Email cím</label>
-        <div class="col-sm-10">
-            <input type="text" asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com">
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Email cím</label>
+            <input type="text" asp-for="Email" class="form-control form-control-lg @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com" style="border-color: #eee;">
             <span asp-validation-for="Email" class="invalid-feedback"></span>
         </div>
-    </div>
-    <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label">Jelszó</label>
-        <div class="col-sm-10">
-            <input type="password" asp-for="Password" class="form-control @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó">
-            <span asp-validation-for="Password" class="invalid-feedback"></span>
-        </div>
-    </div>
-    <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label">Jelszó mégegyszer</label>
-        <div class="col-sm-10">
-            <input type="password" asp-for="ConfirmPassword" class="form-control @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Jelszó">
-            <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Nemed</label>
-        <div class="col-sm-10">
-            <div class="form-check">
-                <input class="form-check-input" asp-for="Sex" type="radio" value="Male" checked>
-                <label class="form-check-label">
-                    Férfi
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" asp-for="Sex" type="radio" value="Famale">
-                <label class="form-check-label">
-                    Nő
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" asp-for="Sex" type="radio" value="None">
-                <label class="form-check-label">
-                    Egyéb
-                </label>
-            </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Nem</label>
+            <select asp-for="Sex" class="form-select form-select-lg @(ViewData.ModelState["Sex"]?.Errors.Count > 0 ? "is-invalid" : "")" style="border-color: #eee;">
+                <option value="None" disabled selected>Válassz...</option>
+                <option value="Male">Férfi</option>
+                <option value="Famale">Nő</option>
+            </select>
             <span asp-validation-for="Sex" class="invalid-feedback"></span>
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary w-100 mt-3">Regisztráció</button>
-</form>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Jelszó</label>
+            <input type="password" asp-for="Password" class="form-control form-control-lg @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="••••••••" style="border-color: #eee;">
+            <span asp-validation-for="Password" class="invalid-feedback"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Jelszó újra</label>
+            <input type="password" asp-for="ConfirmPassword" class="form-control form-control-lg @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="••••••••" style="border-color: #eee;">
+            <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
+        </div>
+
+        <input type="hidden" id="recaptchaToken" name="recaptchaToken" />
+
+        <button type="submit" class="btn-primary-custom w-100 border-0 mb-3 mt-2">Regisztráció</button>
+
+        <div class="text-center mt-3">
+            <span class="text-muted">Már van fiókod?</span>
+            <a asp-action="Login" class="text-decoration-none fw-bold" style="color: var(--primary-color);">Lépj be itt!</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        grecaptcha.ready(function () {
+            // Itt az action-t 'register'-re állítottam a statisztikák miatt
+            grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'register' }).then(function (token) {
+                document.getElementById("recaptchaToken").value = token;
+                e.target.submit();
+            });
+        });
+    });
+</script>

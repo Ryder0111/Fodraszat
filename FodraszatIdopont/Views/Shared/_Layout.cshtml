@@ -8,32 +8,48 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FodraszatIdopont.styles.css" asp-append-version="true" />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/css/theme-basic.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-
-    <script src="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/bundle.js"></script>
+    <style>
+        #timeSlotsContainer {
+            min-height: 220px;
+        }
+    </style>
 </head>
 <body>
+    
     <header>
-        <nav id="mainNavbar" class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3 fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-custom navbar-dark fixed-top">
             <div class="container-fluid">
                 <img src="~/fodraszikon.png" class="navbar-brand-img" alt="Wild Cut logo" style="height: 90px;" />
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Wild Cut</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <!-- Baloldali menük -->
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item mx-2">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <!-- Jobboldali menük -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Főoldal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="szolgaltatasok">Szolgáltatások</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="galeria">Galéria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="kapcsolat">Kapcsolat</a>
+                        </li>
+                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Admin.ToString()))
+                        {
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" asp-controller="Admin" asp-action="Index">Adminfelület</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
+                        {
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Index">Fodrászfelület</a>
+                            </li>
+                        }
                         <li class="nav-item mx-2">
                             <a class="nav-link" asp-controller="Account" asp-action="MAAppointment">Időpontfoglalás</a>
                         </li>
@@ -84,14 +100,18 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2025 - FodraszatIdopont - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="text-center" style="color: #d1c5b4; font-size: 0.85rem;">
+                &copy; 2026 - Wild Cut Fodrászat. Minden jog fenntartva. <br />
+                <span style="opacity: 0.7;">Készítette: Nagy Gábor és Belák Marcell</span>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

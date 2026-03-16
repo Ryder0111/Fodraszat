@@ -21,7 +21,7 @@ namespace FodraszatIdopont.Services
             _Userrepo = repo3;
             _CurrentUser = currentUser;
         }
-
+        
         public async Task<Results<List<User>>> GetAllHairdressers()
         {
             var fodraszok = await _Userrepo.GetAllHairdresser();
@@ -135,65 +135,112 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<List<DateTime>>> GetAvailableSlots(int hairdresserId, DateOnly date, int serviceDurationInMinutes)
         {
-            var mNap = date.DayOfWeek;
-            if (mNap == DayOfWeek.Sunday)
+            if (date.DayOfWeek == DayOfWeek.Sunday)
                 return Results<List<DateTime>>.Fail("Vasárnap zárva vagyunk.");
 
-            var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId, date);
-            idopontok = idopontok.OrderBy(x => x.StartTime).ToList();
+            DateOnly cDay = DateOnly.FromDateTime(DateTime.Now);
+            if (date<cDay)
+                return Results<List<DateTime>>.Fail("Erre az időpontra már nem lehet foglalni!.");
 
-            var szabadIdopontok = new List<DateTime>();
-            var nyitas = date.ToDateTime(new TimeOnly(10, 0));
-            var zaras = date.ToDateTime(new TimeOnly(18, 0));
+            var appointments = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId, date);
+            var ordered = appointments.Where(a => a.AppointmentStatus != AppointmentStatus.Cancelled)
+                                      .OrderBy(a => a.StartTime)
+                                      .ToList();
 
-            while (nyitas + TimeSpan.FromMinutes(serviceDurationInMinutes) <= zaras)
+            var slots = new List<DateTime>();
+            DateTime current;
+            if(cDay == date)
             {
-                bool szabad = true;
+                current = date.ToDateTime(new TimeOnly(DateTime.Now.Hour+1, 0));
+            }
+            else
+            {
+                current = date.ToDateTime(new TimeOnly(10, 0));
+            }
+            var closing = date.ToDateTime(new TimeOnly(18, 0));
 
-                var proposedEnd = nyitas + TimeSpan.FromMinutes(serviceDurationInMinutes);
+            while (current + TimeSpan.FromMinutes(serviceDurationInMinutes) <= closing)
+            {
+                bool conflict = false;
+                var proposedEnd = current + TimeSpan.FromMinutes(serviceDurationInMinutes);
 
-                foreach (var app in idopontok)
+                foreach (var app in ordered)
                 {
-                    if (app.AppointmentStatus != AppointmentStatus.Cancelled && nyitas < app.EndTime && proposedEnd > app.StartTime)
+                    if (current < app.EndTime && proposedEnd > app.StartTime)
                     {
-                        szabad = false;
-                        nyitas = app.EndTime;
+                        conflict = true;
+                        current = app.EndTime;  // ugrás a következő szabadra
                         break;
                     }
                 }
 
-                if (szabad)
+                if (!conflict)
                 {
-                    szabadIdopontok.Add(nyitas);
-                    nyitas += TimeSpan.FromHours(1);
+                    slots.Add(current);
+                    current += TimeSpan.FromMinutes(60);
                 }
             }
 
-            if (szabadIdopontok.Count == 0)
-                return Results<List<DateTime>>.Fail("Nincs elérhető időpont ezen a napon.");
-
-            return Results<List<DateTime>>.Ok(szabadIdopontok);
+            return slots.Any()
+                ? Results<List<DateTime>>.Ok(slots)
+                : Results<List<DateTime>>.Fail("Nincs szabad időpont.");
         }
 
         public async Task<Results<List<DateOnly>>> GetBookedDays(int hairdresserId, DateOnly startDate, DateOnly endDate)
         {
-            var foglaltDatom = new List<DateOnly>();
-            var ido = startDate;
+            var bookedDays = new List<DateOnly>();
+            var currentDate = startDate;
 
-            while (ido <= endDate)
+            while (currentDate <= endDate)
             {
-                if (ido.DayOfWeek >= DayOfWeek.Monday && ido.DayOfWeek <= DayOfWeek.Saturday)
+                if (currentDate.DayOfWeek >= DayOfWeek.Monday && currentDate.DayOfWeek <= DayOfWeek.Saturday)
                 {
-                    var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId,ido);
-                    if (idopontok.Any(a => a.AppointmentStatus != AppointmentStatus.Cancelled))
+                    var appointments = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId, currentDate);
+
+                    if (appointments == null || !appointments.Any())
                     {
-                        foglaltDatom.Add(ido);
+                        currentDate = currentDate.AddDays(1);
+                        continue;
+                    }
+
+                    var ordered = appointments
+                        .Where(a => a.AppointmentStatus != AppointmentStatus.Cancelled)
+                        .OrderBy(a => a.StartTime)
+                        .ToList();
+
+                    if (IsFullyBooked(ordered, 10, 18))
+                    {
+                        bookedDays.Add(currentDate);
                     }
                 }
-                ido = ido.AddDays(1);
+
+                currentDate = currentDate.AddDays(1);
             }
 
-            return Results<List<DateOnly>>.Ok(foglaltDatom);
+            return Results<List<DateOnly>>.Ok(bookedDays);
+        }
+
+        // Segédfüggvény: ellenőrzi, hogy az adott nap teljesen foglalt-e
+        private bool IsFullyBooked(List<Appointment> apps, int startHour, int endHour)
+        {
+            if (apps == null || !apps.Any()) return false;
+
+            var start = new TimeOnly(startHour, 0);
+            var end = new TimeOnly(endHour, 0);
+            var current = start;
+
+            foreach (var app in apps)
+            {
+                var appStart = TimeOnly.FromDateTime(app.StartTime);
+                var appEnd = TimeOnly.FromDateTime(app.EndTime);
+
+                if (current < appStart && appStart - current >= TimeSpan.FromMinutes(45))
+                    return false;
+
+                current = appEnd > current ? appEnd : current;
+            }
+
+            return end - current < TimeSpan.FromMinutes(45);
         }
 
         public async Task<Results<Service>> GetServiceById(int serviceId)

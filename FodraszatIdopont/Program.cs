@@ -51,7 +51,10 @@ namespace FodraszatIdopont
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<BarberDbContext>();
+                db.Database.EnsureDeleted();
                 db.Database.Migrate();
+
+                DbSeeder.Seed(db);
             }
 
             // Configure the HTTP request pipeline.

@@ -1,21 +1,30 @@
-using System.Diagnostics;
+using Azure;
 using FodraszatIdopont.Models;
+using FodraszatIdopont.Services;
+using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IAppointmentService _appointmentService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IAppointmentService appointmentService)
         {
             _logger = logger;
+            _appointmentService = appointmentService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var response = await _appointmentService.GetAllServices();
+
+            var services = response.Data;
+            return View(services);
         }
 
         public IActionResult Privacy()

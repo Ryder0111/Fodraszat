@@ -1,32 +1,84 @@
+/* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* --- WILD CUT GLOBÁLIS VÁLTOZÓK --- */
+:root {
+    --primary-color: #4A3018;
+    --accent-color: #B89151;
+    --bg-light: #FDFBF7;
+    --text-dark: #2C2C2C;
+    --text-muted: #666666;
+    --overlay-color: rgba(0, 0, 0, 0.6);
 }
 
 body {
-    margin-bottom: 60px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    padding-top: 85px;
 }
 
+/* --- MAIN ÉS LÁBLÉC TÁVOLSÁG (EZ OLDJA MEG A FORM-FOOTER ÉRINTKEZÉST) --- */
+main[role="main"] {
+    /* Ha túl rövid lenne az oldal (pl. csak egy kis form van rajta), akkor is lenyomja a láblécet az aljára */
+    min-height: calc(100vh - 250px);
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* --- NAVBAR BEÁLLÍTÁSOK --- */
 #mainNavbar {
     will-change: transform;
 }
 
-#pageContent {
-    padding-top: 4rem; 
+.navbar-custom {
+    background-color: var(--primary-color) !important;
+    padding: 10px 0;
+    will-change: transform;
+}
+
+    .navbar-custom .navbar-brand {
+        color: var(--accent-color) !important;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .navbar-custom .nav-link {
+        color: var(--bg-light) !important;
+        font-weight: 500;
+        margin-right: 15px;
+        transition: 0.3s;
+    }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+    .navbar-custom .navbar-toggler {
+        border-color: var(--accent-color);
+    }
+
+    .navbar-custom .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23B89151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+.navbar-hidden {
+    transform: translateY(-100%);
 }
 
 @media (max-width: 576px) {
@@ -36,6 +88,475 @@ body {
 }
 
 .navbar-brand-img {
-    height: 6.2rem; 
+    height: 6.2rem;
     width: auto;
+}
+
+/* --- LÁBLÉC (FOOTER) --- */
+.footer {
+    position: static !important; /* <-- EZ A KULCS! Megöli a gyári ragasztást */
+    width: 100%;
+    line-height: normal;
+    padding: 0;
+    background-color: var(--primary-color);
+    color: var(--bg-light);
+    border-top: 3px solid var(--accent-color);
+}
+
+.footer-link {
+    color: var(--bg-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .footer-link:hover {
+        color: var(--accent-color);
+    }
+
+/* --- CÍMSOROK (H2) ÉS ALÁHÚZÁSOK --- */
+h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+    h2::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background-color: var(--accent-color);
+        bottom: -10px;
+        left: 25%;
+        border-radius: 2px;
+    }
+
+    h2.m-0::after {
+        display: none !important;
+    }
+/* A Vezérlõpultoknál nincs vonal */
+
+/* --- ADMIN / FODRÁSZ SIDEBAR (OFFCANVAS) FIXÁLÁSA --- */
+.offcanvas-start {
+    width: 280px;
+}
+
+#offcanvasScrolling {
+    position: fixed !important;
+    top: 85px !important;
+    bottom: 0 !important;
+    height: calc(100vh - 85px) !important;
+    max-height: calc(100vh - 85px) !important;
+    display: flex !important;
+    flex-direction: column;
+}
+
+    #offcanvasScrolling .offcanvas-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-bottom: 30px;
+    }
+
+/* --- GOMBOK --- */
+.btn-primary-custom {
+    background-color: var(--accent-color);
+    color: white !important;
+    padding: 15px 35px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+    .btn-primary-custom:hover {
+        background-color: white;
+        color: var(--primary-color) !important;
+    }
+
+/* --- FÕOLDAL: HERO --- */
+.hero-container {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    height: calc(100vh - 85px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../lib/hero-bg.jpg) center/cover;
+    filter: blur(10px);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+    .hero-background::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--overlay-color);
+        z-index: -1;
+    }
+
+.hero-content {
+    text-align: center;
+    color: white;
+    max-width: 900px;
+    padding: 30px;
+    z-index: 1;
+}
+
+    .hero-content h1 {
+        font-size: 4rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .hero-content p {
+        font-size: 1.6rem;
+        margin-bottom: 50px;
+    }
+
+/* --- FÕOLDAL: SZOLGÁLTATÁSOK & KÁRTYÁK --- */
+.features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 100px 20px;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    width: 230px;
+}
+
+.feature-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(184, 145, 81, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-circle {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+}
+
+.services-section {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.services-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    max-width: 1300px;
+    margin: 50px auto 0;
+}
+
+.service-card {
+    background: white;
+    border: 1px solid #eee;
+    border-top: 5px solid var(--primary-color);
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(74, 48, 24, 0.15);
+    }
+
+    .service-card h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .service-card .price {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-top: 20px;
+        display: block;
+    }
+
+/* --- FÕOLDAL: KAPCSOLAT --- */
+.contact-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 100px 20px 80px 20px;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: var(--bg-light);
+    margin-bottom: 0 !important;
+}
+
+    .contact-section h2 {
+        color: var(--accent-color);
+    }
+
+        .contact-section h2::after {
+            background-color: var(--bg-light);
+        }
+
+    .contact-section p {
+        color: #d1c5b4;
+    }
+
+.contact-container {
+    display: flex;
+    gap: 60px;
+    max-width: 1300px;
+    margin: 80px auto 0;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.contact-info, .map-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.contact-info {
+    background-color: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(184, 145, 81, 0.3);
+    text-align: left;
+}
+
+    .contact-info h3 {
+        color: var(--accent-color);
+        border-bottom: 2px solid rgba(184, 145, 81, 0.3);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .contact-info p strong {
+        color: var(--accent-color);
+    }
+
+/* --- FÕOLDAL: GALÉRIA --- */
+.gallery-section {
+    padding: 100px 20px;
+    text-align: center;
+    background-color: white;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    justify-content: center;
+    gap: 20px;
+    max-width: 1300px;
+    margin: 50px auto 0;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+/* --- FOGLALÁS: NAPTÁR --- */
+.custom-calendar {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+    .custom-calendar th {
+        text-align: center;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .custom-calendar td {
+        text-align: center;
+        padding: 15px 5px;
+        border: 1px solid #eee;
+        vertical-align: top;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .custom-calendar td:hover:not(.empty-day) {
+            background-color: #fcfbf9;
+        }
+
+        .custom-calendar td.empty-day {
+            background-color: transparent;
+            border: none;
+            cursor: default;
+        }
+
+.day-number {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 50%;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.custom-calendar td:hover:not(.empty-day) .day-number {
+    background-color: rgba(184, 145, 81, 0.2);
+}
+
+.sunday-day .day-number {
+    color: #ccc;
+}
+
+.booked-day .day-number {
+    background-color: #dc3545;
+    color: white;
+}
+
+.booked-day:hover .day-number {
+    background-color: #c82333;
+}
+
+.today .day-number {
+    border: 2px solid var(--accent-color);
+}
+
+.slots-row {
+    background-color: #fdfbf7;
+    border-bottom: 3px solid var(--accent-color);
+    animation: slideDown 0.3s ease-out;
+}
+
+.slots-container {
+    padding: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.slot-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+    .slot-btn:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- LEBEGÕ ÉRTESÍTÉSEK (TOAST) --- */
+.floating-alert {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    min-width: 350px;
+    max-width: 90%;
+    text-align: left;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    animation: slideDownAlert 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+    .floating-alert.alert-success {
+        background-color: #f8fff9;
+        color: #155724;
+    }
+
+    .floating-alert.alert-danger {
+        background-color: #fff8f8;
+        color: #721c24;
+    }
+
+@keyframes slideDownAlert {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+
+    100% {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+/* --- RESZPONZÍV (MOBIL) NÉZET --- */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+    }
+
+    .contact-container {
+        text-align: center;
+        gap: 30px;
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+
+        .contact-info h3 {
+            border-bottom: none;
+        }
 }

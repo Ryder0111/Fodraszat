@@ -1,16 +1,115 @@
-﻿@{
+﻿@model List<FodraszatIdopont.Models.Entities.Service>
+@{
     ViewData["Title"] = "Főoldal";
-    if (TempData["error_msg"] != null)
-    {
-        <div class="alert alert-danger">@TempData["error_msg"]</div>
-    }
-    if (TempData["msg"] != null)
-    {
-        <div class="alert alert-success w-50 text-center mx-auto">@TempData["msg"]</div>
-    }
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />asd</p>
-</div>
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+<section class="hero-container">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h1>Stílus, ami rólad szól.</h1>
+        <p>Professzionális fodrászat, ahol a szépség és elegancia találkozik</p>
+        <a asp-controller="Account" asp-action="MAAppointment" class="btn-primary-custom">Időpontfoglalás</a>
+    </div>
+</section>
+
+<section class="features-grid">
+    <div class="feature-item">
+        <img src="~/lib/bemutat-1.jpg" class="feature-circle" alt="Professzionális Fodrászok">
+        <h3>Professzionális Fodrászok</h3>
+        <p>Tapasztalt szakemberek, akik szenvedélyükké tették a hajápolást.</p>
+    </div>
+    <div class="feature-item">
+        <img src="~/lib/bemutat-2.jpg" class="feature-circle" alt="Pihentető Atmoszféra">
+        <h3>Pihentető Atmoszféra</h3>
+        <p>Csak a legjobb minőségű hajápoló termékeket használjuk.</p>
+    </div>
+    <div class="feature-item">
+        <img src="~/lib/bemutat-3.jpg" class="feature-circle" alt="Személyre Szabott Konzultáció">
+        <h3>Személyre Szabott Konzultáció</h3>
+        <p>Minden vendégünkre egyéni figyelmet fordítunk.</p>
+    </div>
+    <div class="feature-item">
+        <img src="~/lib/bemutat-4.jpg" class="feature-circle" alt="Prémium Termékek">
+        <h3>Prémium Termékek</h3>
+        <p>Relaxáljon nálunk luxus körülmények között.</p>
+    </div>
+</section>
+
+<section id="szolgaltatasok" class="services-section">
+    <h2>Szolgáltatásaink</h2>
+    <div class="services-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var service in Model.Where(s => s.isActive))
+            {
+                <div class="service-card">
+                    <h3>@service.Name</h3>
+                    <div class="duration">⏱ @service.DurationInMinute perc</div>
+                    <div class="price">@service.Price Ft-tól</div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Jelenleg nincsenek aktív szolgáltatások feltöltve.</p>
+        }
+    </div>
+</section>
+
+<section id="galeria" class="gallery-section">
+    <h2>Galéria</h2>
+    <p>Tekintse meg munkáinkat és szalonunk atmoszféráját</p>
+    <div class="gallery-grid">
+        <img src="~/lib/galeria-1.jpg" class="gallery-item" alt="Galéria 1">
+        <img src="~/lib/galeria-2.jpg" class="gallery-item" alt="Galéria 2">
+        <img src="~/lib/galeria-3.jpg" class="gallery-item" alt="Galéria 3">
+        <img src="~/lib/galeria-4.jpg" class="gallery-item" alt="Galéria 4">
+        <img src="~/lib/galeria-5.jpg" class="gallery-item" alt="Galéria 5">
+        <img src="~/lib/galeria-6.jpg" class="gallery-item" alt="Galéria 6">
+    </div>
+</section>
+
+<section id="kapcsolat" class="contact-section">
+    <h2>Kapcsolat</h2>
+    <p>Várjuk szeretettel szalonunkban!</p>
+
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Elérhetőségeink</h3>
+            <p>📍 <strong>Cím:</strong> 3000 Hatvan, Kazinczy u. 3.</p>
+            <p>📞 <strong>Telefon:</strong> +36 12 345 6789</p>
+            <p>✉️ <strong>Email:</strong> info@wildcut.hu</p>
+            <br>
+            <h3>Nyitvatartás</h3>
+            <p>Hétfő - Péntek: 10:00 - 18:00</p>
+            <p>Szombat: 10:00 - 18:00</p>
+            <p>Vasárnap: Zárva</p>
+        </div>
+
+        <div class="map-container">
+            <iframe src="https://maps.google.com/maps?q=3000%20Hatvan,%20Kazinczy%20u.%203.&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="350"
+                    style="border:0; border-radius: 8px;"
+                    allowfullscreen=""
+                    loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>

@@ -22,7 +22,7 @@ namespace FodraszatIdopont.Models.Entities
 
         public AppointmentStatus AppointmentStatus { get; set; }
 
-
+        public string? Notes { get; set; }
 
     }
 }
