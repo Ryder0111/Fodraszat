@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260309123201_ClosedDays")]
-    partial class ClosedDays
+    [Migration("20260316124410_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace FodraszatIdopont.Migrations
 
                     b.Property<int>("HairdresserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -102,48 +105,6 @@ namespace FodraszatIdopont.Migrations
                     b.HasKey("ServiceId");
 
                     b.ToTable("Services");
-
-                    b.HasData(
-                        new
-                        {
-                            ServiceId = 1,
-                            DurationInMinute = 60,
-                            Name = "Női hajvágás",
-                            Price = 6000,
-                            isActive = true
-                        },
-                        new
-                        {
-                            ServiceId = 2,
-                            DurationInMinute = 45,
-                            Name = "Férfi hajvágás",
-                            Price = 4000,
-                            isActive = true
-                        },
-                        new
-                        {
-                            ServiceId = 3,
-                            DurationInMinute = 120,
-                            Name = "Hajfestés",
-                            Price = 15000,
-                            isActive = true
-                        },
-                        new
-                        {
-                            ServiceId = 4,
-                            DurationInMinute = 90,
-                            Name = "Melírozás",
-                            Price = 12000,
-                            isActive = true
-                        },
-                        new
-                        {
-                            ServiceId = 5,
-                            DurationInMinute = 60,
-                            Name = "Frizura készítés",
-                            Price = 7000,
-                            isActive = true
-                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.User", b =>
@@ -178,53 +139,6 @@ namespace FodraszatIdopont.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "admin",
-                            Name = "admin",
-                            PasswordHash = "100000.G5gQ0f7G0Fh3+1Kf0hkLjw==.5qypMaVTdhsZZYKAb7eE5LBfl65avM9Hd/QGLnREZIs=",
-                            Role = 4,
-                            Sex = 0
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Email = "anna.kovacs@gmail.com",
-                            Name = "Anna Kovács",
-                            PasswordHash = "100000.7tZ2JiOK/sadUGITAQsL3Q==.dFpjOFCDjJ6EsBL4NCVs4ei8FmVnZkubH5NmFQnMINY=",
-                            Role = 1,
-                            Sex = 2
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Email = "peter.nagy@gmail.com",
-                            Name = "Péter Nagy",
-                            PasswordHash = "100000.kVOj5yPdgSGPkPaDEFQXJQ==.DITK5u53+F2Ki5TW5gzMSdbpuGlr0h7UPDPChbmB5Xc=",
-                            Role = 1,
-                            Sex = 1
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            Email = "gabor.fodrasz@gmail.com",
-                            Name = "Nagy Gábor",
-                            PasswordHash = "100000.W+9sttCKklLVjSIOvyAEoQ==.wnH8u14ixrhXm17GizwWChxZaSAsJDS1Htgmzz8jCBI=",
-                            Role = 2,
-                            Sex = 2
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            Email = "marcell.fodrasz@gmail.com",
-                            Name = "Belák Marcell",
-                            PasswordHash = "100000.WwlDY/pWqZDuFZPeQYERCQ==.ejDdWOE9lEUIpLf6+IusAcRCiqRxXy92/tbV5s/4Hss=",
-                            Role = 2,
-                            Sex = 1
-                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.Appointment", b =>

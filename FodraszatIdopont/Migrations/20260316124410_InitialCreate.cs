@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace FodraszatIdopont.Migrations
 {
     /// <inheritdoc />
@@ -13,6 +11,19 @@ namespace FodraszatIdopont.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ClosedDays",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClosedDays", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
@@ -83,50 +94,6 @@ namespace FodraszatIdopont.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Services",
-                columns: new[] { "ServiceId", "DurationInMinute", "Name", "Price", "isActive" },
-                values: new object[,]
-                {
-                    { 1, 60, "Női hajvágás", 6000, true },
-                    { 2, 45, "Férfi hajvágás", 4000, true },
-                    { 3, 120, "Hajfestés", 15000, true },
-                    { 4, 90, "Melírozás", 12000, true },
-                    { 5, 60, "Frizura készítés", 7000, true }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
-                values: new object[,]
-                {
-                    { 1, "admin", "admin", "100000.kmOgVfl/e2lHs/EdMt2Pxw==.uqxHBK9PQlbu684oDDsGSWqP63n3GvKMeroXeUNJs3s=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.JIUgI91MjZ3Cp/vjYKEKhw==.7fSqAHmb5milZbq37OwFEUA1rfUPzFEW5DUCV6Z5C58=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.FBxsXu16txCJJATRo5M5jw==.jkyW9Uvw82MPuy1TDWoc4RNN9UHHo9m52DZnNd2AiTM=", 1, 1 },
-                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.6+r2kw/9VIChCTCfZE8SFg==.yisQSwmUsaAY7kJBy1riMOCP+vc9xVduKFPsvoydkVo=", 2, 2 },
-                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.6jsSREiuuyTlxYXFstXBFQ==.NvZUqIi4IcjFgQmvsoDBkekxc24q1UTqMi5oPCTooao=", 2, 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Appointments",
-                columns: new[] { "AppointmentId", "AppointmentStatus", "EndTime", "HairdresserId", "Notes", "ServiceId", "StartTime", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 0, new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified), 4, "Férfi hajvágás", 2, new DateTime(2026, 3, 5, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 2, 0, new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), 4, "Női hajvágás", 1, new DateTime(2026, 3, 5, 10, 45, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 3, 0, new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified), 4, "Hajfestés", 3, new DateTime(2026, 3, 5, 11, 45, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 4, 0, new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified), 4, "Melírozás", 4, new DateTime(2026, 3, 5, 13, 45, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 5, 0, new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified), 4, "Frizura készítés", 5, new DateTime(2026, 3, 5, 15, 15, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 6, 0, new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified), 4, "Férfi hajvágás", 2, new DateTime(2026, 3, 5, 16, 15, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 7, 0, new DateTime(2026, 3, 5, 18, 0, 0, 0, DateTimeKind.Unspecified), 4, "Női hajvágás", 1, new DateTime(2026, 3, 5, 17, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 8, 0, new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified), 5, "Hajfestés délután", 3, new DateTime(2026, 3, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 9, 0, new DateTime(2026, 3, 10, 17, 30, 0, 0, DateTimeKind.Unspecified), 5, "Melírozás", 4, new DateTime(2026, 3, 10, 16, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 10, 0, new DateTime(2026, 3, 20, 12, 0, 0, 0, DateTimeKind.Unspecified), 4, "Reggeli hajfestés", 3, new DateTime(2026, 3, 20, 10, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 11, 0, new DateTime(2026, 3, 20, 14, 0, 0, 0, DateTimeKind.Unspecified), 4, "Délutáni női hajvágás", 1, new DateTime(2026, 3, 20, 13, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 12, 0, new DateTime(2026, 3, 15, 11, 0, 0, 0, DateTimeKind.Unspecified), 5, "Frizura reggel", 5, new DateTime(2026, 3, 15, 10, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 13, 0, new DateTime(2026, 3, 15, 14, 45, 0, 0, DateTimeKind.Unspecified), 5, "Férfi hajvágás délután", 2, new DateTime(2026, 3, 15, 14, 0, 0, 0, DateTimeKind.Unspecified), 2 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_HairdresserId",
                 table: "Appointments",
@@ -154,6 +121,9 @@ namespace FodraszatIdopont.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "ClosedDays");
 
             migrationBuilder.DropTable(
                 name: "Services");
