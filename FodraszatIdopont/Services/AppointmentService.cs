@@ -25,7 +25,7 @@ namespace FodraszatIdopont.Services
         public async Task<Results<List<User>>> GetAllHairdressers()
         {
             var fodraszok = await _Userrepo.GetAllHairdresser();
-            if (fodraszok == null)
+            if (!fodraszok.Any())
             {
                 return Results<List<User>>.Fail("Még nincsenek fodrászok!");
             }

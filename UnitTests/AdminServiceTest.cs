@@ -1,0 +1,329 @@
+using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
+using FodraszatIdopont.Repositories.Interfaces;
+using FodraszatIdopont.Services;
+using FodraszatIdopont.Services.Interface;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UnitTests
+{
+    internal class AdminServiceTest
+    {
+        public class CreateServiceTests 
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private IAdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService(
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task CreateService_ShouldFail_WhenNameAlreadyExists()
+            {
+                _mockServiceRepo.Setup(s => s.ExistsByName("teszt")).ReturnsAsync(true);
+
+                var result = await _service.CreateService(
+                    new Service
+                    {
+                        Name = "teszt",
+                        DurationInMinute = 30,
+                        Price = 3000
+                    });
+
+                Assert.That(result.Success, Is.False);
+
+                _mockServiceRepo.Verify(e => e.ExistsByName("teszt"), Times.Once);
+                _mockServiceRepo.Verify(e => e.Create(It.IsAny<Service>()), Times.Never);
+            }
+
+            [Test]
+            public async Task CreateService_ShouldCreateService_WhenNameIsUnique()
+            {
+                _mockServiceRepo.Setup(s => s.ExistsByName("teszt")).ReturnsAsync(false);
+
+                var result = await _service.CreateService(
+                    new Service
+                    {
+                        Name = "teszt",
+                        DurationInMinute = 30,
+                        Price = 3000
+                    });
+
+                Assert.That(result.Success, Is.True);
+
+                _mockServiceRepo.Verify(e => e.ExistsByName("teszt"), Times.Once);
+                _mockServiceRepo.Verify(e => e.Create(It.IsAny<Service>()), Times.Once);
+            }
+
+            [Test]
+            public async Task CreateService_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockServiceRepo.Setup(s => s.ExistsByName("teszt")).ReturnsAsync(false);
+
+                _mockServiceRepo
+                    .Setup(s => s.Create(It.IsAny<Service>()))
+                    .ThrowsAsync(new Exception("DB hiba"));
+
+                Assert.ThrowsAsync<Exception>(async () =>
+                    await _service.CreateService(new Service
+                    {
+                        Name = "teszt",
+                        DurationInMinute = 30,
+                        Price = 3000
+                    })
+                );
+            }
+        }
+
+        public class PromoteToHairdresserTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private IAdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService(
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task PromoteToHairdresser_ShouldFail_WhenUserDoesNotExist()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync((User?)null);
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task PromoteToHairdresser_ShouldFail_WhenUserAlreadyHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User
+                    {
+                        Role = FodraszatIdopont.Models.Enums.UserRole.Hairdresser,
+                        Email = "teszt@gmail.com"
+                    });
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task ShouldPromoteUser_WhenUserIsValid()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = FodraszatIdopont.Models.Enums.UserRole.User });
+
+                var result = await _service.PromoteToHairdresser("teszt");
+
+                Assert.That(result.Success, Is.True);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Once);
+            }
+
+            [Test]
+            public async Task PromoteToHairdresser_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(new User { Role = UserRole.User });
+
+                _mockUserRepo.Setup(u => u.Update(It.IsAny<User>())).ThrowsAsync(new Exception("DB hiba"));
+
+                Assert.ThrowsAsync<Exception>(async () => await _service.PromoteToHairdresser("teszt"));
+            }
+        }
+
+        public class RemoveHairdresserTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private IAdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService(
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldFail_WhenUserDoesNotExist()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync((User?)null);
+
+                var result = await _service.RemoveHairdresserRole("teszt");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldFail_WhenUserIsNotHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt@gmail.com")).ReturnsAsync(
+                    new User 
+                        { Role = UserRole.User,
+                        Email = "teszt@gmail.com"});
+
+                var result = await _service.RemoveHairdresserRole("teszt@gmail.com");
+
+                Assert.That(result.Success, Is.False);
+
+                _mockUserRepo.Verify(u => u.Update(It.IsAny<User>()), Times.Never);
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldUpdateUser_WhenUserIsHairdresser()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User
+                    {
+                        Role = UserRole.Hairdresser,
+                    });
+
+                var result = await _service.RemoveHairdresserRole("teszt");
+
+                Assert.That(result.Success, Is.True);
+
+                _mockUserRepo.Verify(h => h.Update(It.IsAny<User>()), Times.Once);
+            }
+
+            [Test]
+            public async Task RemoveHairdresser_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockUserRepo.Setup(u => u.GetUserByEamil("teszt")).ReturnsAsync(
+                    new User
+                    {
+                        Role = UserRole.Hairdresser
+                    });
+
+                _mockUserRepo.Setup(u => u.Update(It.IsAny<User>())).ThrowsAsync(new Exception("DB Hiba"));
+
+                Assert.ThrowsAsync<Exception>(async () => await _service.RemoveHairdresserRole("teszt"));
+            }
+        }
+
+        public class UpdateServiceTests
+        {
+            private Mock<IUserRepository> _mockUserRepo;
+            private Mock<IServiceRepository> _mockServiceRepo;
+            private IAdminService _service;
+
+            [SetUp]
+            public void Setup()
+            {
+                _mockUserRepo = new Mock<IUserRepository>();
+                _mockServiceRepo = new Mock<IServiceRepository>();
+
+                _service = new AdminService
+                (
+                    _mockUserRepo.Object,
+                    _mockServiceRepo.Object
+                );
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldFail_WhenServiceDoesNotExist()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync((Service?)null);
+
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 1,
+                });
+
+                Assert.That(result.Success, Is.False);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Never);
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldFail_WhenNameAlreadyExists()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(2))
+                    .ReturnsAsync(new Service { ServiceId = 2, Name = "régi" });
+
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 2))
+                    .ReturnsAsync(true);
+
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 2,
+                    Name = "teszt"
+                });
+
+                Assert.That(result.Success, Is.False);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Never);
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldUpdateService_WhenDataIsValid()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync(new Service { ServiceId = 1, Name = "régi" });
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 1)).ReturnsAsync(false);
+
+                var result = await _service.UpdateService(new Service
+                {
+                    ServiceId = 1,
+                    Name = "teszt"
+                });
+
+                Assert.That(result.Success, Is.True);
+
+                _mockServiceRepo.Verify(s => s.Update(It.IsAny<Service>()), Times.Once);
+
+            }
+
+            [Test]
+            public async Task UpdateService_ShouldThrowException_WhenRepositoryFails()
+            {
+                _mockServiceRepo.Setup(s => s.GetById(1)).ReturnsAsync(new Service { ServiceId = 1, Name = "teszt" });
+                _mockServiceRepo.Setup(s => s.ExistsByNameExceptId("teszt", 1)).ReturnsAsync(false);
+
+                _mockServiceRepo.Setup(s => s.Update(It.IsAny<Service>())).ThrowsAsync(new Exception("DB Hiba"));
+
+                Assert.ThrowsAsync<Exception>( async () =>
+                    await _service.UpdateService(new Service
+                    {
+                        ServiceId = 1,
+                        Name = "teszt"
+                    }));
+            }
+        }   
+    }
+}
+

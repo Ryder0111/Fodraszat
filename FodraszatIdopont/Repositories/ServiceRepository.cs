@@ -14,7 +14,7 @@ namespace FodraszatIdopont.Repositories
             _db = db;
         }
 
-        public async Task<Service> Ceate(Service service)
+        public async Task<Service> Create(Service service)
         {
             _db.Services.Add(service);
             await _db.SaveChangesAsync();
@@ -34,7 +34,12 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<bool> ExistsByName(string name)
         {
-            return await _db.Services.AnyAsync(s => s.Name == name);
+            return await _db.Services.AnyAsync(s => s.Name.ToLower().Trim() == name.ToLower().Trim());
+        }
+
+        public async Task<bool> ExistsByNameExceptId(string name, int id)
+        {
+            return await _db.Services.AnyAsync(s => s.Name.ToLower().Trim() == name.ToLower().Trim() && s.ServiceId != id);
         }
 
         public async Task<List<Service>> GetAll()
