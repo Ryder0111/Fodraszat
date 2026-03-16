@@ -45,43 +45,63 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
+    @* <div class="row g-4 mb-4">
         <div class="col-12">
             <label class="form-label fw-bold fs-5 text-primary">Válassz időpontot a naptárból</label>
-            <div id="calendar" class="shadow rounded-4 p-3 bg-white"></div>
+                <div id="color-calendar" class="shadow rounded-4 p-3"></div>
         </div>
-    </div>
+    </div> *@
+
+    <div id="color-calendar" style="max-width: 600px; margin: 0 auto;"></div>
 
     <input type="hidden" asp-for="Appointment.StartTime" id="selectedStartTime" />
 
     <button type="submit" class="btn btn-primary w-100 mt-3">Időpont lefoglalása</button>
 </form>
-
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            new Calendar({
+                container: '#color-calendar',
+                calendarSize: 'large',          // vagy 'small'
+                initialSelectedDate: new Date(), // ma
+                theme: 'basic',
+                primaryColor: '#007bff',        // Bootstrap kék, hogy illeszkedjen
+                headerColor: '#343a40',
+                headerBackgroundColor: '#f8f9fa',
+                weekdaysColor: '#6c757d',
 
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek',
-                locale: 'hu',
-                height: 650,
-                events: [
+                // Események / foglalt napok (piros karikákhoz)
+                eventsData: [
+                    // Példa foglalt nap – később backend-ből töltöd
                     {
-                        title: 'Teszt esemény',
-                        start: new Date().toISOString(),
-                        end: new Date(new Date().getTime() + 60*60*1000).toISOString(),
-                        color: '#198754'
+                        start: '2026-03-10T00:00:00',
+                        end: '2026-03-10T23:59:59',
+                        name: 'Foglalt',
+                        color: '#dc3545'  // piros
                     }
-                ]
-            });
+                ],
 
-            calendar.render();
+                eventBulletMode: 'multiple',    // Több foglalás naponta is látható
+                disableDayClick: false          // Kattintható napok
+
+                // Ha kell: startWeekday: 1 (hétfővel kezdjen)
+            });
         });
+
+                function loadEvents(hairdresserId) {
+            fetch(`/Account/GetBookedDays?hairdresserId=${hairdresserId}`)
+                .then(res => res.json())
+                .then(data => {
+                    // data = ["2026-03-10", "2026-03-15", ...]
+                    let events = data.map(date => ({
+                        start: date,
+                        end: date,
+                        name: 'Foglalt',
+                        color: '#dc3545'
+                    }));
+                    calendar.setOption('eventsData', events);
+                    calendar.refetchEvents();  // Frissítés
+                });
+        }
     </script>
-<style>
-</style>
 </body>

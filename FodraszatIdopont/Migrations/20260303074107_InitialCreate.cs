@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FodraszatIdopont.Migrations
 {
     /// <inheritdoc />
-    public partial class InitilCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -99,11 +99,28 @@ namespace FodraszatIdopont.Migrations
                 columns: new[] { "UserId", "Email", "Name", "PasswordHash", "Role", "Sex" },
                 values: new object[,]
                 {
-                    { 1, "admin", "admin", "100000.6dFbp8r5FRlLPbrmED2JWA==.hU9lcNtCig7U7oeusbXsfN32sDhXFIgVw+084P/NqCM=", 4, 0 },
-                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.DTcXGyTwPm9N5SdL5OLD7w==.ciWAFveZSuQGFpTU82gMInqo5T6jZZnDQaDSeEEKVak=", 1, 2 },
-                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.7kgeQgQIQ4n4L0pYVLaD3Q==.pSaaNjPeNo0VZskW+EYcT0oPoAV3VWPTWHUGXOAI8oo=", 1, 1 },
-                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.zcwmQBDiSa3x9JJ8McJ3ZQ==.uSp3XCg+H5zSWXU7pXShwCTlaVqWcjIwTgKD6iOg7mY=", 2, 2 },
-                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.3vpnyJ0gLS3Yx07cQ5v16w==.ICYDUCec3bDLjXqbnA5ptWJgm2JUtukT+XW34L4h/rw=", 2, 1 }
+                    { 1, "admin", "admin", "100000.N2u9Ytm/+h17JxxBZHgyKg==.45Qb88rM+mjEbCCwjyxXKyxtRExahnaLPO/QOtxfYi8=", 4, 0 },
+                    { 2, "anna.kovacs@gmail.com", "Anna Kovács", "100000.clx32FeirbAjWwF9thxz6w==.vCMU7ZuAQIEzQtb4svDByiBfzAdRoq0E4EBSKhoRSBk=", 1, 2 },
+                    { 3, "peter.nagy@gmail.com", "Péter Nagy", "100000.lg2qwi6lAll6TWCHQxh3aA==.6p8UAfn1l2wCWoTnMr9pTbjJLJRDoy2BLzh1ADGanEY=", 1, 1 },
+                    { 4, "gabor.fodrasz@gmail.com", "Nagy Gábor", "100000.bTTyZUi0jj6aPQ2q53n7Mg==.702A+Wu9tnbpvC0I2WEvmzkxktMSunXWezOoqKQfLQs=", 2, 2 },
+                    { 5, "marcell.fodrasz@gmail.com", "Belák Marcell", "100000.7/kIc+smoq/Q+kH6K2lcGw==.rDGaTVLARvmEX/HXqcCrFch1mfTUygUDYdZa4NGt8UE=", 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "AppointmentId", "AppointmentStatus", "EndTime", "HairdresserId", "ServiceId", "StartTime", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 0, new DateTime(2026, 4, 10, 9, 30, 0, 0, DateTimeKind.Unspecified), 2, 1, new DateTime(2026, 4, 10, 9, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, 0, new DateTime(2026, 4, 10, 11, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, new DateTime(2026, 4, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 3, 2, new DateTime(2025, 12, 15, 9, 0, 0, 0, DateTimeKind.Unspecified), 3, 1, new DateTime(2025, 12, 15, 8, 30, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 4, 1, new DateTime(2025, 11, 20, 10, 30, 0, 0, DateTimeKind.Unspecified), 3, 3, new DateTime(2025, 11, 20, 9, 30, 0, 0, DateTimeKind.Unspecified), 4 },
+                    { 5, 0, new DateTime(2026, 4, 12, 14, 0, 0, 0, DateTimeKind.Unspecified), 2, 2, new DateTime(2026, 4, 12, 13, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 6, 2, new DateTime(2025, 10, 5, 15, 0, 0, 0, DateTimeKind.Unspecified), 3, 1, new DateTime(2025, 10, 5, 14, 30, 0, 0, DateTimeKind.Unspecified), 5 },
+                    { 7, 0, new DateTime(2026, 4, 13, 11, 30, 0, 0, DateTimeKind.Unspecified), 4, 3, new DateTime(2026, 4, 13, 10, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 8, 2, new DateTime(2025, 9, 18, 13, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, new DateTime(2025, 9, 18, 12, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 9, 0, new DateTime(2026, 4, 14, 9, 30, 0, 0, DateTimeKind.Unspecified), 2, 1, new DateTime(2026, 4, 14, 9, 0, 0, 0, DateTimeKind.Unspecified), 4 },
+                    { 10, 1, new DateTime(2025, 8, 22, 12, 30, 0, 0, DateTimeKind.Unspecified), 3, 3, new DateTime(2025, 8, 22, 11, 0, 0, 0, DateTimeKind.Unspecified), 5 }
                 });
 
             migrationBuilder.CreateIndex(
