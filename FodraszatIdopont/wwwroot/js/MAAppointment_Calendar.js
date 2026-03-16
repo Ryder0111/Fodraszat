@@ -1,6 +1,8 @@
 ﻿// ==========================================
 // 3. OKOS NAPTÁR LOGIKA
 // ==========================================
+
+
 document.addEventListener("DOMContentLoaded", function () {
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
@@ -13,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const hairdresserSelect = document.getElementById('hairdresserSelect');
     const serviceSelect = document.getElementById('serviceSelect');
+
+    let monthChangeCount = 0;
+
+    const btnPrevMonth = document.getElementById('btnPrevMonth');
+    const btnNextMonth = document.getElementById('btnNextMonth');
 
     // Biztonsági kilépés, ha nem a foglalás oldalon vagyunk
     if (!calendarBody || !hairdresserSelect || !serviceSelect) return;
@@ -31,6 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
     serviceSelect.addEventListener('change', checkSelectionsAndRender);
 
     function renderCalendar(year, month) {
+        if (monthChangeCount <= 0) {
+            btnPrevMonth.classList.add("disabled");
+        } else {
+            btnPrevMonth.classList.remove("disabled");
+        }
+
+        if (monthChangeCount >= 2) {
+            btnNextMonth.classList.add("disabled");
+        } else {
+            btnNextMonth.classList.remove("disabled");
+        }
+
         calendarBody.innerHTML = '';
         messageDisplay.innerText = '';
         removeSlotsRow();
@@ -203,7 +222,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         } catch (error) {
             console.error("Hiba az időpontok lekérésekor:", error);
-            document.getElementById('slotsContainer').innerHTML = '<p class="text-danger m-0">Hiba történt a betöltés során.</p>';
+
+            document.getElementById('slotsContainer').innerHTML = '<p class="text-danger m-0">Erre a napra már nem lehet időpontot foglalni!</p>';
         }
     }
 
@@ -214,12 +234,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    const btnPrevMonth = document.getElementById('btnPrevMonth');
-    const btnNextMonth = document.getElementById('btnNextMonth');
 
     if (btnPrevMonth && btnNextMonth) {
         btnPrevMonth.addEventListener('click', () => {
             removeSlotsRow();
+            monthChangeCount--;
             currentMonth--;
             if (currentMonth < 0) {
                 currentMonth = 11;
@@ -230,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         btnNextMonth.addEventListener('click', () => {
             removeSlotsRow();
+            monthChangeCount++;
             currentMonth++;
             if (currentMonth > 11) {
                 currentMonth = 0;

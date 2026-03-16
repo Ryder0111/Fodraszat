@@ -138,13 +138,25 @@ namespace FodraszatIdopont.Services
             if (date.DayOfWeek == DayOfWeek.Sunday)
                 return Results<List<DateTime>>.Fail("Vasárnap zárva vagyunk.");
 
+            DateOnly cDay = DateOnly.FromDateTime(DateTime.Now);
+            if (date<cDay)
+                return Results<List<DateTime>>.Fail("Erre az időpontra már nem lehet foglalni!.");
+
             var appointments = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId, date);
             var ordered = appointments.Where(a => a.AppointmentStatus != AppointmentStatus.Cancelled)
                                       .OrderBy(a => a.StartTime)
                                       .ToList();
 
             var slots = new List<DateTime>();
-            var current = date.ToDateTime(new TimeOnly(10, 0));
+            DateTime current;
+            if(cDay == date)
+            {
+                current = date.ToDateTime(new TimeOnly(DateTime.Now.Hour+1, 0));
+            }
+            else
+            {
+                current = date.ToDateTime(new TimeOnly(10, 0));
+            }
             var closing = date.ToDateTime(new TimeOnly(18, 0));
 
             while (current + TimeSpan.FromMinutes(serviceDurationInMinutes) <= closing)

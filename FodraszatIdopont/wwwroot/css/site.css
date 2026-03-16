@@ -1,7 +1,6 @@
 /* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
-    position: relative; /* Ezt töröld! */
     min-height: 100%;
 }
 
@@ -11,103 +10,18 @@ html {
     }
 }
 
-html {
-    position: relative; /* Ezt is töröld! */
-    min-height: 100%;
-}
-
-.footer {
-    position: relative;
-    width: 100%;
-    /* A LINE-HEIGHT ALAPHELYZETBE ÁLLÍTÁSA A KULCS! */
-    line-height: normal;
-    /* Itt állítod a magasságot! Fent 50px, lent 20px belsõ ûr */
-    padding: 0;
-    background-color: var(--primary-color); /* Legyen sötétbarna, mint a navbar! */
-    color: var(--bg-light); /* Világos szöveg */
-    border-top: 3px solid var(--accent-color); /* Egy szép arany vonal a tetejére */
-}
-
-/* Egy kis extra effekt a lábléc linkjeinek */
-.footer-link {
-    color: var(--bg-light);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-    .footer-link:hover {
-        color: var(--accent-color);
-    }
-
-.container,
-.container-fluid,
-main[role="main"],
-#pageContent {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-.contact-section {
-    margin-bottom: 0 !important;
-    padding-bottom: 80px !important; /* Csak belsõ térköz maradjon */
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-#mainNavbar {
-    will-change: transform;
-}
-
-#pageContent {
-}
-
-@media (max-width: 576px) {
-    .navbar-brand-img {
-        height: 3.8rem;
-    }
-}
-
-.navbar-brand-img {
-    height: 6.2rem;
-    width: auto;
-}
-
-.d-flex.border-bottom h2::after {
-    display: none !important;
-}
-
-/* --- 2. ADMIN ÉS FODRÁSZ MENÜ (OFFCANVAS) FIXÁLÁSA --- */
-#offcanvasScrolling {
-    position: fixed !important;
-    top: 85px !important; /* Pontosan a Navbar alatt kezdõdik */
-    bottom: 0 !important;
-    /* A LÉNYEG: Kõkeményen levonjuk a 85px navbart a teljes magasságból */
-    height: calc(100vh - 85px) !important;
-    max-height: calc(100vh - 85px) !important;
-    display: flex !important;
-    flex-direction: column;
-}
-
-    #offcanvasScrolling .offcanvas-body {
-        flex-grow: 1;
-        overflow-y: auto; /* Ha sok a menüpont, lehessen görgetni belül */
-        padding-bottom: 30px; /* Hogy a legalsó menüpont se tapadjon a képernyõ aljához */
-    }
-
-.offcanvas-start {
-    width: 280px;
-}
-
 /* --- WILD CUT GLOBÁLIS VÁLTOZÓK --- */
 :root {
-    --primary-color: #4A3018; /* Sötét, fás barna */
-    --accent-color: #B89151; /* Arany/bronz árnyalat */
-    --bg-light: #FDFBF7; /* Nagyon enyhe törtfehér */
+    --primary-color: #4A3018;
+    --accent-color: #B89151;
+    --bg-light: #FDFBF7;
     --text-dark: #2C2C2C;
     --text-muted: #666666;
-    --overlay-color: rgba(0, 0, 0, 0.6); /* Sötétebb overlay 60% átlátszósággal */
+    --overlay-color: rgba(0, 0, 0, 0.6);
 }
 
 body {
@@ -115,16 +29,27 @@ body {
     color: var(--text-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    overflow-x: hidden; /* Fontos a teljes szélességû kilépésnél, hogy ne legyen vízszintes görgetõsáv */
+    overflow-x: hidden;
     padding-top: 85px;
-    padding-bottom: 80px; /* Ez ad egy kis lélegzetvételnyi helyet az oldal alján a gombnak */
 }
 
-/* --- ÚJ NAVBAR --- */
+/* --- MAIN ÉS LÁBLÉC TÁVOLSÁG (EZ OLDJA MEG A FORM-FOOTER ÉRINTKEZÉST) --- */
+main[role="main"] {
+    /* Ha túl rövid lenne az oldal (pl. csak egy kis form van rajta), akkor is lenyomja a láblécet az aljára */
+    min-height: calc(100vh - 250px);
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* --- NAVBAR BEÁLLÍTÁSOK --- */
+#mainNavbar {
+    will-change: transform;
+}
+
 .navbar-custom {
     background-color: var(--primary-color) !important;
     padding: 10px 0;
-    will-change: transform; /* Ez optimalizálja a böngészõnek az animációt */
+    will-change: transform;
 }
 
     .navbar-custom .navbar-brand {
@@ -153,22 +78,114 @@ body {
     }
 
 .navbar-hidden {
-    transform: translateY(-100%); /* Ez a saját magasságával pontosan feltolja a képernyõn kívülre */
+    transform: translateY(-100%);
 }
 
-/* --- FRISSÍTETT HERO (TELJES SZÉLESSÉGÛ KILÉPÉSSEL) --- */
+@media (max-width: 576px) {
+    .navbar-brand-img {
+        height: 3.8rem;
+    }
+}
+
+.navbar-brand-img {
+    height: 6.2rem;
+    width: auto;
+}
+
+/* --- LÁBLÉC (FOOTER) --- */
+.footer {
+    position: static !important; /* <-- EZ A KULCS! Megöli a gyári ragasztást */
+    width: 100%;
+    line-height: normal;
+    padding: 0;
+    background-color: var(--primary-color);
+    color: var(--bg-light);
+    border-top: 3px solid var(--accent-color);
+}
+
+.footer-link {
+    color: var(--bg-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .footer-link:hover {
+        color: var(--accent-color);
+    }
+
+/* --- CÍMSOROK (H2) ÉS ALÁHÚZÁSOK --- */
+h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+    h2::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background-color: var(--accent-color);
+        bottom: -10px;
+        left: 25%;
+        border-radius: 2px;
+    }
+
+    h2.m-0::after {
+        display: none !important;
+    }
+/* A Vezérlõpultoknál nincs vonal */
+
+/* --- ADMIN / FODRÁSZ SIDEBAR (OFFCANVAS) FIXÁLÁSA --- */
+.offcanvas-start {
+    width: 280px;
+}
+
+#offcanvasScrolling {
+    position: fixed !important;
+    top: 85px !important;
+    bottom: 0 !important;
+    height: calc(100vh - 85px) !important;
+    max-height: calc(100vh - 85px) !important;
+    display: flex !important;
+    flex-direction: column;
+}
+
+    #offcanvasScrolling .offcanvas-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-bottom: 30px;
+    }
+
+/* --- GOMBOK --- */
+.btn-primary-custom {
+    background-color: var(--accent-color);
+    color: white !important;
+    padding: 15px 35px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+    .btn-primary-custom:hover {
+        background-color: white;
+        color: var(--primary-color) !important;
+    }
+
+/* --- FÕOLDAL: HERO --- */
 .hero-container {
     position: relative;
-    /* Teljes szélesség: */
     width: 100vw;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    /* VÁLTOZTATÁS ITT: 100vh (képrenyõ magassága) - navbar magassága */
-    /* A korábbi kódodból látszik, hogy kb. 80-90px lehet a navbarod. 
-       Ha esetleg picit megjelenik a görgetõsáv, növeld a 85px-t (pl. 90px-re), 
-       ha pedig pici fehér sáv marad alatta, csökkentsd (pl. 75px-re)! */
     height: calc(100vh - 85px);
     overflow: hidden;
     display: flex;
@@ -182,7 +199,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Itt add meg a jó képet, ami a projektben van! */
     background: url(../lib/hero-bg.jpg) center/cover;
     filter: blur(10px);
     transform: scale(1.1);
@@ -219,46 +235,7 @@ body {
         margin-bottom: 50px;
     }
 
-/* Gombok */
-.btn-primary-custom {
-    background-color: var(--accent-color);
-    color: white !important;
-    padding: 15px 35px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    transition: 0.3s;
-    display: inline-block;
-}
-
-    .btn-primary-custom:hover {
-        background-color: white;
-        color: var(--primary-color) !important;
-    }
-
-/* --- GLOBÁLIS CÍMSOROK --- */
-h2 {
-    color: var(--primary-color);
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-    position: relative;
-    display: inline-block;
-}
-
-    h2::after {
-        content: '';
-        position: absolute;
-        width: 50%;
-        height: 3px;
-        background-color: var(--accent-color);
-        bottom: -10px;
-        left: 25%;
-        border-radius: 2px;
-    }
-
-/* --- RESZPONZÍV SZEKCIÓK ÉS KÁRTYÁK --- */
+/* --- FÕOLDAL: SZOLGÁLTATÁSOK & KÁRTYÁK --- */
 .features-grid {
     display: flex;
     justify-content: center;
@@ -331,41 +308,19 @@ h2 {
         display: block;
     }
 
-.gallery-section {
-    padding: 100px 20px;
-    text-align: center;
-    background-color: white;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    justify-content: center;
-    gap: 20px;
-    max-width: 1300px;
-    margin: 50px auto 0;
-}
-
-.gallery-item {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    border: 2px solid #eee;
-}
-
-/* --- KAPCSOLAT (TELJES SZÉLESSÉGÛ KILÉPÉSSEL) --- */
+/* --- FÕOLDAL: KAPCSOLAT --- */
 .contact-section {
     position: relative;
-    /* Szintén kitör a konténerbõl, hogy a sötét sáv az egész képernyõn végigérjen: */
     width: 100vw;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    padding: 100px 20px;
+    padding: 100px 20px 80px 20px;
     text-align: center;
     background-color: var(--primary-color);
     color: var(--bg-light);
+    margin-bottom: 0 !important;
 }
 
     .contact-section h2 {
@@ -386,7 +341,7 @@ h2 {
     max-width: 1300px;
     margin: 80px auto 0;
     flex-wrap: wrap;
-    padding: 0 20px; /* Hogy a konténer tartalma ne tapadjon a szélére */
+    padding: 0 20px;
 }
 
 .contact-info, .map-container {
@@ -413,31 +368,30 @@ h2 {
         color: var(--accent-color);
     }
 
-/* --- MEDIA QUERIES --- */
-@media (max-width: 768px) {
-    .hero-content h1 {
-        font-size: 3rem;
-    }
-
-    .hero-content p {
-        font-size: 1.3rem;
-    }
-
-    .contact-container {
-        text-align: center;
-        gap: 30px;
-    }
-
-    .contact-info {
-        text-align: center;
-    }
-
-        .contact-info h3 {
-            border-bottom: none;
-        }
+/* --- FÕOLDAL: GALÉRIA --- */
+.gallery-section {
+    padding: 100px 20px;
+    text-align: center;
+    background-color: white;
 }
 
-/* --- NAPTÁR STÍLUSOK --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    justify-content: center;
+    gap: 20px;
+    max-width: 1300px;
+    margin: 50px auto 0;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+/* --- FOGLALÁS: NAPTÁR --- */
 .custom-calendar {
     border-collapse: collapse;
     table-layout: fixed;
@@ -545,24 +499,22 @@ h2 {
     }
 }
 
+/* --- LEBEGÕ ÉRTESÍTÉSEK (TOAST) --- */
 .floating-alert {
     position: fixed;
-    /* Eredetileg a képernyõn kívül, felül indul */
     top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1050; /* A navbar (1030) fölött, vagy épp alatta */
+    z-index: 1050;
     min-width: 350px;
     max-width: 90%;
-    text-align: left; /* Balra zárt szöveg szebb, ha van 'Sikeres!' címke */
-    background-color: white; /* Hogy a zöld/piros bal oldali csík jól mutasson */
+    text-align: left;
+    background-color: white;
     border: none;
     border-radius: 8px;
-    /* Az animáció, ami 0.5 másodperc alatt lefut */
     animation: slideDownAlert 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
-    /* Siker és Hiba egyedi háttérszínek felülírása (hogy elegáns, letisztult legyen) */
     .floating-alert.alert-success {
         background-color: #f8fff9;
         color: #155724;
@@ -580,8 +532,31 @@ h2 {
     }
 
     100% {
-        /* Ide csúszik be. 110px pont jó, ha a navbarod kb. 85px magas, így kicsivel alatta fog megállni */
         top: 20px;
         opacity: 1;
     }
+}
+
+/* --- RESZPONZÍV (MOBIL) NÉZET --- */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+
+    .hero-content p {
+        font-size: 1.3rem;
+    }
+
+    .contact-container {
+        text-align: center;
+        gap: 30px;
+    }
+
+    .contact-info {
+        text-align: center;
+    }
+
+        .contact-info h3 {
+            border-bottom: none;
+        }
 }
