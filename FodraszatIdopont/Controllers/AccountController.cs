@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -20,12 +21,16 @@ namespace FodraszatIdopont.Controllers
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
         private readonly ICurrentUserService _currentUserService;
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService)
+        private readonly IWebHostEnvironment _env;
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IWebHostEnvironment env)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
+            _env = env;
         }
+        
+
         public IActionResult Login()
         {
             return View( new LoginViewModel());
@@ -40,6 +45,7 @@ namespace FodraszatIdopont.Controllers
             if (!isHuman)
             {
                 ModelState.AddModelError("", "Robot ellenőrzés sikertelen.");
+                WriteToLog($"! Sikertelen robot bejelentkezlsés {model.Email} fiókkal !");
                 return View(model);
             }
 
@@ -58,34 +64,8 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-
-            var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-        new Claim(ClaimTypes.Name,          user.Name),
-        new Claim(ClaimTypes.Email,         user.Email),
-        new Claim(ClaimTypes.Role,          user.Role.ToString()),
-    };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var principal = new ClaimsPrincipal(claimsIdentity);
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = model.RememberMe,
-
-                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
-                IssuedUtc = model.RememberMe ? DateTimeOffset.UtcNow : null
-            };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal,
-                authProperties
-            );
+            SignInUserAsync(user, model.RememberMe);
+            WriteToLog($"{user.UserId} - {user.Email} - bejelentkezés");
 
             return RedirectToAction("Index", "Home");
         }
@@ -128,7 +108,10 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            return RedirectToAction("Login");
+            SignInUserAsync(user, false);
+            WriteToLog($"{user.UserId} - {user.Email} - regisztráció");
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -205,6 +188,7 @@ namespace FodraszatIdopont.Controllers
                 return View("MAAppointment", model);
             }
 
+            WriteToLog($"{model.Appointment.UserId} - időpontgolalás");
             TempData["msg"] = "Sikeres időpontfoglalás";
             return RedirectToAction("Index", "Home");
         }
@@ -245,6 +229,55 @@ namespace FodraszatIdopont.Controllers
             dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
 
             return result.success == "true" && result.score >= 0.5;
+        }
+
+        public async Task SignInUserAsync(User user, bool rememberMe)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name,          user.Name),
+                new Claim(ClaimTypes.Email,         user.Email),
+                new Claim(ClaimTypes.Role,          user.Role.ToString()),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(claimsIdentity);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = rememberMe,
+
+                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
+                IssuedUtc = rememberMe ? DateTimeOffset.UtcNow : null
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                authProperties
+            );
+        }
+
+        private void WriteToLog(string message)
+        {
+            var rootPath = _env.ContentRootPath; //a projekt gyökere
+
+            var logDirectory = Path.Combine(rootPath, "Log");
+
+            if (!Directory.Exists(logDirectory))
+            {
+                Directory.CreateDirectory(logDirectory);
+            }
+
+            var filePath = Path.Combine(logDirectory, "Logs.txt");
+
+            var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}";
+
+            System.IO.File.AppendAllText(filePath, logEntry);
         }
     }
 }

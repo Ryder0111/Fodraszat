@@ -1,0 +1,3 @@
+2026-03-16 18:35:15 - 1 - admin - bejelentkezés
+2026-03-16 18:35:24 - 1 - időpontgolalás
+2026-03-16 18:35:41 - 5 - gabor.fodrasz@gmail.com - bejelentkezés

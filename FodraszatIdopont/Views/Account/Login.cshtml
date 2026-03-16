@@ -52,7 +52,10 @@
         <input type="hidden" id="recaptchaToken" name="recaptchaToken" />
 
         <button type="submit" class="btn-primary-custom w-100 border-0 mb-3">Bejelentkezés</button>
-        Ha nincs még nincs fiókod, bármikor <a style="color: var(--accent-color)" asp-action="Registration">regisztrálhatsz</a>
+        <div class="text-center mt-3">
+            <span class="text-muted">Még nincs fiókod?</span>
+            <a asp-action="Registration" class="text-decoration-none fw-bold" style="color: var(--primary-color);">Regisztrálj itt!</a>
+        </div>
     </form>
 </div>
 
