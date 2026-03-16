@@ -4,6 +4,7 @@ using FodraszatIdopont.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    partial class BarberDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260309123201_ClosedDays")]
+    partial class ClosedDays
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,108 +60,6 @@ namespace FodraszatIdopont.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            AppointmentId = 1,
-                            AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 10, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2026, 4, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AppointmentId = 2,
-                            AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 10, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2026, 4, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        },
-                        new
-                        {
-                            AppointmentId = 3,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 12, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2025, 12, 15, 8, 30, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 3
-                        },
-                        new
-                        {
-                            AppointmentId = 4,
-                            AppointmentStatus = 1,
-                            EndTime = new DateTime(2025, 11, 20, 10, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
-                            ServiceId = 3,
-                            StartTime = new DateTime(2025, 11, 20, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 4
-                        },
-                        new
-                        {
-                            AppointmentId = 5,
-                            AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 12, 14, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2026, 4, 12, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AppointmentId = 6,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 10, 5, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2025, 10, 5, 14, 30, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 5
-                        },
-                        new
-                        {
-                            AppointmentId = 7,
-                            AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 13, 11, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 4,
-                            ServiceId = 3,
-                            StartTime = new DateTime(2026, 4, 13, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        },
-                        new
-                        {
-                            AppointmentId = 8,
-                            AppointmentStatus = 2,
-                            EndTime = new DateTime(2025, 9, 18, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 4,
-                            ServiceId = 2,
-                            StartTime = new DateTime(2025, 9, 18, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 3
-                        },
-                        new
-                        {
-                            AppointmentId = 9,
-                            AppointmentStatus = 0,
-                            EndTime = new DateTime(2026, 4, 14, 9, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 2,
-                            ServiceId = 1,
-                            StartTime = new DateTime(2026, 4, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 4
-                        },
-                        new
-                        {
-                            AppointmentId = 10,
-                            AppointmentStatus = 1,
-                            EndTime = new DateTime(2025, 8, 22, 12, 30, 0, 0, DateTimeKind.Unspecified),
-                            HairdresserId = 3,
-                            ServiceId = 3,
-                            StartTime = new DateTime(2025, 8, 22, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 5
-                        });
                 });
 
             modelBuilder.Entity("FodraszatIdopont.Models.Entities.ClosedDay", b =>

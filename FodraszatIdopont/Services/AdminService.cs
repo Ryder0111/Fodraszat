@@ -19,27 +19,20 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Service>> CreateService(Service service)
         {
-
-            if (string.IsNullOrWhiteSpace(service.Name))
-                return Results<Service>.Fail("A név megadása kötelező");
-
-            if (service.DurationInMinute <= 0)
-                return Results<Service>.Fail("Az időtartam megadása kötelező");
-
-            if (service.Price <= 0)
-                return Results<Service>.Fail("Az ér megadása kötelező");
+            if (service == null)
+                return Results<Service>.Fail("Érvénytelen szolgáltatás adat!");
 
             if (await _ServiceRepo.ExistsByName(service.Name))
-            {
                 return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
-            }
 
-                await _ServiceRepo.Ceate(service);
+                await _ServiceRepo.Create(service);
                 return Results<Service>.Ok(service);
         }
 
         public async Task<Results<User>> PromoteToHairdresser(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return Results<User>.Fail("Érvénytelen email!");
 
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
@@ -56,15 +49,17 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> RemoveHairdresserRole(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return Results<User>.Fail("Érvénytelen email!");
+
             var fodrasz = await _UserRepo.GetUserByEamil(email);
             if (fodrasz == null)
                 return Results<User>.Fail("Nincs ilyen felhasználó");
 
-            else if (!fodrasz.Role.HasFlag(UserRole.Hairdresser))
-                return Results<User>.Fail("A felhasználó még fodrász");
+            if (!fodrasz.Role.HasFlag(UserRole.Hairdresser))
+                return Results<User>.Fail("A felhasználó nem fodrász");
 
-            else
-                fodrasz.Role &= ~UserRole.Hairdresser;
+            fodrasz.Role &= ~UserRole.Hairdresser;
 
             await _UserRepo.Update(fodrasz);
             return Results<User>.Ok(fodrasz);
@@ -72,19 +67,15 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Service>> UpdateService(Service service)
         {
+            if (service == null)
+                return Results<Service>.Fail("Érvénytelen szolgáltatás adat!");
+
             var szolgaltatas = await _ServiceRepo.GetById(service.ServiceId);
             if (szolgaltatas == null)
-            {
                 return Results<Service>.Fail("Nincs ilyen szolgáltatás!");
-            }
-            if (service.Price <= 0)
-            {
-                return Results<Service>.Fail("A szolgáltatás ára hibásan lett megadva!");
-            }
-            if (service.DurationInMinute <= 0)
-            {
-                return Results<Service>.Fail("A szolgáltatás időtartama nem megfelelő!");
-            }
+
+            if (await _ServiceRepo.ExistsByNameExceptId(service.Name, service.ServiceId))
+                return Results<Service>.Fail("Ez a szolgáltatás már létezik!");
 
             return Results<Service>.Ok(await _ServiceRepo.Update(service));
 
