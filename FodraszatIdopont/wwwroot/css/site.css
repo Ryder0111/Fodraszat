@@ -1,7 +1,6 @@
 /* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
-    min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -22,34 +21,46 @@ html {
     --text-dark: #2C2C2C;
     --text-muted: #666666;
     --overlay-color: rgba(0, 0, 0, 0.6);
+    --navbar-height: 105px;
 }
 
+/* --- TISZTÍTOTT LAYOUT (FLEXBOX STICKY FOOTER) --- */
 body {
     background-color: var(--bg-light);
     color: var(--text-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    overflow-x: hidden;
-    padding-top: 85px;
+    overflow-x: hidden; /* Megakadályozza a vízszintes görgetõsávot a 100vw trükkök miatt */
+    /* Tökéletes Footer letapasztás */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: var(--navbar-height); /* A fix navbar miatt letoljuk a tartalmat */
 }
 
-/* --- MAIN ÉS LÁBLÉC TÁVOLSÁG (EZ OLDJA MEG A FORM-FOOTER ÉRINTKEZÉST) --- */
+    /* A közvetlen konténer (a _Layout.cshtml-ben) megnyúlik, hogy lefelé nyomja a footert */
+    body > .container {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+
 main[role="main"] {
-    /* Ha túl rövid lenne az oldal (pl. csak egy kis form van rajta), akkor is lenyomja a láblécet az aljára */
-    min-height: calc(100vh - 250px);
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
+    flex: 1 0 auto;
+    width: 100%;
+    /* Törölve minden alsó és felsõ extra távolság, hogy a kapcsolat rész rápattanjon a láblécre */
+    padding-bottom: 0;
 }
 
 /* --- NAVBAR BEÁLLÍTÁSOK --- */
-#mainNavbar {
-    will-change: transform;
-}
-
 .navbar-custom {
     background-color: var(--primary-color) !important;
     padding: 10px 0;
-    will-change: transform;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1060 !important;
 }
 
     .navbar-custom .navbar-brand {
@@ -77,10 +88,6 @@ main[role="main"] {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23B89151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
 
-.navbar-hidden {
-    transform: translateY(-100%);
-}
-
 @media (max-width: 576px) {
     .navbar-brand-img {
         height: 3.8rem;
@@ -94,13 +101,13 @@ main[role="main"] {
 
 /* --- LÁBLÉC (FOOTER) --- */
 .footer {
-    position: static !important; /* <-- EZ A KULCS! Megöli a gyári ragasztást */
+    flex-shrink: 0;
     width: 100%;
-    line-height: normal;
-    padding: 0;
     background-color: var(--primary-color);
     color: var(--bg-light);
     border-top: 3px solid var(--accent-color);
+    padding: 20px 0;
+    text-align: center;
 }
 
 .footer-link {
@@ -137,7 +144,6 @@ h2 {
     h2.m-0::after {
         display: none !important;
     }
-/* A Vezérlõpultoknál nincs vonal */
 
 /* --- ADMIN / FODRÁSZ SIDEBAR (OFFCANVAS) FIXÁLÁSA --- */
 .offcanvas-start {
@@ -146,12 +152,13 @@ h2 {
 
 #offcanvasScrolling {
     position: fixed !important;
-    top: 85px !important;
+    top: var(--navbar-height) !important;
     bottom: 0 !important;
-    height: calc(100vh - 85px) !important;
-    max-height: calc(100vh - 85px) !important;
+    height: calc(100vh - var(--navbar-height)) !important;
+    max-height: calc(100vh - var(--navbar-height)) !important;
     display: flex !important;
     flex-direction: column;
+    z-index: 1050;
 }
 
     #offcanvasScrolling .offcanvas-body {
@@ -159,6 +166,7 @@ h2 {
         overflow-y: auto;
         padding-bottom: 30px;
     }
+
 
 /* --- GOMBOK --- */
 .btn-primary-custom {
@@ -186,7 +194,7 @@ h2 {
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    height: calc(100vh - 85px);
+    min-height: calc(100vh - var(--navbar-height));
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -308,31 +316,33 @@ h2 {
         display: block;
     }
 
-/* --- FÕOLDAL: KAPCSOLAT --- */
 .contact-section {
     position: relative;
-    width: 100vw;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: 100%; /* FONTOS: Itt már nincs 100vw és negatív margó! */
     padding: 100px 20px 80px 20px;
-    text-align: center;
     background-color: var(--primary-color);
     color: var(--bg-light);
     margin-bottom: 0 !important;
+    text-align: center !important; /* Ez húzza középre az egészet */
 }
 
     .contact-section h2 {
         color: var(--accent-color);
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-block;
     }
 
         .contact-section h2::after {
             background-color: var(--bg-light);
         }
 
-    .contact-section p {
+    /* A közvetlen bevezetõ szöveg ("Várjuk szeretettel...") */
+    .contact-section > p {
         color: #d1c5b4;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center !important;
     }
 
 .contact-container {
@@ -502,17 +512,17 @@ h2 {
 /* --- LEBEGÕ ÉRTESÍTÉSEK (TOAST) --- */
 .floating-alert {
     position: fixed;
-    top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1050;
+    z-index: 1100; /* Magasabb, mint a 1060-as Navbar, így biztosan nem takarja ki! */
     min-width: 350px;
     max-width: 90%;
     text-align: left;
     background-color: white;
     border: none;
     border-radius: 8px;
-    animation: slideDownAlert 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    /* 4 másodperces teljes életciklus (lecsúszik, vár, visszamászik) */
+    animation: toastInOut 4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
     .floating-alert.alert-success {
@@ -524,6 +534,29 @@ h2 {
         background-color: #fff8f8;
         color: #721c24;
     }
+
+@keyframes toastInOut {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+
+    10% {
+        /* A var(--navbar-height) kb 105px, ez kicsit alá tolja, hogy szépen mutasson */
+        top: calc(var(--navbar-height) + 15px);
+        opacity: 1;
+    }
+
+    85% {
+        top: calc(var(--navbar-height) + 15px); /* Itt pihen kb. 3 másodpercig */
+        opacity: 1;
+    }
+
+    100% {
+        top: -100px; /* Szépen visszakúszik a képernyõ tetején kívülre */
+        opacity: 0;
+    }
+}
 
 @keyframes slideDownAlert {
     0% {
@@ -559,4 +592,32 @@ h2 {
         .contact-info h3 {
             border-bottom: none;
         }
+}
+
+
+/* --- BRUTÁLIS OVERRIDE A LÁBLÉC ÉS A KIFOLYÁS ELLEN --- */
+html, body {
+    /* Megtiltjuk a böngészõnek, hogy fixálja a magasságot */
+    height: auto !important;
+    min-height: 100vh !important;
+}
+
+body {
+    /* Flexbox helyett CSS Gridet használunk, ami bolondbiztos */
+    display: grid !important;
+    grid-template-rows: 1fr auto !important;
+}
+
+main[role="main"] {
+    /* A Main elem kapja a nyúló részt */
+    grid-row: 1 !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.footer {
+    /* A Footer kötelezõen a legalsó sorba kerül */
+    grid-row: 2 !important;
+    position: relative !important;
 }
