@@ -80,6 +80,9 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<Appointment>> CreateAppointment(Appointment appointment)
         {
+            if (appointment == null)
+                return Results<Appointment>.Fail("Null az appointment");
+
             var hairdresser = await _Userrepo.GetById(appointment.HairdresserId);
             if (hairdresser == null || !hairdresser.Role.HasFlag(UserRole.Hairdresser))
                 return Results<Appointment>.Fail("Válassz fodrász!");
@@ -87,6 +90,12 @@ namespace FodraszatIdopont.Services
             if (appointment.UserId == appointment.HairdresserId)
                 return Results<Appointment>.Fail("Nem lehetsz saját magad vendége!😉");
 
+            var user = await _Userrepo.GetById(appointment.UserId);
+            if (user == null)
+                return Results<Appointment>.Fail("Nem létezik ilyen felhasználó");
+
+            if (await _Appointmentrepo.CountBookedByUserId(appointment.UserId) >= 3)
+                return Results<Appointment>.Fail("Nem lehet több mint 3 lefoglalt időpont");
 
             var szolgaltatas = await _Servicerepo.GetById(appointment.ServiceId);
             if (szolgaltatas == null)
@@ -94,8 +103,10 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("Válassz szolgáltatás!");
             }
 
+            if (await _Appointmentrepo.ExistsInTimeRangeU(appointment.UserId, appointment.StartTime, appointment.EndTime))
+                return Results<Appointment>.Fail("Nem lehet ugyan arra az időpontra 2 foglalásod");
 
-            if (await _Appointmentrepo.ExistsInTimeRange(appointment.HairdresserId,appointment.StartTime,appointment.EndTime))
+            if (await _Appointmentrepo.ExistsInTimeRangeH(appointment.HairdresserId,appointment.StartTime,appointment.EndTime))
             {
                 return Results<Appointment>.Fail($"Ez az időpont({appointment.StartTime.ToString("MM. dd. HH:mm")}) már foglalt");
             }
