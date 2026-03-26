@@ -50,6 +50,13 @@
                                 <a class="nav-link" asp-controller="Hairdresser" asp-action="Index">Fodrászfelület</a>
                             </li>
                         }
+                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.User.ToString()))
+                        {
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" asp-controller="User" asp-action="Index">Időpontjaim</a>
+                            </li>
+                        }
+
                         <li class="nav-item mx-2">
                             <a class="nav-link" asp-controller="Account" asp-action="MAAppointment">Időpontfoglalás</a>
                         </li>
@@ -94,11 +101,9 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3" id="pageContent">
+        <main role="main">
             @RenderBody()
         </main>
-    </div>
 
     <footer class="footer">
         <div class="container">

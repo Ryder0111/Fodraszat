@@ -1,3 +1,5 @@
 2026-03-16 18:35:15 - 1 - admin - bejelentkezés
 2026-03-16 18:35:24 - 1 - időpontgolalás
 2026-03-16 18:35:41 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-26 11:55:52 - 2 - anna.kovacs@gmail.com - bejelentkezés
+2026-03-26 12:01:08 - 2 - anna.kovacs@gmail.com - bejelentkezés
