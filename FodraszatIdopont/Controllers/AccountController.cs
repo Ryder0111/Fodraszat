@@ -150,15 +150,19 @@ namespace FodraszatIdopont.Controllers
             if (model?.Appointment == null)
             {
                 TempData["error_msg"] = "Hibás adatok érkeztek.";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model);
+                return RedirectToAction("MAAppointment",model);
             }
 
             // 2) Kötelező mezők ellenőrzése (StartTime a slot választásból jön)
             if (model.Appointment.HairdresserId <= 0 || model.Appointment.ServiceId <= 0 || model.Appointment.StartTime == default)
             {
                 TempData["error_msg"] = "Válassz fodrászt, szolgáltatást és időpontot!";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model);
+                return RedirectToAction("MAAppointment",model);
             }
+
+            
 
             // 3) Service betöltése DB-ből (NE model.Services-ből)
             var service = await _appointService.GetServiceById(model.Appointment.ServiceId);
@@ -166,7 +170,8 @@ namespace FodraszatIdopont.Controllers
             if (service == null)
             {
                 TempData["error_msg"] = "A választott szolgáltatás nem található.";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model);
+                return RedirectToAction("MAAppointment",model);
             }
 
 
@@ -185,6 +190,7 @@ namespace FodraszatIdopont.Controllers
             if (!result.Success)
             {
                 TempData["error_msg"] = result.Error;
+                await PopulateListsInModel(model);
                 return View("MAAppointment", model);
             }
 
@@ -192,6 +198,15 @@ namespace FodraszatIdopont.Controllers
             TempData["msg"] = "Sikeres időpontfoglalás";
             return RedirectToAction("Index", "Home");
         }
+
+        private async Task PopulateListsInModel(AppointmentDTO model)
+        {
+            var hairdressers = await _appointService.GetAllHairdressers();
+            model.Hairdressers = hairdressers.Data;
+            var services = await _appointService.GetAllServices();
+            model.Services = services.Data;
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)

@@ -8,3 +8,6 @@
 2026-03-25 18:13:58 - 4 - időpontgolalás
 2026-03-25 18:14:21 - 4 - időpontgolalás
 2026-03-25 18:14:47 - 4 - időpontgolalás
+2026-03-26 09:57:36 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-26 10:15:29 - 5 - időpontgolalás
+2026-03-26 10:21:46 - 5 - gabor.fodrasz@gmail.com - bejelentkezés

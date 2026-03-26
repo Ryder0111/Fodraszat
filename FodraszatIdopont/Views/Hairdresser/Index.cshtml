@@ -47,7 +47,14 @@
             <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Saját naptáram</a>
             <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Napi foglalások</a>
             <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">⚙️ Profil beállítások</a>
-            <a href="#" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="background-color: transparent;">🚪 Kijelentkezés</a>
+            <form asp-controller="Account"
+                  asp-action="Logout"
+                  method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="color: var(--primary-color);">
+                    🚪 Kijelentkezés
+                </button>
+            </form>
         </div>
     </div>
 </div>
