@@ -49,7 +49,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<Service?> GetById(int id)
         {
-            return await _db.Services.SingleOrDefaultAsync(s => s.ServiceId == id);
+            return await _db.Services.Include(s=>s.Appointments).SingleOrDefaultAsync(s => s.ServiceId == id);
         }
 
         public async Task<Service> Update(Service service)

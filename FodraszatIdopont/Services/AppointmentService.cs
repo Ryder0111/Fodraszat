@@ -252,5 +252,17 @@ namespace FodraszatIdopont.Services
 
             return Results<Service>.Ok(szolgaltatas);
         }
+
+        public async Task<Results<Service>> CreateService(Service service)
+        {
+            var exists = await _Servicerepo.ExistsByName(service.Name);
+            if (exists)
+            {
+                return Results<Service>.Fail("Már van ilyen szolgáltatás!");
+            }
+
+            var cService = await _Servicerepo.Create(service);
+            return Results<Service>.Ok(cService);
+        }
     }
 }

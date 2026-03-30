@@ -621,3 +621,49 @@ main[role="main"] {
     grid-row: 2 !important;
     position: relative !important;
 }
+
+.text-theme-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-theme-accent {
+    color: var(--accent-color) !important;
+}
+
+.bg-theme-accent {
+    background-color: var(--accent-color) !important;
+    color: white;
+}
+
+.border-theme-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.card-theme-light {
+    background-color: var(--bg-light) !important;
+    color: var(--text-dark);
+}
+
+/* Gombok stílusai */
+.btn-theme-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+    .btn-theme-primary:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+.btn-outline-theme {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-theme:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }

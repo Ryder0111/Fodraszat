@@ -22,5 +22,7 @@ namespace FodraszatIdopont.Services.Interface
         Task<Results<List<DateOnly>>> GetBookedDays(int hairdresserId, DateOnly startDate, DateOnly endDate);
 
         Task<Results<Service>> GetServiceById(int serviceId);
+
+        Task<Results<Service>> CreateService(Service service);
     }
 }

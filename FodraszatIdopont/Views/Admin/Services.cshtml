@@ -1,0 +1,124 @@
+﻿@model FodraszatIdopont.Models.ServiceDTO;
+
+@{
+    ViewData["Title"] = "Szolgáltatások";
+}
+
+
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+<div class="container mt-4">
+    
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-5 border-bottom pb-3">
+        <h2 class="mb-4 text-theme-primary fw-bold"><i class="fas fa-cut text-theme-accent me-2"></i> Szolgáltatások Kezelése</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm px-4 py-2" style="border-radius: 5px;">
+            <i class="fas fa-arrow-left me-2"></i> Vissza a panelre
+        </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        @if (Model.Services != null && Model.Services.Any())
+        {
+            @foreach (var service in Model.Services)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm card-theme-light @(service.isActive ? "border-theme-primary" : "border-secondary opacity-75")">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title fw-bold mb-0 text-theme-primary">@service.Name</h5>
+                                @if (service.isActive)
+                                {
+                                    <span class="badge bg-theme-accent">Aktív</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inaktív</span>
+                                }
+                            </div>
+                            
+                            <p class="card-text mb-1">
+                                <i class="far fa-clock text-theme-accent me-2"></i> 
+                                <strong>Időtartam:</strong> @service.DurationInMinute perc
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-tags text-theme-accent me-2"></i> 
+                                <strong>Ár:</strong> @service.Price.ToString("N0" /* Ezresével tagolja a számjegyeket */) Ft
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 pb-3 text-end">
+                            <a class="btn btn-sm btn-outline-theme" asp-action="serviceDetails" asp-route-id="@service.ServiceId">Szerkesztés</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert shadow-sm card-theme-light border-theme-primary" role="alert">
+                    <i class="fas fa-info-circle text-theme-accent me-2"></i> Jelenleg nincs egyetlen szolgáltatás sem rögzítve.
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="card shadow-sm card-theme-light mb-5" style="border-top: 5px solid var(--accent-color);">
+        <div class="card-header bg-transparent pt-3 pb-2 border-bottom-0">
+            <h4 class="text-theme-primary fw-bold"><i class="fas fa-plus-circle text-theme-accent me-2"></i> Új szolgáltatás hozzáadása</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateService" method="post">
+                @Html.AntiForgeryToken()
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="NewService.Name" class="form-label fw-bold small" style="color: var(--text-muted);">Szolgáltatás neve</label>
+                        <input asp-for="NewService.Name" class="form-control" placeholder="pl. Női hajvágás" />
+                        <span asp-validation-for="NewService.Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="NewService.DurationInMinute" class="form-label fw-bold small" style="color: var(--text-muted);">Időtartam (perc)</label>
+                        <div class="input-group">
+                            <input asp-for="NewService.DurationInMinute" class="form-control" placeholder="pl. 60" />
+                            <span class="input-group-text card-theme-light">perc</span>
+                        </div>
+                        <span asp-validation-for="NewService.DurationInMinute" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="NewService.Price" class="form-label fw-bold small" style="color: var(--text-muted);">Ár (Ft)</label>
+                        <div class="input-group">
+                            <input asp-for="NewService.Price" class="form-control" placeholder="pl. 8500" />
+                            <span class="input-group-text card-theme-light">Ft</span>
+                        </div>
+                        <span asp-validation-for="NewService.Price" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-theme-primary px-4 shadow-sm">
+                        <i class="fas fa-save me-2"></i> Mentés
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" /> @* Azért kell, hogy a ViewModel üzenetei már használa közben megjlenjenek *@
+}
