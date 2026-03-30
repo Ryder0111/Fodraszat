@@ -66,8 +66,8 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-            SignInUserAsync(user, model.RememberMe);
-            WriteToLog($"{user.UserId} - {user.Email} - bejelentkezés");
+            await SignInUserAsync(user!, model.RememberMe);
+            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés");
 
             return RedirectToAction("Index", "Home");
         }
@@ -110,7 +110,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            SignInUserAsync(user, false);
+            await SignInUserAsync(user, false);
             WriteToLog($"{user.UserId} - {user.Email} - regisztráció");
 
             return RedirectToAction("Index", "Home");
@@ -152,7 +152,7 @@ namespace FodraszatIdopont.Controllers
             if (model?.Appointment == null)
             {
                 TempData["error_msg"] = "Hibás adatok érkeztek.";
-                await PopulateListsInModel(model);
+                await PopulateListsInModel(model!);
                 return RedirectToAction("MAAppointment",model);
             }
 
@@ -184,7 +184,7 @@ namespace FodraszatIdopont.Controllers
                 UserId = model.Appointment.UserId,
                 HairdresserId = model.Appointment.HairdresserId,
                 StartTime = model.Appointment.StartTime,
-                EndTime = model.Appointment.StartTime.AddMinutes(service.Data.DurationInMinute),
+                EndTime = model.Appointment.StartTime.AddMinutes(service.Data!.DurationInMinute),
                 ServiceId = service.Data.ServiceId,
                 AppointmentStatus = AppointmentStatus.Booked,
                 Notes = model.Appointment.Notes ?? null
@@ -223,7 +223,7 @@ namespace FodraszatIdopont.Controllers
         {
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
             var datum = DateOnly.Parse(date);
-            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
+            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data!.DurationInMinute);
             if (!result.Success)
                 return Json(result.Error);
             return Json(result.Data);
@@ -251,7 +251,7 @@ namespace FodraszatIdopont.Controllers
 
             var json = await response.Content.ReadAsStringAsync();
 
-            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json)!;
 
             return result.success == "true" && result.score >= 0.5;
         }
