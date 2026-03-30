@@ -18,3 +18,17 @@
 2026-03-28 11:08:01 - 5 - időpontgolalás
 2026-03-28 11:43:25 - 7 - w@asd.hu - regisztráció
 2026-03-28 11:43:48 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-30 12:13:06 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-30 12:18:54 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-30 12:20:25 - 5 - időpontgolalás
+2026-03-30 12:20:43 - 1 - admin - bejelentkezés
+2026-03-30 12:24:13 - 1 - időpontgolalás
+2026-03-30 12:32:38 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-30 12:36:40 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-03-30 12:36:52 - 1 - admin - bejelentkezés
+2026-03-30 12:53:47 - 1 - admin - bejelentkezés
+2026-03-30 13:25:52 - 1 - admin - bejelentkezés
+2026-03-30 13:26:18 - 1 - admin - bejelentkezés
+2026-03-30 13:50:58 - 1 - időpontgolalás
+2026-03-30 13:56:15 - 1 - időpontgolalás
+2026-03-30 13:59:20 - 1 - időpontgolalás

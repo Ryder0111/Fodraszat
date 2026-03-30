@@ -21,12 +21,14 @@ namespace FodraszatIdopont.Controllers
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUserService _userService;
         private readonly IWebHostEnvironment _env;
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IWebHostEnvironment env)
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IWebHostEnvironment env)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
+            _userService = userService;
             _env = env;
         }
         
@@ -174,6 +176,8 @@ namespace FodraszatIdopont.Controllers
                 return RedirectToAction("MAAppointment",model);
             }
 
+            var user = await _userService.GetUserById(model.Appointment.UserId);
+            var hairdresser = await _userService.GetUserById(model.Appointment.HairdresserId);
 
             var appointment = new Appointment
             {
@@ -185,6 +189,12 @@ namespace FodraszatIdopont.Controllers
                 AppointmentStatus = AppointmentStatus.Booked,
                 Notes = model.Appointment.Notes ?? null
             };
+
+            if(user.Success && hairdresser.Success)
+            {
+                user.Data!.Appointments.Add(appointment);
+                hairdresser.Data!.HairdresserAppointments.Add(appointment);
+            }
 
             var result = await _appointService.CreateAppointment(appointment);
             if (!result.Success)

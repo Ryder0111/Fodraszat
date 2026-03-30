@@ -522,7 +522,7 @@ h2 {
     border: none;
     border-radius: 8px;
     /* 4 másodperces teljes életciklus (lecsúszik, vár, visszamászik) */
-    animation: toastInOut 4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: toastInOut 3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
     .floating-alert.alert-success {
