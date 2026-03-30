@@ -42,9 +42,9 @@ namespace FodraszatIdopont.Services
             return Results<List<Service>>.Ok(szolgaltatasok.ToList());
         }
 
-        public async Task<Results<Appointment>> CancelAppointment(Appointment appointment)
+        public async Task<Results<Appointment>> CancelAppointment(int apoointmentid)
         {
-            var idopont = await _Appointmentrepo.GetById(appointment.AppointmentId);
+            var idopont = await _Appointmentrepo.GetById(apoointmentid);
             if (idopont == null)
             {
                 return Results<Appointment>.Fail("Nincs ilyen időpontfoglalás!");

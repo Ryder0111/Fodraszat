@@ -755,3 +755,9 @@ main[role="main"] {
         background-color: #dc3545;
         color: white;
     }
+
+    .btn-cancel:disabled {
+        background-color: #f5c6cb;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }

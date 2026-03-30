@@ -28,5 +28,21 @@ namespace FodraszatIdopont.Controllers
             
             return View(idopontok.Data);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelAppointment(int id)
+        {
+            var idopont = await _AppointmentService.CancelAppointment(id);
+            if (!idopont.Success)
+            {
+                TempData["error_msg"] = idopont.Error;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["msg"] = "Sikeres törlés";
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

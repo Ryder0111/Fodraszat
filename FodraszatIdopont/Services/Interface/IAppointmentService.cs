@@ -11,7 +11,7 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<Appointment>> CreateAppointment(Appointment appointment);
 
-        Task<Results<Appointment>> CancelAppointment(Appointment appointment);
+        Task<Results<Appointment>> CancelAppointment(int appointmentid);
 
         Task<Results<List<Appointment>>> GetUserAppointments(int? userid);
 
