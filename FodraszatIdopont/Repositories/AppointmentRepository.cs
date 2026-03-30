@@ -66,7 +66,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<List<Appointment>> GetFutureAppointmentsByUser(int id)
         {
-            return await _db.Appointments.Where(u => u.UserId == id && u.StartTime > DateTime.Now).ToListAsync();
+            return await _db.Appointments.Where(u => u.UserId == id && u.StartTime > DateTime.Now).Include(a => a.Service).Include(h => h.Hairdresser).ToListAsync();
         }
 
         public async Task Update(Appointment appointment)

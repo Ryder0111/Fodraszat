@@ -24,7 +24,7 @@ public static class DbSeeder
                     Email = "anna.kovacs@gmail.com",
                     PasswordHash = PasswordHelper.HashPassword("anna123"),
                     Role = UserRole.User,
-                    Sex = Gender.Famale,
+                    Sex = Gender.Female,
                 },
                 new User
                 {
@@ -48,7 +48,7 @@ public static class DbSeeder
                     Email = "gabor.fodrasz@gmail.com",
                     PasswordHash = PasswordHelper.HashPassword("gabor123"),
                     Role = UserRole.Hairdresser,
-                    Sex = Gender.Famale,
+                    Sex = Gender.Female,
                 },
                 new User
                 {

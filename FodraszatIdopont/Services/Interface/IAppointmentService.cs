@@ -13,7 +13,7 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<Appointment>> CancelAppointment(Appointment appointment);
 
-        Task<Results<List<Appointment>>> GetUserAppointments(User user);
+        Task<Results<List<Appointment>>> GetUserAppointments(int? userid);
 
         Task<Results<List<Appointment>>> GetHairdresseSchedule(User hairdresser);
 

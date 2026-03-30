@@ -131,17 +131,17 @@ namespace FodraszatIdopont.Services
             }
         }
 
-        public async Task<Results<List<Appointment>>> GetUserAppointments(User user)
+        public async Task<Results<List<Appointment>>> GetUserAppointments(int? userid)
         {
-            if (user == null)
-                return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
+            if (userid == null)
+                return Results<List<Appointment>>.Fail("Hibás id");
 
-            var dbUser = await _Userrepo.GetById(user.UserId);
+            var dbUser = await _Userrepo.GetById(userid.Value);
 
             if (dbUser == null)
                 return Results<List<Appointment>>.Fail("Nincs ilyen felhasználó");
 
-            return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(dbUser.UserId));
+            return Results<List<Appointment>>.Ok(await _Appointmentrepo.GetFutureAppointmentsByUser(userid.Value));
         }
 
         public async Task<Results<List<DateTime>>> GetAvailableSlots(int hairdresserId, DateOnly date, int serviceDurationInMinutes)
