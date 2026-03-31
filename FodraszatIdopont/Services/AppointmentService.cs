@@ -67,7 +67,7 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
             }
 
-            if (DateTime.Now.AddDays(1) > idopont.StartTime)
+            if (!_CurrentUser.Roles.HasFlag(UserRole.Hairdresser) && !_CurrentUser.Roles.HasFlag(UserRole.Admin) && DateTime.Now.AddDays(1) > idopont.StartTime) // Az admin és a fodrász bármikor le tudja mondani
             {
                 return Results<Appointment>.Fail("Ezt az időpontot már nem lehet lemondani.");
             }
