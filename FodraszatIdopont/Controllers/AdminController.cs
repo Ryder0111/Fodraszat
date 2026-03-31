@@ -151,5 +151,41 @@ namespace FodraszatIdopont.Controllers
             };
             return View(viewModel);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditService(ServiceEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["error_msg"] = "Az adatok megadása sikertelen!";
+                return RedirectToAction("serviceDetails", new { id = model.ServiceId });
+            }
+
+            var respone = await _appointmentService.GetServiceById(model.ServiceId);
+            if (!respone.Success)
+            {
+                TempData["error_msg"] = respone.Error;
+                return RedirectToAction("serviceDetails", new { id = model.ServiceId });
+            }
+
+            var service = respone.Data;
+
+            service!.Name = model.Name;
+            service.DurationInMinute = model.DurationInMinute;
+            service.Price = model.Price;
+            service.isActive = model.isActive;
+
+            var updated = await _appointmentService.UpdateService(service);
+
+            if (!updated.Success)
+            {
+                TempData["error_msg"] = updated.Error;
+                return RedirectToAction("serviceDetails", new { id = model.ServiceId });
+            }
+
+            TempData["msg"] = $"A {updated.Data!.Name} sikeresen módosítva lett!";
+            return RedirectToAction("serviceDetails", new { id = model.ServiceId });
+        }
     }
 }

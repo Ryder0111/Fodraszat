@@ -75,7 +75,7 @@
             <div class="bg-white p-4 rounded shadow-sm" style="border-top: 5px solid #dc3545;">
                 <h5 class="text-danger fw-bold mb-3"><i class="fas fa-exclamation-triangle me-2"></i> Adminisztratív műveletek</h5>
 
-                <form asp-action="ChangeRole" method="post" class="mb-4">
+                <form id="ChageRoleForm" asp-action="ChangeRole" method="post" class="mb-4">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="userEmail" value="@Model.Email" />
                     <label class="form-label fw-bold text-muted small">Jogosultság módosítása</label>
@@ -120,7 +120,7 @@
                                             <span class="badge bg-success">Foglalva</span>
                                         </td>
                                         <td class="text-end">
-                                            <form asp-action="CancelAppointment" method="post" onsubmit="return confirm('Biztosan törlöd ezt az időpontot?');">
+                                            <form id="CancelAppointmentForm" asp-action="CancelAppointment" method="post" onsubmit="return confirm('Biztosan törlöd ezt az időpontot?');">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="appointmentId" value="@app.AppointmentId" />
                                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Időpont törlése">
@@ -167,7 +167,7 @@
                                                 <span class="badge bg-primary">Beosztva</span>
                                             </td>
                                             <td class="text-end">
-                                                <form asp-action="CancelAppointment" method="post" onsubmit="return confirm('Biztosan törlöd ezt a fodrász beosztást/foglalást?');">
+                                                <form id="CancelAppointmentForm" asp-action="CancelAppointment" method="post">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="appointmentId" value="@app.AppointmentId" />
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -191,3 +191,54 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Megfogjuk a formot az ID-ja alapján
+    document.getElementById('CancelAppointmentForm').addEventListener('submit', function(e) {
+        // Megállítjuk az azonnali elküldést
+        e.preventDefault();
+
+        // Elindítjuk a gyönyörű felugró ablakot
+        Swal.fire({
+            title: 'Biztosan törlöd?',
+            text: "Biztos vagy a foglalás törlésében?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd', // Bootstrap primary kék szín
+            cancelButtonColor: '#dc3545',  // Bootstrap danger piros szín
+            confirmButtonText: 'Igen, törlöm!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            // Ha a felhasználó az 'Igen'-re kattintott
+            if (result.isConfirmed) {
+                // Most már ténylegesen beküldjük a formot
+                this.submit();
+            }
+        })
+    });
+
+    // Megfogjuk a formot az ID-ja alapján
+    document.getElementById('ChageRoleForm').addEventListener('submit', function(e) {
+        // Megállítjuk az azonnali elküldést
+        e.preventDefault();
+
+        // Elindítjuk a gyönyörű felugró ablakot
+        Swal.fire({
+            title: 'Biztosan módosítod?',
+            text: "A felhasználó jogosultsága meg fog változni!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd', // Bootstrap primary kék szín
+            cancelButtonColor: '#dc3545',  // Bootstrap danger piros szín
+            confirmButtonText: 'Igen, módosítom!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            // Ha a felhasználó az 'Igen'-re kattintott
+            if (result.isConfirmed) {
+                // Most már ténylegesen beküldjük a formot
+                this.submit();
+            }
+        })
+    });
+
+</script>

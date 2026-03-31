@@ -4,6 +4,21 @@
     ViewData["Title"] = "Szolgáltatás Részletei";
 }
 
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
 
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -27,7 +42,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form asp-action="EditService" method="post">
+                    <form id="EditServiceForm" asp-action="EditService" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="ServiceId" />
 
@@ -79,3 +94,28 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<script>
+    // Megfogjuk a formot az ID-ja alapján
+    document.getElementById('EditServiceForm').addEventListener('submit', function(e) {
+        // Megállítjuk az azonnali elküldést
+        e.preventDefault();
+
+        // Elindítjuk a gyönyörű felugró ablakot
+        Swal.fire({
+            title: 'Biztosan módosítod?',
+            text: "A szolgáltatás adatai meg fognak változni!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd', // Bootstrap primary kék szín
+            cancelButtonColor: '#dc3545',  // Bootstrap danger piros szín
+            confirmButtonText: 'Igen, módosítom!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            // Ha a felhasználó az 'Igen'-re kattintott
+            if (result.isConfirmed) {
+                // Most már ténylegesen beküldjük a formot
+                this.submit();
+            }
+        })
+    });
+</script>

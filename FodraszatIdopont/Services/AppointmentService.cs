@@ -264,5 +264,26 @@ namespace FodraszatIdopont.Services
             var cService = await _Servicerepo.Create(service);
             return Results<Service>.Ok(cService);
         }
+
+        public async Task<Results<Service>> UpdateService(Service service)
+        {
+            var existingService = await _Servicerepo.GetById(service.ServiceId);
+            if (existingService == null)
+            {
+                return Results<Service>.Fail("A módosítani kívánt szolgáltatás már nem található az adatbázisban!");
+            }
+
+            if (existingService.Name != service.Name)
+            {
+                var nameConflict = await _Servicerepo.ExistsByName(service.Name);
+                if (nameConflict)
+                {
+                    return Results<Service>.Fail("Már létezik másik szolgáltatás ezzel a névvel!");
+                }
+            }
+
+            var updated = await _Servicerepo.Update(service);
+            return Results<Service>.Ok(updated);
+        }
     }
 }

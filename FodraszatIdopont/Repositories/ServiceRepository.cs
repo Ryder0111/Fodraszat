@@ -25,7 +25,7 @@ namespace FodraszatIdopont.Repositories
         {
             var szolgaltatas = await _db.Services.FirstOrDefaultAsync(s=>s.ServiceId==service.ServiceId);
 
-            szolgaltatas.isActive = false;
+            szolgaltatas!.isActive = false;
 
             await _db.SaveChangesAsync();
             return szolgaltatas;

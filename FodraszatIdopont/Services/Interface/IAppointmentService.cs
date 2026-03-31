@@ -24,5 +24,7 @@ namespace FodraszatIdopont.Services.Interface
         Task<Results<Service>> GetServiceById(int serviceId);
 
         Task<Results<Service>> CreateService(Service service);
+
+        Task<Results<Service>> UpdateService(Service service);
     }
 }
