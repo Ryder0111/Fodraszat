@@ -102,7 +102,7 @@ namespace FodraszatIdopont.Controllers
                 return View("Services", await PopulateListsInModel());
             }
 
-            Service service = new Service
+            Service service = new()
             {
                 Name = model.Name,
                 DurationInMinute = model.DurationInMinute,
@@ -187,5 +187,30 @@ namespace FodraszatIdopont.Controllers
             TempData["msg"] = $"A {updated.Data!.Name} sikeresen módosítva lett!";
             return RedirectToAction("serviceDetails", new { id = model.ServiceId });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelAppointment(int userId,int appointmentId)
+        {
+            var appResponse = await _appointmentService.GetAppointmentById(appointmentId);
+
+            if (!appResponse.Success)
+            {
+                TempData["error_msg"] = appResponse.Error;
+                return RedirectToAction("Details", new { id = userId });
+            }
+
+            var cancelResponse = await _appointmentService.CancelAppointment(appResponse.Data!);
+
+            if (!cancelResponse.Success)
+            {
+                TempData["error_msg"] = cancelResponse.Error;
+                return RedirectToAction("Details", new { id = userId });
+            }
+
+            TempData["msg"] = "Sikeresen lemondtad az időpontot!";
+            return RedirectToAction("Details", new { id = userId });
+        }
+
     }
 }

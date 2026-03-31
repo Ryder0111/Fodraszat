@@ -26,19 +26,19 @@
         <p style="color: var(--text-muted); font-size: 1.2rem;">Hozz létre egy fiókot az időpontfoglaláshoz.</p>
     </div>
 
-    <form asp-action="Registration" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 500px; border-top: 5px solid var(--primary-color);">
+    <form asp-action="Registration" method="post" id="registerForm" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 500px; border-top: 5px solid var(--primary-color);">
         @Html.AntiForgeryToken()
 
         <div class="mb-4">
             <label class="form-label fw-bold" style="color: var(--primary-color);">Teljes Név</label>
             <input type="text" asp-for="Name" class="form-control form-control-lg @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Kovács János" style="border-color: #eee;">
-            <span asp-validation-for="Name" class="invalid-feedback"></span>
+            <span asp-validation-for="Name" class="text-danger small"></span>
         </div>
 
         <div class="mb-4">
             <label class="form-label fw-bold" style="color: var(--primary-color);">Email cím</label>
             <input type="text" asp-for="Email" class="form-control form-control-lg @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com" style="border-color: #eee;">
-            <span asp-validation-for="Email" class="invalid-feedback"></span>
+            <span asp-validation-for="Email" class="text-danger small"></span>
         </div>
 
         <div class="mb-4">
@@ -48,7 +48,7 @@
                 <option value="Male">Férfi</option>
                 <option value="Famale">Nő</option>
             </select>
-            <span asp-validation-for="Sex" class="invalid-feedback"></span>
+            <span asp-validation-for="Sex" class="text-danger small"></span>
         </div>
 
         <div class="mb-4">
@@ -61,9 +61,8 @@
                        style="border-color: #eee; border-right: 0;"> <span class="input-group-text bg-white" style="border-color: #eee; border-left: 0;">
                     <i class="fa fa-eye text-muted" style="cursor: pointer;"></i>
                 </span>
-
-                <span asp-validation-for="Password" class="invalid-feedback"></span>
             </div>
+            <span asp-validation-for="Password" class="text-danger small"></span>
         </div>
 
         <div class="mb-4">
@@ -76,9 +75,8 @@
                        style="border-color: #eee; border-right: 0;"> <span class="input-group-text bg-white" style="border-color: #eee; border-left: 0;">
                     <i class="fa fa-eye text-muted" style="cursor: pointer;"></i>
                 </span>
-
-                <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
             </div>
+            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
         </div>
 
         <input type="hidden" id="recaptchaToken" name="recaptchaToken" />
@@ -92,15 +90,28 @@
     </form>
 </div>
 
-<script>
-    document.querySelector("form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        grecaptcha.ready(function () {
-            // Itt az action-t 'register'-re állítottam a statisztikák miatt
-            grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'register' }).then(function (token) {
-                document.getElementById("recaptchaToken").value = token;
-                e.target.submit();
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        $('#registerForm').on('submit', function (e) {
+
+            e.preventDefault(); //Ez megállítja az adatok elküldését azonnal, mert ha ez történi, akkor a böngészőnek nincs ideje legenerálni a "Nem vagyok robot" tokent és hogy megelenjenek a modelstate hibák
+
+            var form = $(this);
+
+            if (!form.valid()) { //Ahhoz kell, hogy előbb validálja az oldalt (mert ha előbb a robot ellenőrzés fut, le akkor nem írja ki a ViewModel hibákat
+                return;
+            }
+            
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'register' }).then(function (token) {
+                    document.getElementById("recaptchaToken").value = token;
+
+                    form[0].submit(); //Ha megkapjuk a tokent, utána már mehet az adatok küldése, azért a 0. elem, mert a var form = $(this); jQuery lekérdezés olyan mint a querySelectAll
+                });
             });
         });
-    });
-</script>
+    </script>
+}

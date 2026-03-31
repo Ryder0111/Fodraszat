@@ -285,5 +285,17 @@ namespace FodraszatIdopont.Services
             var updated = await _Servicerepo.Update(service);
             return Results<Service>.Ok(updated);
         }
+
+        public async Task<Results<Appointment>> GetAppointmentById(int id)
+        {
+            var appointment = await _Appointmentrepo.GetById(id);
+
+            if(appointment == null)
+            {
+                return Results<Appointment>.Fail("Nincs ilyen időpont!");
+            }
+
+            return Results<Appointment>.Ok(appointment);
+        }
     }
 }
