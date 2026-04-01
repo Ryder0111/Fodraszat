@@ -49,6 +49,9 @@
                             <li class="nav-item mx-2">
                                 <a class="nav-link" asp-controller="Hairdresser" asp-action="Index">Fodrászfelület</a>
                             </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments">Beosztás</a>
+                            </li>
                         }
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.User.ToString()))
                         {

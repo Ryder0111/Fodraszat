@@ -28,14 +28,20 @@
             {
                 // Státusz logika: itt döntjük el, milyen színe legyen a jelvénynek.
                 // Ezt a saját modelledhez kell igazítani (lehet, hogy neked enumod van, pl. item.Status == AppointmentStatus.Approved)
-                var badgeClass = "bg-warning-custom";
+                var badgeClass = "bg-danger-custom";
                 var statuszSzoveg = "Lemondva";
 
                 // Írd át a "Jóváhagyva" feltételt arra, ahogy te tárolod a jóváhagyott státuszt!
                 if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                 {
-                    badgeClass = "bg-success-custom";
+                    badgeClass = "bg-warning-custom";
                     statuszSzoveg = "Jóváhagyva";
+                }
+
+                if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Completed)
+                {
+                    badgeClass = "bg-success-custom";
+                    statuszSzoveg = "Befejezve";
                 }
 
                 <div class="appointment-card">
@@ -53,7 +59,7 @@
                     <div class="appointment-footer">
                         @* Létrehoztam egy Form-ot a lemondáshoz, ami a Post kérést küld. *@
                         <form asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" onsubmit="return confirm('Biztosan le szeretnéd mondani ezt az időpontot?');">
-                            @if (item.AppointmentStatus != FodraszatIdopont.Models.Enums.AppointmentStatus.Cancelled)
+                            @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                             {
                                 <button type="submit" class="btn-cancel">Időpont lemondása</button>                
                             }

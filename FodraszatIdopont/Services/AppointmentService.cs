@@ -42,6 +42,36 @@ namespace FodraszatIdopont.Services
             return Results<List<Service>>.Ok(szolgaltatasok.ToList());
         }
 
+        public async Task<Results<Appointment>> CompleteAppointment(int appointmentid)
+        {
+            var idopont = await _Appointmentrepo.GetById(appointmentid);
+            if (idopont == null)
+            {
+                return Results<Appointment>.Fail("Nincs ilyen időpontfoglalás!");
+
+            }
+
+            if (!_CurrentUser.Roles.HasFlag(UserRole.Hairdresser))
+            {
+                if (_CurrentUser.UserId != idopont.UserId)
+                {
+                    if (_CurrentUser.UserId != idopont.HairdresserId)
+                    {
+                        return Results<Appointment>.Fail("Nincs jogod műveletet végrehajtani");
+                    }
+                }
+            }
+
+            if (idopont.AppointmentStatus == AppointmentStatus.Completed || idopont.AppointmentStatus == AppointmentStatus.Cancelled)
+            {
+                return Results<Appointment>.Fail("Ez már nem létezik");
+            }
+
+            idopont.AppointmentStatus = AppointmentStatus.Completed;
+            await _Appointmentrepo.Update(idopont);
+            return Results<Appointment>.Ok(idopont);
+        }
+
         public async Task<Results<Appointment>> CancelAppointment(int apoointmentid)
         {
             var idopont = await _Appointmentrepo.GetById(apoointmentid);
@@ -114,12 +144,12 @@ namespace FodraszatIdopont.Services
             return Results<Appointment>.Ok(appointment);
         }
 
-        public async Task<Results<List<Appointment>>> GetHairdresseSchedule(User hairdresser)
+        public async Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid)
         {
-            if (hairdresser == null)
-                return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");
+            if (hairdresserid == null)
+                return Results<List<Appointment>>.Fail("Hibás id");
 
-            var fodrasz = await _Userrepo.GetById(hairdresser.UserId);
+            var fodrasz = await _Userrepo.GetById(hairdresserid.Value);
 
             if (fodrasz == null || !fodrasz.Role.HasFlag(UserRole.Hairdresser))
                 return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");

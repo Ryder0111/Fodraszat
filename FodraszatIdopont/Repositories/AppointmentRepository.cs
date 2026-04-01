@@ -40,7 +40,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date)
         {
-            return await _db.Appointments.Where(h => h.HairdresserId == id && h.StartTime >= date.ToDateTime(TimeOnly.MinValue) && h.StartTime < date.ToDateTime(TimeOnly.MinValue).AddDays(1)).ToListAsync();
+            return await _db.Appointments.Where(h => h.HairdresserId == id && h.StartTime >= date.ToDateTime(TimeOnly.MinValue) && h.StartTime < date.ToDateTime(TimeOnly.MinValue).AddDays(1)).Include(s => s.Service).Include(u => u.User).ToListAsync();
         }
 
         public async Task<List<Appointment>> GetAppointmentsByHairdresserInTimeRange(int id, DateTime start, DateTime end)
