@@ -1,5 +1,6 @@
 ﻿using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace FodraszatIdopont.Controllers
             _CurrentUserService = currentUserService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var idopontok = await _AppointmentService.GetUserAppointments(_CurrentUserService.UserId);

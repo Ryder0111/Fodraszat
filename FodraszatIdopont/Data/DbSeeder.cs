@@ -48,7 +48,7 @@ public static class DbSeeder
                     Email = "gabor.fodrasz@gmail.com",
                     PasswordHash = PasswordHelper.HashPassword("gabor123"),
                     Role = UserRole.Hairdresser,
-                    Sex = Gender.Female,
+                    Sex = Gender.Male,
                 },
                 new User
                 {
@@ -56,6 +56,70 @@ public static class DbSeeder
                     Email = "marcell.fodrasz@gmail.com",
                     PasswordHash = PasswordHelper.HashPassword("marcell123"),
                     Role = UserRole.Hairdresser,
+                    Sex = Gender.Male,
+                },
+                new User
+                {
+                    Name = "Tóth Eszter",
+                    Email = "eszter.toth@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("eszter123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Szabó Zsófia",
+                    Email = "zsofia.szabo@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("zsofi123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Kiss Viktória",
+                    Email = "viki.kiss@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("viki123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Farkas Réka",
+                    Email = "reka.farkas@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("reka123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Németh Lilla",
+                    Email = "lilla.nemeth@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("lilla123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Horváth Boglárka",
+                    Email = "bogi.fodrasz@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("bogi123"),
+                    Role = UserRole.Hairdresser,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Balogh Katalin",
+                    Email = "kata.balogh@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("kata123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Female,
+                },
+                new User
+                {
+                    Name = "Varga Máté",
+                    Email = "mate.varga@gmail.com",
+                    PasswordHash = PasswordHelper.HashPassword("mate123"),
+                    Role = UserRole.User,
                     Sex = Gender.Male,
                 }
                 );

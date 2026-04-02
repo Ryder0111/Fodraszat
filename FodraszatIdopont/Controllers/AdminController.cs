@@ -21,12 +21,6 @@ namespace FodraszatIdopont.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
             var response = await _userService.GetAllUsers();
