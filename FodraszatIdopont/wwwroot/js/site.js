@@ -41,7 +41,7 @@ window.addEventListener("load", setOffcanvasOffset);
 window.addEventListener("resize", setOffcanvasOffset);
 
 // ==========================================
-// 4. RECAPTCHA LOGIKA
+// 3. RECAPTCHA LOGIKA
 // ==========================================
 if (typeof grecaptcha !== 'undefined') {
     grecaptcha.ready(function () {
@@ -62,3 +62,27 @@ if (typeof grecaptcha !== 'undefined') {
         }
     });
 }
+
+// ==========================================
+// 4. JELSZÓ LOGIKA
+// ==========================================
+document.addEventListener("DOMContentLoaded", function () {
+
+    const toggleIcons = document.querySelectorAll(".fa-eye");
+
+    toggleIcons.forEach(function (icon) {
+
+        icon.addEventListener("click", function () {
+
+            //Megkeressük a KATTINTOTT szemhez (this) tartozó inputot.
+            // Felmegyünk az 'input-group' dobozig, majd ott megkeressük a '.password' mezőt.
+            const input = this.closest('.input-group').querySelector('.password');
+
+            const type = input.getAttribute("type") === "password" ? "text" : "password";
+            input.setAttribute("type", type);
+
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+});

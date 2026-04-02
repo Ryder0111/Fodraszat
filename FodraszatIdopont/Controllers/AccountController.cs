@@ -21,12 +21,14 @@ namespace FodraszatIdopont.Controllers
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUserService _userService;
         private readonly IWebHostEnvironment _env;
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IWebHostEnvironment env)
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IWebHostEnvironment env)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
+            _userService = userService;
             _env = env;
         }
         
@@ -64,8 +66,8 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-            SignInUserAsync(user, model.RememberMe);
-            WriteToLog($"{user.UserId} - {user.Email} - bejelentkezés");
+            await SignInUserAsync(user!, model.RememberMe);
+            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés");
 
             return RedirectToAction("Index", "Home");
         }
@@ -108,7 +110,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            SignInUserAsync(user, false);
+            await SignInUserAsync(user, false);
             WriteToLog($"{user.UserId} - {user.Email} - regisztráció");
 
             return RedirectToAction("Index", "Home");
@@ -134,9 +136,9 @@ namespace FodraszatIdopont.Controllers
 
             var model = new AppointmentDTO
             {
-                Appointment = new MAAppointmentViewModel { UserId = _currentUserService.UserId ?? 0},
+                Appointment = new MAAppointmentViewModel { UserId = _currentUserService.UserId ?? 0 },
                 Hairdressers = fodraszok.Data,
-                Services = szolgaltatasok.Data
+                Services = szolgaltatasok.Data!.Where(s => s.isActive).ToList()
             };
 
             return View(model);
@@ -150,15 +152,19 @@ namespace FodraszatIdopont.Controllers
             if (model?.Appointment == null)
             {
                 TempData["error_msg"] = "Hibás adatok érkeztek.";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model!);
+                return RedirectToAction("MAAppointment",model);
             }
 
             // 2) Kötelező mezők ellenőrzése (StartTime a slot választásból jön)
             if (model.Appointment.HairdresserId <= 0 || model.Appointment.ServiceId <= 0 || model.Appointment.StartTime == default)
             {
                 TempData["error_msg"] = "Válassz fodrászt, szolgáltatást és időpontot!";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model);
+                return RedirectToAction("MAAppointment",model);
             }
+
+            
 
             // 3) Service betöltése DB-ből (NE model.Services-ből)
             var service = await _appointService.GetServiceById(model.Appointment.ServiceId);
@@ -166,25 +172,35 @@ namespace FodraszatIdopont.Controllers
             if (service == null)
             {
                 TempData["error_msg"] = "A választott szolgáltatás nem található.";
-                return RedirectToAction("MAAppointment");
+                await PopulateListsInModel(model);
+                return RedirectToAction("MAAppointment",model);
             }
 
+            var user = await _userService.GetUserById(model.Appointment.UserId);
+            var hairdresser = await _userService.GetUserById(model.Appointment.HairdresserId);
 
             var appointment = new Appointment
             {
                 UserId = model.Appointment.UserId,
                 HairdresserId = model.Appointment.HairdresserId,
                 StartTime = model.Appointment.StartTime,
-                EndTime = model.Appointment.StartTime.AddMinutes(service.Data.DurationInMinute),
+                EndTime = model.Appointment.StartTime.AddMinutes(service.Data!.DurationInMinute),
                 ServiceId = service.Data.ServiceId,
                 AppointmentStatus = AppointmentStatus.Booked,
                 Notes = model.Appointment.Notes ?? null
             };
 
+            if(user.Success && hairdresser.Success)
+            {
+                user.Data!.Appointments.Add(appointment);
+                hairdresser.Data!.HairdresserAppointments.Add(appointment);
+            }
+
             var result = await _appointService.CreateAppointment(appointment);
             if (!result.Success)
             {
                 TempData["error_msg"] = result.Error;
+                await PopulateListsInModel(model);
                 return View("MAAppointment", model);
             }
 
@@ -193,12 +209,21 @@ namespace FodraszatIdopont.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        private async Task PopulateListsInModel(AppointmentDTO model)
+        {
+            var hairdressers = await _appointService.GetAllHairdressers();
+            model.Hairdressers = hairdressers.Data;
+            var services = await _appointService.GetAllServices();
+            model.Services = services.Data;
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)
         {
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
             var datum = DateOnly.Parse(date);
-            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
+            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data!.DurationInMinute);
             if (!result.Success)
                 return Json(result.Error);
             return Json(result.Data);
@@ -226,7 +251,7 @@ namespace FodraszatIdopont.Controllers
 
             var json = await response.Content.ReadAsStringAsync();
 
-            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json)!;
 
             return result.success == "true" && result.score >= 0.5;
         }

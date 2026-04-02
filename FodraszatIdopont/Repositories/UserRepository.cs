@@ -25,7 +25,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<User?> GetById(int id)
         {
-            return await _db.Users.FindAsync(id);
+            return await _db.Users.Include(u => u.Appointments).Include(u => u.HairdresserAppointments).FirstOrDefaultAsync(u=>u.UserId==id);
         }
 
         public async Task<User?> GetUserByEamil(string email)
