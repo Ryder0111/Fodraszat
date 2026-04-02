@@ -35,7 +35,25 @@
         <div class="col-lg-4">
             <div class="bg-white p-4 rounded shadow-sm mb-4" style="border-top: 5px solid var(--primary-color);">
                 <div class="text-center mb-4">
-                    <i class="fas fa-user-circle text-muted" style="font-size: 5rem; color: #eee !important;"></i>
+
+                    @{
+                        // Kiszámoljuk a kezdőbetűt a fallback (helyettesítő) képhez
+                        var firstLetter = !string.IsNullOrEmpty(Model.Name) ? Model.Name.Substring(0, 1).ToUpper() : "?";
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                    {
+                        // Ha van feltöltött képe, azt mutatjuk meg
+                        <img src="@Model.ProfileImageUrl" alt="Profilkép" class="rounded-circle shadow-sm mb-2" style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #fff;" />
+                    }
+                    else
+                    {
+                        // Ha nincs képe, a szép színes kezdőbetűs kört mutatjuk (mx-auto középre igazítja)
+                        <div class="rounded-circle shadow-sm d-flex justify-content-center align-items-center mx-auto mb-2" style="width: 120px; height: 120px; background-color: var(--primary-color); color: white; font-size: 3rem; font-weight: bold; border: 4px solid #fff;">
+                            @firstLetter
+                        </div>
+                    }
+
                     <h4 class="mt-3 fw-bold" style="color: var(--primary-color);">@Model.Name</h4>
 
                     @if (Model.Role.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin))

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260330161500_InitialCreate")]
+    [Migration("20260402110548_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -125,6 +125,9 @@ namespace FodraszatIdopont.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Role")

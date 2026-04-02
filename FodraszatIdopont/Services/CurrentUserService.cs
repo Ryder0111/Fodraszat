@@ -1,16 +1,21 @@
-﻿using FodraszatIdopont.Models.Enums;
+﻿using FodraszatIdopont.Models.Entities;
+using FodraszatIdopont.Models.Enums;
+using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services.Interface;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
         private readonly IHttpContextAccessor _Http;
+        private readonly IUserRepository _userRepo;
 
-        public CurrentUserService(IHttpContextAccessor http)
+        public CurrentUserService(IHttpContextAccessor http,IUserRepository userRepository)
         {
             _Http = http;
+            _userRepo = userRepository;
         }
 
         public int? UserId
@@ -32,6 +37,14 @@ namespace FodraszatIdopont.Services
 
                 return null;
             }
+        }
+
+        public async Task<User?> GetCurrentUserAsync()
+        {
+            if(UserId == null) return null;
+
+            var user = await _userRepo.GetById(UserId.Value);
+            return user;
         }
 
         public bool IsAuthenticated =>
