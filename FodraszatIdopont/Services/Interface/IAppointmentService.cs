@@ -9,6 +9,8 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<List<Service>>> GetAllServices();
 
+        Task<Results<Appointment>> GetAppointmentById(int id);
+
         Task<Results<Appointment>> CreateAppointment(Appointment appointment);
 
         Task<Results<Appointment>> CancelAppointment(int appointmentid);
@@ -24,5 +26,9 @@ namespace FodraszatIdopont.Services.Interface
         Task<Results<List<DateOnly>>> GetBookedDays(int hairdresserId, DateOnly startDate, DateOnly endDate);
 
         Task<Results<Service>> GetServiceById(int serviceId);
+
+        Task<Results<Service>> CreateService(Service service);
+
+        Task<Results<Service>> UpdateService(Service service);
     }
 }

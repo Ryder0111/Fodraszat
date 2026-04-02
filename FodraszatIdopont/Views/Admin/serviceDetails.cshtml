@@ -1,0 +1,121 @@
+﻿@model FodraszatIdopont.Models.ViewModels.ServiceEditViewModel
+
+@{
+    ViewData["Title"] = "Szolgáltatás Részletei";
+}
+
+@if (TempData["error_msg"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
+        <strong>Hiba történt!</strong> @TempData["error_msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-theme-primary fw-bold mb-0">
+            <i class="fas fa-edit text-theme-accent me-2"></i> Szolgáltatás Szerkesztése
+        </h2>
+
+        <a asp-action="Services" class="btn btn-outline-secondary shadow-sm px-4 py-2">
+            <i class="fas fa-arrow-left me-2"></i> Vissza a szolgáltatásokhoz
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm card-theme-light" style="border-top: 5px solid var(--accent-color);">
+                <div class="card-header bg-transparent pt-3 pb-2 border-bottom-0 d-flex justify-content-between align-items-center">
+                    <h4 class="text-theme-primary fw-bold mb-0">Adatok módosítása</h4>
+                    <span class="badge bg-theme-accent fs-6 rounded-pill px-3 shadow-sm">
+                        Eddigi foglalások: @Model.AppointmentCount
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <form id="EditServiceForm" asp-action="EditService" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="ServiceId" />
+
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold small" style="color: var(--text-muted);">Szolgáltatás neve</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="DurationInMinute" class="form-label fw-bold small" style="color: var(--text-muted);">Időtartam (perc)</label>
+                                <div class="input-group">
+                                    <input asp-for="DurationInMinute" class="form-control" />
+                                    <span class="input-group-text card-theme-light">perc</span>
+                                </div>
+                                <span asp-validation-for="DurationInMinute" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Price" class="form-label fw-bold small" style="color: var(--text-muted);">Ár (Ft)</label>
+                                <div class="input-group">
+                                    <input asp-for="Price" class="form-control" />
+                                    <span class="input-group-text card-theme-light">Ft</span>
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-5 form-check form-switch border p-3 rounded shadow-sm d-flex align-items-center">
+                            <input class="form-check-input ms-0 me-3 mt-0" type="checkbox" role="switch" id="isActiveSwitch" asp-for="isActive" style="transform: scale(1.3);">
+                            <label class="form-check-label fw-bold text-theme-primary mb-0" for="isActiveSwitch">
+                                Szolgáltatás aktív (foglalható a vendégek számára)
+                            </label>
+                        </div>
+
+                        <div class="text-end border-top pt-3">
+                            <button type="submit" class="btn btn-theme-primary px-5 shadow-sm">
+                                <i class="fas fa-save me-2"></i> Módosítások mentése
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    // Megfogjuk a formot az ID-ja alapján
+    document.getElementById('EditServiceForm').addEventListener('submit', function(e) {
+        // Megállítjuk az azonnali elküldést
+        e.preventDefault();
+
+        // Elindítjuk a gyönyörű felugró ablakot
+        Swal.fire({
+            title: 'Biztosan módosítod?',
+            text: "A szolgáltatás adatai meg fognak változni!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd', // Bootstrap primary kék szín
+            cancelButtonColor: '#dc3545',  // Bootstrap danger piros szín
+            confirmButtonText: 'Igen, módosítom!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            // Ha a felhasználó az 'Igen'-re kattintott
+            if (result.isConfirmed) {
+                // Most már ténylegesen beküldjük a formot
+                this.submit();
+            }
+        })
+    });
+</script>

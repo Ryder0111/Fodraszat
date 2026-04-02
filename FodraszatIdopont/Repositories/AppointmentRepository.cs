@@ -53,6 +53,10 @@ namespace FodraszatIdopont.Repositories
         {
             return await _db.Appointments.Where(h => h.HairdresserId == id).ToListAsync();
         }
+        public async Task<List<Appointment>> GetFutureAppointmentsByHairdresserId(int id)
+        {
+            return await _db.Appointments.Where(u => u.HairdresserId == id && u.StartTime > DateTime.Now).ToListAsync();
+        }
 
         public async Task<Appointment?> GetById(int id)
         {

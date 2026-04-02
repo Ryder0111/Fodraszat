@@ -38,6 +38,7 @@ namespace FodraszatIdopont
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
