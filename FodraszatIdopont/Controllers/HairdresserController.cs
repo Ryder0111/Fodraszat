@@ -45,11 +45,24 @@ namespace FodraszatIdopont.Controllers
                 TempData["error_msg"] = idopont.Error;
                 return RedirectToAction("Appointments");
             }
-            else
+
+            TempData["msg"] = "Befejezve";
+            return RedirectToAction("Appointments");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Hairdresser")]
+        public async Task<IActionResult> CancelAppointmentStaff(int id)
+        {
+            var idopontok = await _AppointmentService.CancelAppointment(id);
+            if (!idopontok.Success)
             {
-                TempData["msg"] = "Befejezve";
+                TempData["error_msg"] = idopontok.Error;
                 return RedirectToAction("Appointments");
             }
+
+            TempData["msg"] = "Lemondva";
+            return RedirectToAction("Appointments");
         }
     }
 }

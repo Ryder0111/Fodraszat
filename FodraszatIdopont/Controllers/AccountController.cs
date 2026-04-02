@@ -222,10 +222,15 @@ namespace FodraszatIdopont.Controllers
         public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)
         {
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
+            if (!szolgaltatas.Success)
+                return Json(szolgaltatas.Error);
+
             var datum = DateOnly.Parse(date);
+
             var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data!.DurationInMinute);
             if (!result.Success)
                 return Json(result.Error);
+
             return Json(result.Data);
         }
 
