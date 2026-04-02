@@ -26,9 +26,6 @@
             <h2 class="m-0 text-dark">Felhasználók</h2>
             <p class="text-muted m-0 fs-5">A rendszerben regisztrált vendégek és munkatársak listája.</p>
         </div>
-        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm px-4 py-2" style="border-radius: 5px;">
-            <i class="fas fa-arrow-left me-2"></i> Vissza a panelre
-        </a>
     </div>
 
     <div class="bg-white p-4 rounded shadow-sm" style="border-top: 5px solid var(--primary-color);">
@@ -51,7 +48,21 @@
                             <tr style="border-bottom: 1px solid #eee;">
                                 <td class="px-4 fw-bold text-muted">#@user.UserId</td>
 
-                                <td class="px-4 fw-bold" style="color: var(--primary-color);">@user.Name</td>
+                                <td class="px-4 fw-bold" style="color: var(--primary-color);">
+                                    @if (user.Role.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin))
+                                    {
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                    }
+                                    else if (user.Role.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser))
+                                    {
+                                        <i class="fas fa-cut me-1"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-user me-1"></i>
+                                    }
+                                    @user.Name
+                                </td>
 
                                 <td class="px-4 text-muted">@user.Email</td>
 

@@ -38,12 +38,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="kapcsolat">Kapcsolat</a>
                         </li>
+
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Admin.ToString()))
                         {
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" asp-controller="Admin" asp-action="Index">Adminfelület</a>
+                            <li class="nav-item mx-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                                <a class="nav-link" style="cursor: pointer;" @* hogy ne váltson át a kurzor szöveges módra*@>Menü megnyitása</a>
                             </li>
                         }
+
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
                         {
                             <li class="nav-item mx-2">
@@ -53,12 +55,10 @@
                                 <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments">Beosztás</a>
                             </li>
                         }
-                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.User.ToString()))
-                        {
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" asp-controller="User" asp-action="Index">Időpontjaim</a>
-                            </li>
-                        }
+
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" asp-controller="User" asp-action="Index">Időpontjaim</a>
+                        </li>
 
                         <li class="nav-item mx-2">
                             <a class="nav-link" asp-controller="Account" asp-action="MAAppointment">Időpontfoglalás</a>
@@ -106,6 +106,29 @@
     </header>
     <main role="main">
         @RenderBody()
+
+        <div class="offcanvas offcanvas-start shadow border-end-0" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" style="border-right: 1px solid #eee;">
+            <div class="offcanvas-header" style="background-color: var(--primary-color); color: var(--bg-light);">
+                <h5 class="offcanvas-title fw-bold">Admin Menü</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+
+            <div class="offcanvas-body p-0" style="background-color: #fdfbf7;">
+                <div class="list-group list-group-flush">
+                    <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">👥 Felhasználók kezelése</a>
+                    <a asp-controller="Admin" asp-action="Services" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Szolgáltatások</a>
+                    <a asp-controller="User" asp-action="Index" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Saját Iőpontjaim</a>
+                    <form asp-controller="Account"
+                          asp-action="Logout"
+                          method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="color: var(--primary-color);">
+                            🚪 Kijelentkezés
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="footer">
