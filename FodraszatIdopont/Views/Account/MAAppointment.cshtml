@@ -37,7 +37,7 @@
                 <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz fodrászt</label>
                 <select id="hairdresserSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.HairdresserId" style="border-color: #eee;">
                     <option value="">-- Kérlek válassz --</option>
-                    @foreach (var item in Model.Hairdressers)
+                    @foreach (var item in Model.Hairdressers!)
                     {
                         <option value="@item.UserId">@item.Name</option>
                     }
@@ -48,7 +48,7 @@
                 <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz szolgáltatást</label>
                 <select id="serviceSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.ServiceId" style="border-color: #eee;">
                     <option value="">-- Kérlek válassz --</option>
-                    @foreach (var item in Model.Services)
+                    @foreach (var item in Model.Services!)
                     {
                         <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
                     }

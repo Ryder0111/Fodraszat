@@ -58,6 +58,10 @@
 
                         
                 </div>
+                    <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline ms-3">
+                        <button type="submit" class="btn-action btn-delete" title="Lemondás" onclick="confirmCancel('cancelForm_@item.AppointmentId')">X</button>
+                        </form>
+               </div>
                 
             }
         }
@@ -69,3 +73,23 @@
         }
     </div>
 </div>
+
+<script>
+    function confirmCancel(formId) {
+        Swal.fire({
+            title: 'Biztosan lemondod?',
+            text: "Ezt a műveletet később nem vonhatod vissza!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545', // Danger piros a lemondáshoz
+            cancelButtonColor: '#6c757d',  // Szürke a mégsem gombhoz
+            confirmButtonText: 'Igen, lemondom!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Megkeresi a formot az egyedi ID alapján, és beküldi a szerverre
+                document.getElementById(formId).submit();
+            }
+        });
+    }
+</script>

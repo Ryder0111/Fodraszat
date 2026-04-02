@@ -26,6 +26,7 @@ namespace FodraszatIdopont.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
             var response = await _userService.GetAllUsers();
@@ -37,6 +38,7 @@ namespace FodraszatIdopont.Controllers
             return View(response.Data);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int id)
         {
             var response = await _userService.GetUserById(id);
@@ -50,6 +52,7 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string userEmail, Models.Enums.UserRole newRole)
         {
             if(newRole == Models.Enums.UserRole.Hairdresser)
@@ -76,6 +79,7 @@ namespace FodraszatIdopont.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Services()
         {
             var response = await _appointmentService.GetAllServices();
@@ -94,6 +98,7 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateService([Bind(Prefix = "NewService")]/*Hogy megmaradjanak a formban az értkek*/ ServiceViewModel model)
         {
             if(!ModelState.IsValid)
@@ -129,6 +134,7 @@ namespace FodraszatIdopont.Controllers
             return model;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> serviceDetails(int id)
         {
             var respone = await _appointmentService.GetServiceById(id);
@@ -154,6 +160,7 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditService(ServiceEditViewModel model)
         {
             if (!ModelState.IsValid)
@@ -190,21 +197,14 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CancelAppointment(int userId,int appointmentId)
         {
-            var appResponse = await _appointmentService.GetAppointmentById(appointmentId);
+            var appResponse = await _appointmentService.CancelAppointment(appointmentId);
 
             if (!appResponse.Success)
             {
                 TempData["error_msg"] = appResponse.Error;
-                return RedirectToAction("Details", new { id = userId });
-            }
-
-            var cancelResponse = await _appointmentService.CancelAppointment(appResponse.Data!);
-
-            if (!cancelResponse.Success)
-            {
-                TempData["error_msg"] = cancelResponse.Error;
                 return RedirectToAction("Details", new { id = userId });
             }
 
