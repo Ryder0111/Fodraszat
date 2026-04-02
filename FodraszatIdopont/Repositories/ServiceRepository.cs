@@ -25,7 +25,7 @@ namespace FodraszatIdopont.Repositories
         {
             var szolgaltatas = await _db.Services.FirstOrDefaultAsync(s=>s.ServiceId==service.ServiceId);
 
-            szolgaltatas.isActive = false;
+            szolgaltatas!.isActive = false;
 
             await _db.SaveChangesAsync();
             return szolgaltatas;
@@ -49,7 +49,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<Service?> GetById(int id)
         {
-            return await _db.Services.SingleOrDefaultAsync(s => s.ServiceId == id);
+            return await _db.Services.Include(s=>s.Appointments).SingleOrDefaultAsync(s => s.ServiceId == id);
         }
 
         public async Task<Service> Update(Service service)

@@ -22,7 +22,7 @@
     <div class="d-flex justify-content-between align-items-center mb-5 border-bottom pb-3">
         <div>
             <h2 class="m-0 text-dark">Vezérlőpult</h2>
-            <p class="text-muted m-0 fs-5">Üdvözlünk, <span style="color: var(--accent-color); font-weight: bold;">@User.Identity.Name</span>!</p>
+            <p class="text-muted m-0 fs-5">Üdvözlünk, <span style="color: var(--accent-color); font-weight: bold;">@User.Identity!.Name</span>!</p>
         </div>
 
         <button class="btn-primary-custom border-0 shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
@@ -44,10 +44,17 @@
 
     <div class="offcanvas-body p-0" style="background-color: #fdfbf7;">
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">👥 Felhasználók kezelése</a>
-            <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Szolgáltatások</a>
-            <a href="#" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Teljes Naptár</a>
-            <a href="#" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="background-color: transparent;">🚪 Kijelentkezés</a>
+            <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">👥 Felhasználók kezelése</a>
+            <a asp-action="Services" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Szolgáltatások</a>
+            <a asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Teljes Naptár</a>
+            <form asp-controller="Account"
+                  asp-action="Logout"
+                  method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="color: var(--primary-color);">
+                    🚪 Kijelentkezés
+                </button>
+            </form>
         </div>
     </div>
 </div>

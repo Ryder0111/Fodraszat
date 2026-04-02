@@ -22,6 +22,7 @@ namespace FodraszatIdopont.Models.ViewModels
         [Compare("Password", ErrorMessage = "A két jelszó nem egyezik!")]
         public string ConfirmPassword { get; set; } = null!;
 
+        [Required(ErrorMessage = "Válaszd ki a nemed!")]
         public Gender Sex { get; set; }
     }
 }

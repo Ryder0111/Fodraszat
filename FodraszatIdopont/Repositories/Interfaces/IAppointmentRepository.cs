@@ -14,6 +14,8 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<List<Appointment>> GetByHairdresserId(int id);
 
+        Task<List<Appointment>> GetFutureAppointmentsByHairdresserId(int id);
+
         Task<List<Appointment>> GetAppointmentsByHairdresserInTimeRange(int id, DateTime start, DateTime end);
 
         Task<List<Appointment>> GetFutureAppointmentsByUser(int id);

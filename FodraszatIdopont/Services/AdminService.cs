@@ -49,6 +49,7 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<User>> RemoveHairdresserRole(string email)
         {
+
             if (string.IsNullOrWhiteSpace(email))
                 return Results<User>.Fail("Érvénytelen email!");
 
