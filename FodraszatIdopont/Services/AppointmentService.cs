@@ -97,9 +97,12 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
             }
 
-            if (DateTime.Now.AddDays(1) > idopont.StartTime)
+            if (!_CurrentUser.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser))
             {
-                return Results<Appointment>.Fail("Ezt az időpontot már nem lehet lemondani.");
+                if (DateTime.Now.AddDays(1) > idopont.StartTime)
+                {
+                    return Results<Appointment>.Fail("Ezt az időpontot már nem lehet lemondani.");
+                }
             }
 
             idopont.AppointmentStatus = AppointmentStatus.Cancelled;

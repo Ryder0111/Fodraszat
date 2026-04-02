@@ -57,17 +57,20 @@
                         <p><strong>Státusz:</strong> <span class="badge-custom @badgeClass">@statuszSzoveg</span></p>
                     </div>
                     <div class="appointment-footer">
-                        @* Létrehoztam egy Form-ot a lemondáshoz, ami a Post kérést küld. *@
-                        <form asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" onsubmit="return confirm('Biztosan le szeretnéd mondani ezt az időpontot?');">
-                            @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
-                            {
-                                <button type="submit" class="btn-cancel">Időpont lemondása</button>                
-                            }
-                            else
-                            {
-                                <button class="btn-cancel" disabled>Időpont lemondva</button>                
-                            }
-                        </form>
+                        @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
+                        {
+                            <form asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" onsubmit="return confirm('Biztosan le szeretnéd mondani ezt az időpontot?');">
+                                <button type="submit" class="btn-cancel">Időpont lemondása</button>
+                            </form>
+                        }
+                        else if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Completed)
+                        {
+                            <button class="btn-cancel btn-cancel-success" disabled>Időpont befejezve</button>
+                        }
+                        else
+                        {
+                            <button class="btn-cancel" disabled>Időpont lemondva</button>
+                        }
                     </div>
                 </div>
             }

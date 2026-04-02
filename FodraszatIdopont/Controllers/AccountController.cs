@@ -64,8 +64,8 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-            SignInUserAsync(user, model.RememberMe);
-            WriteToLog($"{user.UserId} - {user.Email} - bejelentkezés");
+            await SignInUserAsync(user!, model.RememberMe);
+            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés");
 
             return RedirectToAction("Index", "Home");
         }
@@ -108,7 +108,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            SignInUserAsync(user, false);
+            await SignInUserAsync(user, false);
             WriteToLog($"{user.UserId} - {user.Email} - regisztráció");
 
             return RedirectToAction("Index", "Home");
@@ -197,10 +197,15 @@ namespace FodraszatIdopont.Controllers
         public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)
         {
             var szolgaltatas = await _appointService.GetServiceById(serviceId);
+            if (!szolgaltatas.Success)
+                return Json(szolgaltatas.Error);
+
             var datum = DateOnly.Parse(date);
-            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data.DurationInMinute);
+
+            var result = await _appointService.GetAvailableSlots(hairdresserId, datum, szolgaltatas.Data!.DurationInMinute);
             if (!result.Success)
                 return Json(result.Error);
+
             return Json(result.Data);
         }
 
@@ -226,7 +231,7 @@ namespace FodraszatIdopont.Controllers
 
             var json = await response.Content.ReadAsStringAsync();
 
-            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json)!;
 
             return result.success == "true" && result.score >= 0.5;
         }

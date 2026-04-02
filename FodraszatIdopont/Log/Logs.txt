@@ -64,3 +64,32 @@
 2026-04-01 11:24:27 - 2 - időpontgolalás
 2026-04-01 11:24:38 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
 2026-04-01 11:24:59 - 2 - anna.kovacs@gmail.com - bejelentkezés
+2026-04-01 20:11:27 - 2 - anna.kovacs@gmail.com - bejelentkezés
+2026-04-01 20:11:46 - 2 - időpontgolalás
+2026-04-01 20:17:06 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:24:43 - 2 - anna.kovacs@gmail.com - bejelentkezés
+2026-04-01 20:25:21 - 2 - időpontgolalás
+2026-04-01 20:25:45 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:36:31 - 5 - időpontgolalás
+2026-04-01 20:37:57 - 5 - időpontgolalás
+2026-04-01 20:38:46 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:46:47 - 6 - időpontgolalás
+2026-04-01 20:47:01 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:47:23 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:55:07 - 6 - időpontgolalás
+2026-04-01 20:55:18 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:55:40 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:56:32 - 6 - időpontgolalás
+2026-04-01 20:56:50 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-01 20:57:23 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-02 07:56:06 - 6 - időpontgolalás
+2026-04-02 07:57:18 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-02 07:59:45 - 5 - időpontgolalás
+2026-04-02 07:59:52 - 5 - időpontgolalás
+2026-04-02 08:00:06 - 5 - időpontgolalás
+2026-04-02 08:00:17 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-02 08:01:01 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-02 08:02:30 - 5 - időpontgolalás
+2026-04-02 08:02:40 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-02 08:05:39 - 6 - időpontgolalás
+2026-04-02 08:05:56 - 5 - gabor.fodrasz@gmail.com - bejelentkezés

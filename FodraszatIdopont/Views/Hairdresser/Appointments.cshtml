@@ -41,28 +41,30 @@
                     <div class="schedule-actions">
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
-                            <form asp-action="CompleteAppointment" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
+                            <form asp-action="CompleteAppointment" asp-route-id="@item.AppointmentId" method="post" class="d-inline" onsubmit="return confirm('Erősítsd meg, hogy végeztél!');">
                                 <button type="submit" class="btn-action btn-complete" title="Teljesítve">Kész</button>
                             </form>
 
+                            <form asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline" onsubmit="return confirm('Biztosan törlöd a vendég időpontját?');">
+                                <button type="submit" class="btn-action btn-delete" style="margin-left:4px" title="Lemondás">X</button>
+                            </form>
                         }
                         else
                         {
                             <button type="button" class="btn-action btn-complete-disabled" disabled>Kész</button>
+                            <button type="button" class="btn-action btn-delete-disabled" style="margin-left:4px" disabled>X</button>
                         }
                     </div>
 
-                        <form asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline" onsubmit="return confirm('Biztosan törlöd a vendég időpontját?');">
-                            <button type="submit" class="btn-action btn-delete" title="Lemondás">X</button>
-                        </form>
-                    </div>
+                        
+                </div>
                 
             }
         }
         else
         {
             <div class="alert alert-info text-center mx-auto mt-4" style="max-width: 600px;" role="alert">
-                Jelenleg nincs beírt vendéged a közeljövőben.
+                Nincs már a mai napra vendéged.
             </div>
         }
     </div>
