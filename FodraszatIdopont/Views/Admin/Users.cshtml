@@ -51,15 +51,15 @@
                                 <td class="px-4 fw-bold" style="color: var(--primary-color);">
                                     @if (user.Role.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin))
                                     {
-                                        <i class="fas fa-shield-alt me-1"></i>
+                                        <i class="fas fa-shield-alt text-danger me-2"></i>
                                     }
                                     else if (user.Role.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser))
                                     {
-                                        <i class="fas fa-cut me-1"></i>
+                                        <i class="fas fa-cut me-2" style="color: var(--accent-color);"></i>
                                     }
                                     else
                                     {
-                                        <i class="fas fa-user me-1"></i>
+                                        <i class="fas fa-user text-secondary me-2"></i>
                                     }
                                     @user.Name
                                 </td>
