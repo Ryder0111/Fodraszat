@@ -26,5 +26,7 @@ namespace FodraszatIdopont.Models.Entities
         [InverseProperty("Hairdresser")]
         public List<Appointment> HairdresserAppointments { get; set; } = new();
 
+        public string? ProfileImageUrl { get; set; }
+
     }
 }

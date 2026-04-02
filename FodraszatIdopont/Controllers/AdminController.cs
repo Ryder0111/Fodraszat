@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IUserService _userService;
@@ -20,7 +21,7 @@ namespace FodraszatIdopont.Controllers
             _appointmentService = appointmentService;
         }
 
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Users()
         {
             var response = await _userService.GetAllUsers();
@@ -31,8 +32,6 @@ namespace FodraszatIdopont.Controllers
             }
             return View(response.Data);
         }
-
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int id)
         {
             var response = await _userService.GetUserById(id);
@@ -46,7 +45,6 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string userEmail, Models.Enums.UserRole newRole)
         {
             if(newRole == Models.Enums.UserRole.Hairdresser)
@@ -73,7 +71,6 @@ namespace FodraszatIdopont.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Services()
         {
             var response = await _appointmentService.GetAllServices();
@@ -92,7 +89,6 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateService([Bind(Prefix = "NewService")]/*Hogy megmaradjanak a formban az értkek*/ ServiceViewModel model)
         {
             if(!ModelState.IsValid)
@@ -128,7 +124,6 @@ namespace FodraszatIdopont.Controllers
             return model;
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> serviceDetails(int id)
         {
             var respone = await _appointmentService.GetServiceById(id);
@@ -154,7 +149,6 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditService(ServiceEditViewModel model)
         {
             if (!ModelState.IsValid)
@@ -191,7 +185,6 @@ namespace FodraszatIdopont.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CancelAppointment(int userId,int appointmentId)
         {
             var appResponse = await _appointmentService.CancelAppointment(appointmentId);

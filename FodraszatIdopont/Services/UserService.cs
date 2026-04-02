@@ -31,5 +31,18 @@ namespace FodraszatIdopont.Services
             }
             return Results<User>.Ok(user);
         }
+
+        public async Task<Results<User>> UpdateUser(User user)
+        {
+            var existingUser = await _userRepository.GetById(user.UserId);
+
+            if(existingUser == null)
+            {
+                return Results<User>.Fail("Nincs ilyen felhasználó");
+            }
+
+            await _userRepository.Update(user);
+            return Results<User>.Ok(existingUser);
+        }
     }
 }

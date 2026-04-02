@@ -1,4 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@* Ezek a fájl legtetejére menjenek! *@
+@using FodraszatIdopont.Services.Interface
+@inject ICurrentUserService _UserService
+
+@* Egy fő C# blokkban előkészítjük az adatokat *@
+@{
+    string userName = "Vendég";
+    string initial = "?";
+    string? profilePicUrl = null;
+
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        userName = User.Identity.Name ?? "Vendég";
+        initial = !string.IsNullOrEmpty(userName) ? userName.Substring(0, 1).ToUpper() : "?";
+
+        var currentUser = await _UserService.GetCurrentUserAsync();
+        profilePicUrl = currentUser?.ProfileImageUrl;
+    }
+}
+<!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="utf-8" />
@@ -49,9 +68,6 @@
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
                         {
                             <li class="nav-item mx-2">
-                                <a class="nav-link" asp-controller="User" asp-action="Index">Időpontjaim</a>
-                            </li>
-                            <li class="nav-item mx-2">
                                 <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments">Beosztás</a>
                             </li>
                         }
@@ -65,17 +81,37 @@
                         </li>
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
+
                             <li class="nav-item dropdown mx-2">
-                                <a class="nav-link dropdown-toggle fw-bold"
+                                <a class="nav-link dropdown-toggle fw-bold d-flex align-items-center py-0"
                                    href="#"
                                    role="button"
                                    data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="bi bi-person-circle me-1"></i>
-                                    @User.Identity.Name
+                                   aria-expanded="false"
+                                   style="height: 40px;">
+
+                                    <!-- AVATAR LOGIKA KEZDŐDIK -->
+                                    @if (!string.IsNullOrEmpty(profilePicUrl))
+                                    {
+                                        <img src="@profilePicUrl" alt="Profilkép" class="rounded-circle shadow-sm me-2" style="width: 32px; height: 32px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="rounded-circle shadow-sm me-2 d-flex justify-content-center align-items-center" style="width: 32px; height: 32px; background-color: var(--accent-color); color: white; font-weight: bold; font-size: 1rem;">
+                                            @initial
+                                        </div>
+                                    }
+                                    <!-- AVATAR LOGIKA VÉGE -->
+                                    @userName
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-end shadow">
+                                    <li>
+                                        <a asp-controller="User" asp-action="EditProfile" class="dropdown-item">
+                                            <i class="bi bi-person-gear me-2"></i> <!-- Ide egy profilhoz illőbb ikont raktam -->
+                                            Profilom
+                                        </a>
+                                    </li>
                                     <li>
                                         <form asp-controller="Account"
                                               asp-action="Logout"
@@ -89,9 +125,7 @@
                                     </li>
                                 </ul>
                             </li>
-                        }
-                        else
-                        {
+                         } else {
                             <li class="nav-item mx-2">
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">Bejelentkezés</a>
                             </li>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
+    [Authorize(Roles = "Hairdresser")]
     public class HairdresserController : Controller
     {
         public readonly IAppointmentService _AppointmentService;
@@ -16,13 +17,11 @@ namespace FodraszatIdopont.Controllers
             _CurrentUserService = currentUserService;
         }
 
-        [Authorize(Roles = "Hairdresser")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize(Roles = "Hairdresser")]
         public async Task<IActionResult> Appointments()
         {
             var idopontok = await _AppointmentService.GetHairdresserSchedule(_CurrentUserService.UserId);
@@ -36,7 +35,6 @@ namespace FodraszatIdopont.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Hairdresser")]
         public async Task<IActionResult> CompleteAppointment(int id)
         {
             var idopont = await _AppointmentService.CompleteAppointment(id);
@@ -51,7 +49,6 @@ namespace FodraszatIdopont.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Hairdresser")]
         public async Task<IActionResult> CancelAppointmentStaff(int id)
         {
             var idopontok = await _AppointmentService.CancelAppointment(id);
