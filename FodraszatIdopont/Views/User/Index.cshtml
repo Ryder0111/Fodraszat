@@ -59,8 +59,8 @@
                     <div class="appointment-footer">
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
-                            <form asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" onsubmit="return confirm('Biztosan le szeretnéd mondani ezt az időpontot?');">
-                                <button type="submit" class="btn-cancel">Időpont lemondása</button>
+                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" ">
+                                <input type="button" class="btn-cancel" value="Időpont lemondása" onclick="confirmCancel('cancelForm_@item.AppointmentId')">
                             </form>
                         }
                         else if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Completed)
@@ -84,3 +84,23 @@
 
     </div>
 </div>
+
+<script>
+    function confirmCancel(formId) {
+        Swal.fire({
+            title: 'Biztosan lemondod?',
+            text: "Ezt a műveletet később nem vonhatod vissza!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545', // Danger piros a lemondáshoz
+            cancelButtonColor: '#6c757d',  // Szürke a mégsem gombhoz
+            confirmButtonText: 'Igen, lemondom!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Megkeresi a formot az egyedi ID alapján, és beküldi a szerverre
+                document.getElementById(formId).submit();
+            }
+        });
+    }
+</script>
