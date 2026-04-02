@@ -189,9 +189,12 @@
                                 <tbody>
                                     @foreach (var app in Model.HairdresserAppointments.OrderByDescending(a => a.StartTime))
                                     {
-                                        // Megnézzük, hogy törölve van-e, és ha igen, egy kis szürkeséget adunk a sornak
+                                        // Megnézzük a státuszokat
                                         var isCancelled = app.AppointmentStatus.HasFlag(FodraszatIdopont.Models.Enums.AppointmentStatus.Cancelled);
-                                        var rowClass = isCancelled ? "table-light text-muted opacity-75" : "align-middle";
+                                        var isCompleted = app.AppointmentStatus.HasFlag(FodraszatIdopont.Models.Enums.AppointmentStatus.Completed);
+
+                                        // Ha le van mondva, szürkébb lesz. (Az elvégzettet hagyhatjuk normál színnel, hogy jól olvasható maradjon)
+                                        var rowClass = isCancelled ? "table-light text-muted opacity-75 align-middle" : "align-middle";
 
                                         <tr class="@rowClass" style="transition: all 0.3s ease;">
 
@@ -205,15 +208,32 @@
                                                 {
                                                     <span class="badge bg-danger shadow-sm"><i class="fas fa-ban me-1"></i> Lemondva</span>
                                                 }
+                                                else if (isCompleted)
+                                                {
+                                                    <span class="badge bg-info shadow-sm"><i class="fas fa-check-double me-1"></i> Elvégezve</span>
+                                                }
                                                 else
                                                 {
-                                                    <span class="badge bg-success shadow-sm"><i class="fas fa-check-circle me-1"></i> Aktív</span>
+                                                    <span class="badge bg-success shadow-sm"><i class="fas fa-clock me-1"></i> Aktív</span>
                                                 }
                                             </td>
 
                                             <td class="text-end">
-                                                @if (!isCancelled)
+                                                @if (isCancelled)
                                                 {
+                                                    <span class="small fst-italic" style="color: var(--text-muted);">
+                                                        <i class="fas fa-info-circle me-1"></i> Az időpont törölve lett.
+                                                    </span>
+                                                }
+                                                else if (isCompleted)
+                                                {
+                                                    <span class="small fst-italic text-success fw-bold">
+                                                        <i class="fas fa-check me-1"></i> Szolgáltatás teljesítve
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    // Ha sem nem törölt, sem nem elvégzett, akkor még aktív -> jöhet a lemondás gomb
                                                     <form id="cancelForm_@app.AppointmentId" asp-action="CancelAppointment" method="post" class="d-inline">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="userId" value="@Model.UserId" />
@@ -223,12 +243,6 @@
                                                             <i class="fas fa-times me-1"></i> Lemondás
                                                         </button>
                                                     </form>
-                                                }
-                                                else
-                                                {
-                                                    <span class="small fst-italic" style="color: var(--text-muted);">
-                                                        <i class="fas fa-info-circle me-1"></i> Az időpont törölve lett.
-                                                    </span>
                                                 }
                                             </td>
                                         </tr>

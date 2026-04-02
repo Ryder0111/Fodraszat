@@ -124,3 +124,11 @@
 2026-04-02 10:14:14 - 1 - időpontgolalás
 2026-04-02 10:15:40 - 1 - időpontgolalás
 2026-04-02 10:19:29 - 1 - időpontgolalás
+2026-04-02 10:35:35 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-02 10:36:07 - 1 - admin - bejelentkezés
+2026-04-02 10:36:14 - 1 - időpontgolalás
+2026-04-02 10:36:22 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-02 10:41:53 - 1 - admin - bejelentkezés
+2026-04-02 10:42:03 - 1 - időpontgolalás
+2026-04-02 10:42:19 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
+2026-04-02 10:52:02 - 1 - admin - bejelentkezés
