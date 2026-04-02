@@ -182,7 +182,7 @@ namespace FodraszatIdopont.Controllers
             var appointment = new Appointment
             {
                 UserId = model.Appointment.UserId,
-                HairdresserId = model.Appointment.HairdresserId,
+                HairdresserId = model.Appointment.HairdresserId, 
                 StartTime = model.Appointment.StartTime,
                 EndTime = model.Appointment.StartTime.AddMinutes(service.Data!.DurationInMinute),
                 ServiceId = service.Data.ServiceId,

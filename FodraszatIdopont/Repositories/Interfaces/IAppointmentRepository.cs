@@ -22,7 +22,11 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date);
 
-        Task<bool> ExistsInTimeRange(int id, DateTime start, DateTime end);
+        Task<bool> ExistsInTimeRangeH(int id, DateTime start, DateTime end);
+
+        Task<bool> ExistsInTimeRangeU(int id, DateTime start, DateTime end);
+
+        Task<int> CountBookedByUserId(int userId);
 
     }
 }

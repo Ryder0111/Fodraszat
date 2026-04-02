@@ -1,4 +1,4 @@
-/* --- ALAPVET’ RENDSZER BE¡LLÕT¡SOK --- */
+/* --- ALAPVET√ï RENDSZER BE√ÅLL√çT√ÅSOK --- */
 html {
     font-size: 14px;
 }
@@ -13,7 +13,7 @@ html {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-/* --- WILD CUT GLOB¡LIS V¡LTOZ”K --- */
+/* --- WILD CUT GLOB√ÅLIS V√ÅLTOZ√ìK --- */
 :root {
     --primary-color: #4A3018;
     --accent-color: #B89151;
@@ -24,21 +24,21 @@ html {
     --navbar-height: 105px;
 }
 
-/* --- TISZTÕTOTT LAYOUT (FLEXBOX STICKY FOOTER) --- */
+/* --- TISZT√çTOTT LAYOUT (FLEXBOX STICKY FOOTER) --- */
 body {
     background-color: var(--bg-light);
     color: var(--text-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    overflow-x: hidden; /* Megakad·lyozza a vÌzszintes gˆrgetıs·vot a 100vw tr¸kkˆk miatt */
-    /* TˆkÈletes Footer letapaszt·s */
+    overflow-x: hidden; /* Megakad√°lyozza a v√≠zszintes g√∂rget√µs√°vot a 100vw tr√ºkk√∂k miatt */
+    /* T√∂k√©letes Footer letapaszt√°s */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     padding-top: var(--navbar-height); /* A fix navbar miatt letoljuk a tartalmat */
 }
 
-    /* A kˆzvetlen kontÈner (a _Layout.cshtml-ben) megny˙lik, hogy lefelÈ nyomja a footert */
+    /* A k√∂zvetlen kont√©ner (a _Layout.cshtml-ben) megny√∫lik, hogy lefel√© nyomja a footert */
     body > .container {
         flex: 1 0 auto;
         display: flex;
@@ -48,11 +48,11 @@ body {
 main[role="main"] {
     flex: 1 0 auto;
     width: 100%;
-    /* Tˆrˆlve minden alsÛ Ès felsı extra t·vols·g, hogy a kapcsolat rÈsz r·pattanjon a l·blÈcre */
+    /* T√∂r√∂lve minden als√≥ √©s fels√µ extra t√°vols√°g, hogy a kapcsolat r√©sz r√°pattanjon a l√°bl√©cre */
     padding-bottom: 0;
 }
 
-/* --- NAVBAR BE¡LLÕT¡SOK --- */
+/* --- NAVBAR BE√ÅLL√çT√ÅSOK --- */
 .navbar-custom {
     background-color: var(--primary-color) !important;
     padding: 10px 0;
@@ -99,7 +99,7 @@ main[role="main"] {
     width: auto;
 }
 
-/* --- L¡BL…C (FOOTER) --- */
+/* --- L√ÅBL√âC (FOOTER) --- */
 .footer {
     flex-shrink: 0;
     width: 100%;
@@ -120,7 +120,7 @@ main[role="main"] {
         color: var(--accent-color);
     }
 
-/* --- CÕMSOROK (H2) …S AL¡H⁄Z¡SOK --- */
+/* --- C√çMSOROK (H2) √âS AL√ÅH√öZ√ÅSOK --- */
 h2 {
     color: var(--primary-color);
     font-size: 2.5rem;
@@ -145,7 +145,7 @@ h2 {
         display: none !important;
     }
 
-/* --- ADMIN / FODR¡SZ SIDEBAR (OFFCANVAS) FIX¡L¡SA --- */
+/* --- ADMIN / FODR√ÅSZ SIDEBAR (OFFCANVAS) FIX√ÅL√ÅSA --- */
 .offcanvas-start {
     width: 280px;
 }
@@ -186,7 +186,7 @@ h2 {
         color: var(--primary-color) !important;
     }
 
-/* --- F’OLDAL: HERO --- */
+/* --- F√ïOLDAL: HERO --- */
 .hero-container {
     position: relative;
     width: 100vw;
@@ -243,7 +243,7 @@ h2 {
         margin-bottom: 50px;
     }
 
-/* --- F’OLDAL: SZOLG¡LTAT¡SOK & K¡RTY¡K --- */
+/* --- F√ïOLDAL: SZOLG√ÅLTAT√ÅSOK & K√ÅRTY√ÅK --- */
 .features-grid {
     display: flex;
     justify-content: center;
@@ -318,12 +318,12 @@ h2 {
 
 .contact-section {
     position: relative;
-    width: 100%; /* FONTOS: Itt m·r nincs 100vw Ès negatÌv margÛ! */
+    width: 100%; /* FONTOS: Itt m√°r nincs 100vw √©s negat√≠v marg√≥! */
     padding: 100px 20px 80px 20px;
     background-color: var(--primary-color);
     color: var(--bg-light);
     margin-bottom: 0 !important;
-    text-align: center !important; /* Ez h˙zza kˆzÈpre az egÈszet */
+    text-align: center !important; /* Ez h√∫zza k√∂z√©pre az eg√©szet */
 }
 
     .contact-section h2 {
@@ -337,7 +337,7 @@ h2 {
             background-color: var(--bg-light);
         }
 
-    /* A kˆzvetlen bevezetı szˆveg ("V·rjuk szeretettel...") */
+    /* A k√∂zvetlen bevezet√µ sz√∂veg ("V√°rjuk szeretettel...") */
     .contact-section > p {
         color: #d1c5b4;
         margin-left: auto;
@@ -378,7 +378,7 @@ h2 {
         color: var(--accent-color);
     }
 
-/* --- F’OLDAL: GAL…RIA --- */
+/* --- F√ïOLDAL: GAL√âRIA --- */
 .gallery-section {
     padding: 100px 20px;
     text-align: center;
@@ -401,7 +401,7 @@ h2 {
     border: 2px solid #eee;
 }
 
-/* --- FOGLAL¡S: NAPT¡R --- */
+/* --- FOGLAL√ÅS: NAPT√ÅR --- */
 .custom-calendar {
     border-collapse: collapse;
     table-layout: fixed;
@@ -509,19 +509,19 @@ h2 {
     }
 }
 
-/* --- LEBEG’ …RTESÕT…SEK (TOAST) --- */
+/* --- LEBEG√ï √âRTES√çT√âSEK (TOAST) --- */
 .floating-alert {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1100; /* Magasabb, mint a 1060-as Navbar, Ìgy biztosan nem takarja ki! */
+    z-index: 1100; /* Magasabb, mint a 1060-as Navbar, √≠gy biztosan nem takarja ki! */
     min-width: 350px;
     max-width: 90%;
     text-align: left;
     background-color: white;
     border: none;
     border-radius: 8px;
-    /* 4 m·sodperces teljes Èletciklus (lecs˙szik, v·r, visszam·szik) */
+    /* 4 m√°sodperces teljes √©letciklus (lecs√∫szik, v√°r, visszam√°szik) */
     animation: toastInOut 3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
@@ -542,18 +542,18 @@ h2 {
     }
 
     10% {
-        /* A var(--navbar-height) kb 105px, ez kicsit al· tolja, hogy szÈpen mutasson */
+        /* A var(--navbar-height) kb 105px, ez kicsit al√° tolja, hogy sz√©pen mutasson */
         top: calc(var(--navbar-height) + 15px);
         opacity: 1;
     }
 
     85% {
-        top: calc(var(--navbar-height) + 15px); /* Itt pihen kb. 3 m·sodpercig */
+        top: calc(var(--navbar-height) + 15px); /* Itt pihen kb. 3 m√°sodpercig */
         opacity: 1;
     }
 
     100% {
-        top: -100px; /* SzÈpen visszak˙szik a kÈpernyı tetejÈn kÌv¸lre */
+        top: -100px; /* Sz√©pen visszak√∫szik a k√©perny√µ tetej√©n k√≠v√ºlre */
         opacity: 0;
     }
 }
@@ -570,7 +570,7 @@ h2 {
     }
 }
 
-/* --- RESZPONZÕV (MOBIL) N…ZET --- */
+/* --- RESZPONZ√çV (MOBIL) N√âZET --- */
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 3rem;
@@ -595,21 +595,21 @@ h2 {
 }
 
 
-/* --- BRUT¡LIS OVERRIDE A L¡BL…C …S A KIFOLY¡S ELLEN --- */
+/* --- BRUT√ÅLIS OVERRIDE A L√ÅBL√âC √âS A KIFOLY√ÅS ELLEN --- */
 html, body {
-    /* Megtiltjuk a bˆngÈszınek, hogy fix·lja a magass·got */
+    /* Megtiltjuk a b√∂ng√©sz√µnek, hogy fix√°lja a magass√°got */
     height: auto !important;
     min-height: 100vh !important;
 }
 
 body {
-    /* Flexbox helyett CSS Gridet haszn·lunk, ami bolondbiztos */
+    /* Flexbox helyett CSS Gridet haszn√°lunk, ami bolondbiztos */
     display: grid !important;
     grid-template-rows: 1fr auto !important;
 }
 
 main[role="main"] {
-    /* A Main elem kapja a ny˙lÛ rÈszt */
+    /* A Main elem kapja a ny√∫l√≥ r√©szt */
     grid-row: 1 !important;
     display: block !important;
     height: auto !important;
@@ -617,11 +617,339 @@ main[role="main"] {
 }
 
 .footer {
-    /* A Footer kˆtelezıen a legalsÛ sorba ker¸l */
+    /* A Footer k√∂telez√µen a legals√≥ sorba ker√ºl */
     grid-row: 2 !important;
     position: relative !important;
 }
 
+
+
+
+/* --- ID√ïPONTJAIM (MY APPOINTMENTS) N√âZET --- */
+
+.appointments-container {
+    padding: 60px 20px 100px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+    .appointments-container .intro-text {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+.appointments-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.appointment-card {
+    background: white;
+    border: 1px solid #eee;
+    border-top: 5px solid var(--accent-color);
+    width: 340px;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    overflow: hidden;
+}
+
+    .appointment-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(74, 48, 24, 0.12);
+    }
+
+.appointment-header {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appointment-date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.appointment-time {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    background: rgba(184, 145, 81, 0.1);
+    padding: 5px 12px;
+    border-radius: 6px;
+}
+
+.appointment-details {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+    .appointment-details p {
+        margin-bottom: 12px;
+        color: var(--text-dark);
+        font-size: 1.05rem;
+    }
+
+        .appointment-details p:last-child {
+            margin-bottom: 0;
+        }
+
+    .appointment-details strong {
+        color: var(--primary-color);
+        margin-right: 5px;
+    }
+
+.badge-custom {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.bg-success-custom {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.bg-warning-custom {
+    background-color: #fff8e1;
+    color: #f57f17;
+    border: 1px solid #ffecb3;
+}
+
+.bg-danger-custom {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.appointment-footer {
+    padding: 15px 20px;
+    background-color: #faf9f7;
+    border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    .btn-cancel:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-cancel:disabled {
+        background-color: #f5c6cb;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+
+/* --- FODR√ÅSZ (STAFF) BEOSZT√ÅS N√âZET --- */
+
+.staff-schedule-container {
+    padding: 60px 20px 100px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+    .staff-schedule-container h2 {
+        text-align: center;
+        display: block; /* Hogy k√∂z√©pre igazodjon az al√°h√∫z√°ssal egy√ºtt */
+    }
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.schedule-card {
+    background: white;
+    border-left: 6px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+    .schedule-card:hover {
+        transform: translateX(5px);
+        border-left-color: var(--accent-color);
+        box-shadow: 0 6px 20px rgba(74, 48, 24, 0.1);
+    }
+
+/* 1. D√°tum blokk */
+.schedule-datetime {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding-right: 20px;
+    border-right: 2px dashed #eee;
+}
+
+.s-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.s-time {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    line-height: 1.1;
+}
+
+/* 2. Inf√≥ blokk */
+.schedule-info {
+    flex-grow: 1;
+    padding: 0 25px;
+}
+
+.client-name {
+    margin: 0 0 5px 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.service-name {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+    .service-name strong {
+        color: var(--accent-color);
+    }
+
+/* 3. St√°tusz blokk */
+.schedule-status {
+    min-width: 120px;
+    text-align: center;
+    padding: 0 15px;
+}
+
+/* 4. Gombok */
+.schedule-actions {
+    display: flex;
+    gap: 10px;
+    min-width: 110px;
+    justify-content: flex-end;
+}
+
+.btn-action {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-complete {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+    .btn-complete:hover {
+        background-color: var(--accent-color);
+    }
+
+.btn-delete {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+    .btn-delete:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+/* --- RESZPONZ√çV (MOBIL) N√âZET A BEOSZT√ÅSHOZ --- */
+@media (max-width: 768px) {
+    .schedule-card {
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .schedule-datetime {
+        border-right: none;
+        border-bottom: 2px dashed #eee;
+        padding-right: 0;
+        padding-bottom: 10px;
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 10px;
+        align-items: baseline;
+    }
+
+    .schedule-info {
+        padding: 0;
+    }
+
+    .schedule-status {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 0;
+    }
+
+    .schedule-actions {
+        width: 100%;
+        justify-content: flex-start;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 5px;
+    }
+}
+
+.btn-complete-disabled {
+    background-color: transparent;
+    border: 1px solid #2e7d32; 
+    color: #2e7d32; 
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: not-allowed; 
+    opacity: 0.6; 
+}
 .text-theme-primary {
     color: var(--primary-color) !important;
 }
@@ -644,7 +972,7 @@ main[role="main"] {
     color: var(--text-dark);
 }
 
-/* Gombok stÌlusai */
+/* Gombok st√≠lusai */
 .btn-theme-primary {
     background-color: var(--primary-color);
     color: white;

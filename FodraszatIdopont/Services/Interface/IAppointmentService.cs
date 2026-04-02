@@ -13,11 +13,13 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<Appointment>> CreateAppointment(Appointment appointment);
 
-        Task<Results<Appointment>> CancelAppointment(Appointment appointment);
+        Task<Results<Appointment>> CancelAppointment(int appointmentid);
 
-        Task<Results<List<Appointment>>> GetUserAppointments(User user);
+        Task<Results<Appointment>> CompleteAppointment(int appointmentid);
 
-        Task<Results<List<Appointment>>> GetHairdresseSchedule(User hairdresser);
+        Task<Results<List<Appointment>>> GetUserAppointments(int? userid);
+
+        Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid);
 
         Task<Results<List<DateTime>>> GetAvailableSlots(int hairdresserId, DateOnly date, int serviceDurationInMinutes);
 

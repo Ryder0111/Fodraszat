@@ -15,6 +15,11 @@ namespace FodraszatIdopont.Repositories
             _db = db;
         }
 
+        public async Task<int> CountBookedByUserId(int userId)
+        {
+            return await _db.Appointments.CountAsync(a => a.UserId == userId && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked);
+        }
+
         public async Task<Appointment> Create(Appointment appointment)
         {
             _db.Appointments.Add(appointment);
@@ -22,15 +27,20 @@ namespace FodraszatIdopont.Repositories
             return appointment;
         }
 
-        public async Task<bool> ExistsInTimeRange(int id, DateTime start, DateTime end)
+        public async Task<bool> ExistsInTimeRangeH(int id, DateTime start, DateTime end)
         {
             return await _db.Appointments.Where(h => h.HairdresserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime);
+        }
+
+        public async Task<bool> ExistsInTimeRangeU(int id, DateTime start, DateTime end)
+        {
+            return await _db.Appointments.Where(u => u.UserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime);
         }
 
 
         public async Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date)
         {
-            return await _db.Appointments.Where(h => h.HairdresserId == id && h.StartTime >= date.ToDateTime(TimeOnly.MinValue) && h.StartTime < date.ToDateTime(TimeOnly.MinValue).AddDays(1)).ToListAsync();
+            return await _db.Appointments.Where(h => h.HairdresserId == id && h.StartTime >= date.ToDateTime(TimeOnly.MinValue) && h.StartTime < date.ToDateTime(TimeOnly.MinValue).AddDays(1)).Include(s => s.Service).Include(u => u.User).ToListAsync();
         }
 
         public async Task<List<Appointment>> GetAppointmentsByHairdresserInTimeRange(int id, DateTime start, DateTime end)
@@ -60,7 +70,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<List<Appointment>> GetFutureAppointmentsByUser(int id)
         {
-            return await _db.Appointments.Where(u => u.UserId == id && u.StartTime > DateTime.Now).ToListAsync();
+            return await _db.Appointments.Where(u => u.UserId == id && u.StartTime > DateTime.Now).Include(a => a.Service).Include(h => h.Hairdresser).ToListAsync();
         }
 
         public async Task Update(Appointment appointment)

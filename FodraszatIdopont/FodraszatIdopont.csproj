@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Log\" />
+    <Folder Include="Views\Admin\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
 
