@@ -136,9 +136,9 @@ namespace FodraszatIdopont.Controllers
 
             var model = new AppointmentDTO
             {
-                Appointment = new MAAppointmentViewModel { UserId = _currentUserService.UserId ?? 0},
+                Appointment = new MAAppointmentViewModel { UserId = _currentUserService.UserId ?? 0 },
                 Hairdressers = fodraszok.Data,
-                Services = szolgaltatasok.Data
+                Services = szolgaltatasok.Data!.Where(s => s.isActive).ToList()
             };
 
             return View(model);
