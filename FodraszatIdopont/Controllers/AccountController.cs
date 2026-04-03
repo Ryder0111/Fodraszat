@@ -73,8 +73,8 @@ namespace FodraszatIdopont.Controllers
         }
 
 
-        [HttpPost] 
-        [ValidateAntiForgeryToken] 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             // Kijelentkeztetés a Cookie-ból
@@ -104,6 +104,7 @@ namespace FodraszatIdopont.Controllers
                 ModelState.AddModelError("", "Bot vagy!");
                 return View(felhasznalo);
             }
+;
 
             if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()

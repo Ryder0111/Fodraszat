@@ -91,8 +91,18 @@
 
         <button type="submit" class="btn-primary-custom w-100 border-0 mb-3 mt-2">Regisztráció</button>
 
+        <div class="text-center mt-4 pt-3 border-top" style="border-color: #eee !important;">
+            <p class="small text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                <i class="fas fa-shield-alt me-1" style="color: var(--accent-color);"></i> 
+                Ezt az oldalt a reCAPTCHA védi, a Google 
+                <a href="https://policies.google.com/privacy" target="_blank" class="text-decoration-none fw-bold" style="color: var(--text-muted);">Adatvédelmi irányelvei</a> és 
+                <a href="https://policies.google.com/terms" target="_blank" class="text-decoration-none fw-bold" style="color: var(--text-muted);">Feltételei</a> érvényesek.
+            </p>
+        </div>
+
         <div class="text-center mt-3">
             <span class="text-muted">Már van fiókod?</span>
+
             <a asp-action="Login" class="text-decoration-none fw-bold" style="color: var(--primary-color);">Lépj be itt!</a>
         </div>
     </form>

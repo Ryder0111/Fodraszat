@@ -192,3 +192,10 @@
 2026-04-03 12:51:39 - 6 - időpontgolalás
 2026-04-03 12:55:44 - 6 - időpontgolalás
 2026-04-03 12:58:08 - 6 - időpontgolalás
+2026-04-03 15:03:11 - ! Sikertelen robot bejelentkezlsés marcell.fodrasz@gmail.com fiókkal !
+2026-04-03 15:29:47 - 6 - kijelentkezés
+2026-04-03 16:42:34 - 1 - kijelentkezés
+2026-04-03 16:42:47 - ! Sikertelen robot bejelentkezlsés admin fiókkal !
+2026-04-03 16:42:58 - ! Sikertelen robot bejelentkezlsés admin fiókkal !
+2026-04-03 16:43:05 - ! Sikertelen robot bejelentkezlsés admin fiókkal !
+2026-04-03 16:44:30 - ! Sikertelen robot bejelentkezlsés gabor.fodrasz@gmail.com fiókkal !

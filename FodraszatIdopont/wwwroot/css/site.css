@@ -21,7 +21,14 @@ html {
     --text-dark: #2C2C2C;
     --text-muted: #666666;
     --overlay-color: rgba(0, 0, 0, 0.6);
-    --navbar-height: 90px;
+    --navbar-height: 105px; /* Asztali méret */
+}
+
+/* Mobilon kisebb a menü, így kisebb eltolás kell! */
+@media (max-width: 768px) {
+    :root {
+        --navbar-height: 80px;
+    }
 }
 
 /* --- TISZTÍTOTT LAYOUT (FLEXBOX STICKY FOOTER) --- */
@@ -61,7 +68,7 @@ main[role="main"] {
     left: 0;
     width: 100%;
     z-index: 1060 !important;
-}
+    min-height: var(--navbar-height);
 
     .navbar-custom .navbar-brand {
         color: var(--accent-color) !important;
@@ -87,6 +94,7 @@ main[role="main"] {
     .navbar-custom .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23B89151' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
+}
 
 @media (max-width: 576px) {
     .navbar-brand-img {
@@ -204,14 +212,14 @@ h2 {
 
 .hero-background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
     background: url(../lib/hero-bg.jpg) center/cover;
     filter: blur(10px);
-    transform: scale(1.1);
     z-index: -2;
+    transform: none;
 }
 
     .hero-background::after {
@@ -228,15 +236,32 @@ h2 {
 .hero-content {
     text-align: center;
     color: white;
+    width: 100%;
     max-width: 900px;
-    padding: 30px;
+    padding: 30px 20px;
+    box-sizing: border-box;
     z-index: 1;
 }
 
     .hero-content h1 {
-        font-size: 4rem;
+        font-size: clamp(2.2rem, 8vw, 4rem);
         margin-bottom: 10px;
         font-weight: bold;
+        line-height: 1.2;
+        word-wrap: break-word;
+    }
+
+    .hero-content p {
+        font-size: 1.6rem;
+        margin-bottom: 50px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(2.2rem, 8vw, 4rem); /* Ez automatikusan skálázódik a kijelzővel! */
+        margin-bottom: 10px;
+        font-weight: bold;
+        line-height: 1.2;
+        word-wrap: break-word;
     }
 
     .hero-content p {
@@ -390,7 +415,7 @@ h2 {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     justify-content: center;
     gap: 25px;
     max-width: 1200px;
@@ -581,6 +606,7 @@ h2 {
     }
 
     .contact-container {
+        flex-direction: column;
         text-align: center;
         gap: 30px;
     }
@@ -626,18 +652,20 @@ h2 {
     }
 }
 
-
-/* --- BRUTÁLIS OVERRIDE A LÁBLÉC ÉS A KIFOLYÁS ELLEN --- */
-html, body {
-    /* Megtiltjuk a böngészőnek, hogy fixálja a magasságot */
-    height: auto !important;
-    min-height: 100vh !important;
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
 }
 
 body {
-    /* Flexbox helyett CSS Gridet használunk, ami bolondbiztos */
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
     display: grid !important;
     grid-template-rows: 1fr auto !important;
+    margin: 0;
+    padding-top: var(--navbar-height);
 }
 
 main[role="main"] {
@@ -946,6 +974,10 @@ main[role="main"] {
         gap: 15px;
     }
 
+    .grecaptcha-badge {
+        display: none !important;
+    }
+
     .schedule-datetime {
         border-right: none;
         border-bottom: 2px dashed #eee;
@@ -1042,4 +1074,13 @@ main[role="main"] {
     background-color: transparent;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+.features-grid,
+.services-section,
+.gallery-section,
+.contact-section {
+    max-width: 100vw;
+    overflow: hidden; 
+    box-sizing: border-box; 
 }
