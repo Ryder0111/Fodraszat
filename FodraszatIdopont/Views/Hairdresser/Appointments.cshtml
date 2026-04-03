@@ -108,7 +108,7 @@
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
                             <form asp-action="CompleteAppointment" id="completeForm_@item.AppointmentId" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
-                                <input type="button" class="btn-action btn-complete" title="Teljesítve" value="Kész" onclick="confirmComplete(completeForm_@item.AppointmentId)">
+                                <input type="button" class="btn-action btn-complete" title="Teljesítve" value="Kész" onclick="confirmComplete(this.form)">
                             </form>
 
                             <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
@@ -155,21 +155,20 @@
         });
     }
 
-    function confirmComplete(formId) {
-        Swal.fire({
-            title: 'Biztosan késznek nyilvánítod?',
-            text: "Ezt a műveletet később nem vonhatod vissza!",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545', // Danger piros a lemondáshoz
-            cancelButtonColor: '#6c757d',  // Szürke a mégsem gombhoz
-            confirmButtonText: 'Igen, lemondom!',
-            cancelButtonText: 'Mégsem'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Megkeresi a formot az egyedi ID alapján, és beküldi a szerverre
-                document.getElementById(formId).submit();
-            }
-        });
-    }
+    function confirmComplete(clickedForm) {
+    Swal.fire({
+        title: 'Biztosan késznek nyilvánítod?',
+        text: "Ezt a műveletet később nem vonhatod vissza!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745', // Ez lesz a zöld gombod
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Igen, kész van!',
+        cancelButtonText: 'Mégsem'
+    }).then((result) => {
+        if (result && result.isConfirmed) {
+            clickedForm.submit();
+        }
+    });
+}
 </script>
