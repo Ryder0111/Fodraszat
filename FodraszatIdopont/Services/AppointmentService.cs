@@ -193,15 +193,26 @@ namespace FodraszatIdopont.Services
 
             var slots = new List<DateTime>();
             DateTime current;
-            if(cDay == date)
+            int nyitasOra = 8;
+            int zarasOra = 18;
+
+            if (cDay == date)
             {
-                current = date.ToDateTime(new TimeOnly(DateTime.Now.Hour+1, 0));
+                int kovetkezoOra = Math.Max(nyitasOra, DateTime.Now.Hour + 1);
+
+                if (kovetkezoOra >= zarasOra)
+                {
+                    return Results<List<DateTime>>.Fail("Mára már nincs több szabad időpont.");
+                }
+
+                current = date.ToDateTime(new TimeOnly(kovetkezoOra, 0));
             }
             else
             {
-                current = date.ToDateTime(new TimeOnly(10, 0));
+                current = date.ToDateTime(new TimeOnly(nyitasOra, 0));
             }
-            var closing = date.ToDateTime(new TimeOnly(18, 0));
+
+            var closing = date.ToDateTime(new TimeOnly(zarasOra, 0));
 
             while (current + TimeSpan.FromMinutes(serviceDurationInMinutes) <= closing)
             {
