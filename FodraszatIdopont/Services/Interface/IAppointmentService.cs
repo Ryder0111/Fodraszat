@@ -19,7 +19,7 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<List<Appointment>>> GetUserAppointments(int? userid);
 
-        Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid);
+        Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid, int offset);
 
         Task<Results<List<DateTime>>> GetAvailableSlots(int hairdresserId, DateOnly date, int serviceDurationInMinutes);
 

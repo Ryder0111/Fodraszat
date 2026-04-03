@@ -22,14 +22,20 @@ namespace FodraszatIdopont.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Appointments()
+        public async Task<IActionResult> Appointments(int offset = 0)
         {
-            var idopontok = await _AppointmentService.GetHairdresserSchedule(_CurrentUserService.UserId);
+            if (offset < 0) offset = 0;
+            if (offset > 6) offset = 6;
+
+            var idopontok = await _AppointmentService.GetHairdresserSchedule(_CurrentUserService.UserId,offset);
             if (!idopontok.Success)
             {
                 TempData["error_msg"] = idopontok.Error;
                 return View();
             }
+
+            ViewBag.CurrentOffset = offset;
+            ViewBag.TargetDate = DateOnly.FromDateTime(DateTime.Now.AddDays(offset));
 
             return View(idopontok.Data);
         }

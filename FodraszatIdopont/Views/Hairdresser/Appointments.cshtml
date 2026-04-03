@@ -18,10 +18,66 @@
 
 <div class="staff-schedule-container">
     <h2>Következő Vendégeim</h2>
+    @{
+        int offset = ViewBag.CurrentOffset ?? 0;
+        DateOnly targetDate = ViewBag.TargetDate ?? DateOnly.FromDateTime(DateTime.Now);
+    
+        string formattedDate = targetDate.ToString("yyyy. MMMM dd. (dddd)");
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4 mx-auto" style="max-width: 800px;">
+    
+        @if (offset > 0)
+        {
+            <a asp-action="Appointments" asp-route-offset="@(offset - 1)" class="btn btn-outline-secondary shadow-sm">
+                &laquo; Előző nap
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-outline-secondary shadow-sm" disabled>&laquo; Előző nap</button>
+        }
+
+        <h4 class="mb-0 fw-bold" style="color: var(--primary-color);">
+            @if (offset == 0)
+            {
+                <span>Ma - </span>
+            }
+            else if (offset == 1)
+            {
+
+                <span>Holnap - </span>
+            }
+            @formattedDate
+        </h4>
+
+        @if (offset < 6)
+        {
+            <a asp-action="Appointments" asp-route-offset="@(offset + 1)" class="btn btn-primary-custom shadow-sm">
+                Következő nap &raquo;
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-secondary shadow-sm" disabled>Következő nap &raquo;</button>
+        }
+    </div>
     <p class="intro-text text-center">Itt láthatod a hozzád beírt időpontokat és a szolgáltatásokat.</p>
 
+    @{
+        bool isClosedDay = ViewBag.TargetDate != null && ((DateOnly)ViewBag.TargetDate).DayOfWeek == DayOfWeek.Sunday;
+    }
+
     <div class="schedule-list">
-        @if (Model != null && Model.Any())
+        @if (isClosedDay)
+        {
+            <div class="alert alert-secondary text-center mx-auto mt-4 shadow-sm" style="max-width: 600px; border-left: 5px solid #6c757d;">
+                <i class="fas fa-calendar-times fa-3x mb-3 d-block"></i>
+                <h4 class="fw-bold">Ma zárva vagyunk</h4>
+                <p class="mb-0">Ezen a napon pihenőnap van, nincsenek foglalható időpontok.</p>
+            </div>
+        }
+        else if (Model != null && Model.Any())
         {
             foreach (var item in Model.OrderBy(x => x.StartTime))
             {
@@ -71,8 +127,10 @@
         }
         else
         {
-            <div class="alert alert-info text-center mx-auto mt-4" style="max-width: 600px;" role="alert">
-                Nincs már a mai napra vendéged.
+            <div class="alert alert-info text-center mx-auto mt-4 shadow-sm" style="max-width: 600px; border-left: 5px solid #0dcaf0;">
+                <i class="fas fa-user-clock fa-3x mb-3 d-block"></i>
+                <h4 class="fw-bold">Nincs ütemezett vendég</h4>
+                <p class="mb-0">Munkanap van, de mára még egy vendég sem foglalt hozzád időpontot.</p>
             </div>
         }
     </div>

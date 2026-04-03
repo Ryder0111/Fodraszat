@@ -147,7 +147,7 @@ namespace FodraszatIdopont.Services
             return Results<Appointment>.Ok(appointment);
         }
 
-        public async Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid)
+        public async Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid, int offset)
         {
             if (hairdresserid == null)
                 return Results<List<Appointment>>.Fail("Hibás id");
@@ -159,7 +159,7 @@ namespace FodraszatIdopont.Services
 
             else
             {
-                var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now));
+                var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now).AddDays(offset));
                 return Results<List<Appointment>>.Ok(idopontok);
             }
         }

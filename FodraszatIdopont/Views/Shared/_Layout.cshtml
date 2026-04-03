@@ -67,7 +67,7 @@
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
                         {
                             <li class="nav-item mx-2">
-                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments">Beosztás</a>
+                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments" asp-route-offset="0">Beosztás</a>
                             </li>
                         }
 
