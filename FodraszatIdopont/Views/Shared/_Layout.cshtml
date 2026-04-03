@@ -149,15 +149,15 @@
 
             <div class="offcanvas-body p-0" style="background-color: #fdfbf7;">
                 <div class="list-group list-group-flush">
-                    <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">👥 Felhasználók kezelése</a>
-                    <a asp-controller="Admin" asp-action="Services" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Szolgáltatások</a>
-                    <a asp-controller="User" asp-action="Index" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Saját Iőpontjaim</a>
+                    <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;"><i class="fas fa-users-cog me-2" style="color: #4b2c61;"></i>  Felhasználók kezelése</a>
+                    <a asp-controller="Admin" asp-action="Services" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;"><i class="fas fa-cut me-2" style="color: #d182b5;"></i>  Szolgáltatások</a>
+                    <a asp-controller="User" asp-action="Index" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;"><i class="fas fa-calendar-check me-2" style="color: #6c8dbf;"></i>  Saját Iőpontjaim</a>
                     <form asp-controller="Account"
                           asp-action="Logout"
                           method="post">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="color: var(--primary-color);">
-                            🚪 Kijelentkezés
+                            <i class="fas fa-sign-out-alt me-2"></i>  Kijelentkezés
                         </button>
                     </form>
                 </div>
