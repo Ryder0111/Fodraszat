@@ -185,3 +185,10 @@
 2026-04-03 11:29:47 - 5 - gabor.fodrasz@gmail.com - bejelentkezés
 2026-04-03 11:41:20 - 5 - kijelentkezés
 2026-04-03 11:41:26 - 6 - marcell.fodrasz@gmail.com - bejelentkezés
+2026-04-03 12:38:36 - 6 - időpontgolalás
+2026-04-03 12:42:50 - 6 - időpontgolalás
+2026-04-03 12:44:24 - 6 - időpontgolalás
+2026-04-03 12:51:21 - 6 - időpontgolalás
+2026-04-03 12:51:39 - 6 - időpontgolalás
+2026-04-03 12:55:44 - 6 - időpontgolalás
+2026-04-03 12:58:08 - 6 - időpontgolalás

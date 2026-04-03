@@ -34,7 +34,7 @@ namespace FodraszatIdopont.Controllers
                 return View();
             }
             
-            return View(idopontok.Data);
+            return View("Indexu",idopontok.Data);
         }
 
         [HttpGet]

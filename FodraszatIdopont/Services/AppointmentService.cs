@@ -232,7 +232,7 @@ namespace FodraszatIdopont.Services
                 if (!conflict)
                 {
                     slots.Add(current);
-                    current += TimeSpan.FromMinutes(60);
+                    current += TimeSpan.FromMinutes(serviceDurationInMinutes);
                 }
             }
 

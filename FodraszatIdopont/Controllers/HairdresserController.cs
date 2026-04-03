@@ -19,7 +19,7 @@ namespace FodraszatIdopont.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Indexh");
         }
 
         public async Task<IActionResult> Appointments(int offset = 0)

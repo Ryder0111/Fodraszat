@@ -29,12 +29,12 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<bool> ExistsInTimeRangeH(int id, DateTime start, DateTime end)
         {
-            return await _db.Appointments.Where(h => h.HairdresserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime);
+            return await _db.Appointments.Where(h => h.HairdresserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked);
         }
 
         public async Task<bool> ExistsInTimeRangeU(int id, DateTime start, DateTime end)
         {
-            return await _db.Appointments.Where(u => u.UserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime);
+            return await _db.Appointments.Where(u => u.UserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked);
         }
 
 
