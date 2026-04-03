@@ -62,7 +62,7 @@
                     <div class="appointment-footer">
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
-                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post" ">
+                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointment" asp-route-id="@item.AppointmentId" method="post">
                                 <input type="button" class="btn-cancel" value="Időpont lemondása" onclick="confirmCancel('cancelForm_@item.AppointmentId')">
                             </form>
                         }

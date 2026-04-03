@@ -1,4 +1,4 @@
-/* --- ALAPVETÕ RENDSZER BEÁLLÍTÁSOK --- */
+/* --- ALAPVETŐ RENDSZER BEÁLLÍTÁSOK --- */
 html {
     font-size: 14px;
 }
@@ -30,7 +30,7 @@ body {
     color: var(--text-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    overflow-x: hidden; /* Megakadályozza a vízszintes görgetõsávot a 100vw trükkök miatt */
+    overflow-x: hidden; /* Megakadályozza a vízszintes görgetősávot a 100vw trükkök miatt */
     /* Tökéletes Footer letapasztás */
     display: flex;
     flex-direction: column;
@@ -48,7 +48,7 @@ body {
 main[role="main"] {
     flex: 1 0 auto;
     width: 100%;
-    /* Törölve minden alsó és felsõ extra távolság, hogy a kapcsolat rész rápattanjon a láblécre */
+    /* Törölve minden alsó és felső extra távolság, hogy a kapcsolat rész rápattanjon a láblécre */
     padding-bottom: 0;
 }
 
@@ -167,7 +167,6 @@ h2 {
         padding-bottom: 30px;
     }
 
-
 /* --- GOMBOK --- */
 .btn-primary-custom {
     background-color: var(--accent-color);
@@ -186,7 +185,7 @@ h2 {
         color: var(--primary-color) !important;
     }
 
-/* --- FÕOLDAL: HERO --- */
+/* --- FŐOLDAL: HERO --- */
 .hero-container {
     position: relative;
     width: 100vw;
@@ -243,7 +242,7 @@ h2 {
         margin-bottom: 50px;
     }
 
-/* --- FÕOLDAL: SZOLGÁLTATÁSOK & KÁRTYÁK --- */
+/* --- FŐOLDAL: SZOLGÁLTATÁSOK & KÁRTYÁK --- */
 .features-grid {
     display: flex;
     justify-content: center;
@@ -255,6 +254,7 @@ h2 {
 
 .feature-item {
     width: 230px;
+    max-width: 100%; /* Plusz védelem extrém kis kijelzőre */
 }
 
 .feature-circle {
@@ -291,7 +291,8 @@ h2 {
     border: 1px solid #eee;
     border-top: 5px solid var(--primary-color);
     padding: 30px;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
@@ -337,7 +338,7 @@ h2 {
             background-color: var(--bg-light);
         }
 
-    /* A közvetlen bevezetõ szöveg ("Várjuk szeretettel...") */
+    /* A közvetlen bevezető szöveg ("Várjuk szeretettel...") */
     .contact-section > p {
         color: #d1c5b4;
         margin-left: auto;
@@ -356,7 +357,7 @@ h2 {
 
 .contact-info, .map-container {
     flex: 1;
-    min-width: 300px;
+    min-width: min(100%, 300px); /* Javítva: védelem a nagyon keskeny kijelzőkhöz */
 }
 
 .contact-info {
@@ -378,7 +379,7 @@ h2 {
         color: var(--accent-color);
     }
 
-/* --- FÕOLDAL: GALÉRIA --- */
+/* --- FŐOLDAL: GALÉRIA --- */
 .gallery-section {
     padding: 100px 20px;
     text-align: center;
@@ -387,7 +388,7 @@ h2 {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
     justify-content: center;
     gap: 20px;
     max-width: 1300px;
@@ -405,6 +406,7 @@ h2 {
 .custom-calendar {
     border-collapse: collapse;
     table-layout: fixed;
+    width: 100%; /* Biztosítja, hogy kitöltse a rendelkezésre álló helyet */
 }
 
     .custom-calendar th {
@@ -509,13 +511,13 @@ h2 {
     }
 }
 
-/* --- LEBEGÕ ÉRTESÍTÉSEK (TOAST) --- */
+/* --- LEBEGŐ ÉRTESÍTÉSEK (TOAST) --- */
 .floating-alert {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1100; /* Magasabb, mint a 1060-as Navbar, így biztosan nem takarja ki! */
-    min-width: 350px;
+    min-width: min(90%, 350px); /* Javítva: Ha a kijelző < 350px, felveszi a 90%-ot */
     max-width: 90%;
     text-align: left;
     background-color: white;
@@ -553,20 +555,8 @@ h2 {
     }
 
     100% {
-        top: -100px; /* Szépen visszakúszik a képernyõ tetején kívülre */
+        top: -100px; /* Szépen visszakúszik a képernyő tetején kívülre */
         opacity: 0;
-    }
-}
-
-@keyframes slideDownAlert {
-    0% {
-        top: -100px;
-        opacity: 0;
-    }
-
-    100% {
-        top: 20px;
-        opacity: 1;
     }
 }
 
@@ -592,12 +582,44 @@ h2 {
         .contact-info h3 {
             border-bottom: none;
         }
+
+    /* Naptár optimalizálás kis kijelzőre */
+    .custom-calendar td {
+        padding: 10px 2px;
+    }
+
+    .day-number {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%; /* Védelem vízszintes görgetés ellen */
+    }
+
+    .schedule-actions {
+        width: 100%;
+        justify-content: flex-start;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 5px;
+        gap: 15px;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 12px 15px;
+    }
 }
 
 
 /* --- BRUTÁLIS OVERRIDE A LÁBLÉC ÉS A KIFOLYÁS ELLEN --- */
 html, body {
-    /* Megtiltjuk a böngészõnek, hogy fixálja a magasságot */
+    /* Megtiltjuk a böngészőnek, hogy fixálja a magasságot */
     height: auto !important;
     min-height: 100vh !important;
 }
@@ -617,15 +639,13 @@ main[role="main"] {
 }
 
 .footer {
-    /* A Footer kötelezõen a legalsó sorba kerül */
+    /* A Footer kötelezően a legalsó sorba kerül */
     grid-row: 2 !important;
     position: relative !important;
 }
 
 
-
-
-/* --- IDÕPONTJAIM (MY APPOINTMENTS) NÉZET --- */
+/* --- IDŐPONTJAIM (MY APPOINTMENTS) NÉZET --- */
 
 .appointments-container {
     padding: 60px 20px 100px 20px;
@@ -651,7 +671,8 @@ main[role="main"] {
     background: white;
     border: 1px solid #eee;
     border-top: 5px solid var(--accent-color);
-    width: 340px;
+    width: 100%;
+    max-width: 340px;
     border-radius: 8px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -900,7 +921,7 @@ main[role="main"] {
 
 .btn-delete-disabled {
     background-color: #f8d7da;
-    color: #721c24; 
+    color: #721c24;
     cursor: not-allowed;
     opacity: 0.6;
 }
