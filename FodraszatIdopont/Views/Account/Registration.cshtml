@@ -1,4 +1,6 @@
-﻿@model FodraszatIdopont.Models.ViewModels.RegisterViewModel
+﻿@using FodraszatIdopont.Services.Interface;
+@inject ICurrentUserService _CurrentUserService;
+@model FodraszatIdopont.Models.ViewModels.RegisterViewModel
 
 @{
     ViewData["Title"] = "Regisztráció";
@@ -39,6 +41,12 @@
             <label class="form-label fw-bold" style="color: var(--primary-color);">Email cím</label>
             <input type="text" asp-for="Email" class="form-control form-control-lg @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="email@pelda.com" style="border-color: #eee;">
             <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold" style="color: var(--primary-color);">Telefon szám</label>
+            <input type="tel" asp-for="Phone" class="form-control form-control-lg @(ViewData.ModelState["Phone"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="+36 (20) 444-44444" style="border-color: #eee;" id="phoneInput">
+            <span asp-validation-for="Phone" class="text-danger small"></span>
         </div>
 
         <div class="mb-4">
@@ -92,24 +100,30 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
     <script>
+        $(document).ready(function () {
+            $('#phoneInput').mask('+36 (00) 000-0000');
 
-        $('#registerForm').on('submit', function (e) {
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();
+                
+                var form = $(this);
 
-            e.preventDefault(); //Ez megállítja az adatok elküldését azonnal, mert ha ez történi, akkor a böngészőnek nincs ideje legenerálni a "Nem vagyok robot" tokent és hogy megelenjenek a modelstate hibák
+                if (!form.valid()) {
+                    return;
+                }
 
-            var form = $(this);
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998d00969edqR', { action: 'register' }).then(function (token) {
+                        var recaptchaInput = document.getElementById("recaptchaToken");
+                        if (recaptchaInput) {
+                            recaptchaInput.value = token;
+                        }
 
-            if (!form.valid()) { //Ahhoz kell, hogy előbb validálja az oldalt (mert ha előbb a robot ellenőrzés fut, le akkor nem írja ki a ViewModel hibákat
-                return;
-            }
-            
-            grecaptcha.ready(function () {
-                grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'register' }).then(function (token) {
-                    document.getElementById("recaptchaToken").value = token;
-
-                    form[0].submit(); //Ha megkapjuk a tokent, utána már mehet az adatok küldése, azért a 0. elem, mert a var form = $(this); jQuery lekérdezés olyan mint a querySelectAll
+                        form[0].submit();
+                    });
                 });
             });
         });

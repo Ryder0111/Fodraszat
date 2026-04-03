@@ -26,15 +26,12 @@
         {
             foreach (var item in Model)
             {
-                // Státusz logika: itt döntjük el, milyen színe legyen a jelvénynek.
-                // Ezt a saját modelledhez kell igazítani (lehet, hogy neked enumod van, pl. item.Status == AppointmentStatus.Approved)
                 var badgeClass = "bg-danger-custom";
                 var statuszSzoveg = "Lemondva";
 
-                // Írd át a "Jóváhagyva" feltételt arra, ahogy te tárolod a jóváhagyott státuszt!
                 if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                 {
-                    badgeClass = "bg-warning-custom";
+                    badgeClass = "bg-warning-custom";   
                     statuszSzoveg = "Jóváhagyva";
                 }
 
@@ -54,6 +51,12 @@
                         @* A ? (null-conditional) operátor megvéd a hibáktól, ha véletlen nincs betöltve a kapcsolat *@
                         <p><strong>Szolgáltatás:</strong> @item.Service!.Name</p>
                         <p><strong>Fodrász:</strong> @item.Hairdresser?.Name</p>
+                        <p>
+                            <strong>Telefon:</strong>
+                            <a href="tel:@item.Hairdresser?.Phone" class="text-decoration-none text-dark">
+                                @item.User?.Phone.ToFormattedPhone()
+                            </a>
+                        </p>
                         <p><strong>Státusz:</strong> <span class="badge-custom @badgeClass">@statuszSzoveg</span></p>
                     </div>
                     <div class="appointment-footer">

@@ -71,10 +71,20 @@ namespace FodraszatIdopont.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpPost] 
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Logout()
         {
+            // Kijelentkeztetés a Cookie-ból
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             Response.Cookies.Delete("FodraszatAuth");
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            WriteToLog($"{userId} - kijelentkezés");
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -99,6 +109,7 @@ namespace FodraszatIdopont.Controllers
             User user = new User()
             {
                 Name = felhasznalo.Name,
+                Phone = felhasznalo.Phone,
                 Email = felhasznalo.Email,
                 PasswordHash = PasswordHelper.HashPassword(felhasznalo.Password),
                 Sex = felhasznalo.Sex,

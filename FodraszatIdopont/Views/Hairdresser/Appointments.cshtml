@@ -33,6 +33,16 @@
 
                     <div class="schedule-info">
                         <h4 class="client-name">@item.User!.Name</h4>
+    
+                        <p class="mb-1">
+                            <small style="color: var(--primary-color); font-weight: bold;">
+                                <i class="fas fa-phone-alt me-1"></i>
+                                <a href="tel:@item.User?.Phone" class="text-decoration-none" style="color: inherit;">
+                                    @item.User?.Phone.ToFormattedPhone()
+                                </a>
+                            </small>
+                        </p>
+
                         <p class="service-name">
                             <strong>Szolgáltatás:</strong> @item.Service!.Name
                         </p>

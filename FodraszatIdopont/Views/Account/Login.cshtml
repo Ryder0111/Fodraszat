@@ -27,7 +27,7 @@
         <p style="color: var(--text-muted); font-size: 1.2rem;">Lépj be a fiókodba a foglalásaid kezeléséhez.</p>
     </div>
 
-    <form asp-action="Login" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 500px; border-top: 5px solid var(--primary-color);">
+    <form id="loginForm" asp-action="Login" method="post" class="mx-auto bg-white p-4 p-md-5 rounded shadow-sm" style="max-width: 500px; border-top: 5px solid var(--primary-color);">
         @Html.AntiForgeryToken()
 
         <div class="mb-4">
@@ -68,14 +68,28 @@
     </form>
 </div>
 
-<script>
-    document.querySelector("form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        grecaptcha.ready(function () {
-            grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'login' }).then(function (token) {
-                document.getElementById("recaptchaToken").value = token;
-                e.target.submit();
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault(); 
+                var form = $(this);
+
+                if (!form.valid()) {
+                    return; 
+                }
+
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'login' }).then(function (token) {
+                        var recaptchaInput = document.getElementById("recaptchaToken");
+                        if (recaptchaInput) {
+                            recaptchaInput.value = token;
+                        }
+                        form[0].submit();
+                    });
+                });
             });
         });
-    });
-</script>
+    </script>
+}
