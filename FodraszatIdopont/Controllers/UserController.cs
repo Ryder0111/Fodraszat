@@ -17,12 +17,14 @@ namespace FodraszatIdopont.Controllers
         public readonly IAppointmentService _AppointmentService;
         public readonly ICurrentUserService _CurrentUserService;
         private readonly IUserService _UserService;
+        private readonly IAuthService _AutService;
 
-        public UserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IUserService userService)
+        public UserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IUserService userService, IAuthService autService)
         {
             _AppointmentService = appointmentService;
             _CurrentUserService = currentUserService;
             _UserService = userService;
+            _AutService = autService;
         }
 
         public async Task<IActionResult> Index()
@@ -107,6 +109,8 @@ namespace FodraszatIdopont.Controllers
                 // És végül beállítjuk a felhasználónál az elérési utat, amit a HTML-ben használni fogunk
                 user.ProfileImageUrl = "/images/profiles/" + uniqueFileName;
             }
+
+            await _AutService.SignInUserAsync(user, true); //Átírja a sütikben is a nevét
 
             var updateResult = await _UserService.UpdateUser(user);
 

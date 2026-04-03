@@ -4,16 +4,21 @@ using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FodraszatIdopont.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _user;
-        public AuthService(IUserRepository user)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AuthService(IUserRepository user, IHttpContextAccessor httpContextAccessor)
         {
             _user = user;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Results<User>> AuthenticateAsync(string email, string password)
@@ -40,7 +45,40 @@ namespace FodraszatIdopont.Services
             felhasznalo.Role = Models.Enums.UserRole.User;
             await _user.Add(felhasznalo);
             return Results<User>.Ok(felhasznalo);
-            
+        }
+
+        public async Task SignInUserAsync(User user, bool rememberMe)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if(httpContext==null) return;
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name,          user.Name),
+                new Claim(ClaimTypes.Email,         user.Email),
+                new Claim(ClaimTypes.Role,          user.Role.ToString()),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(claimsIdentity);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = rememberMe,
+
+                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
+                IssuedUtc = rememberMe ? DateTimeOffset.UtcNow : null
+            };
+
+            await httpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                authProperties
+            );
         }
     }
 }

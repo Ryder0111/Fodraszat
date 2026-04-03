@@ -112,14 +112,17 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+
+    @if (!isAdmin) //Így az adminnak nem jelenek mg a modelsate hibák
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }
     <script>
         $(document).ready(function () {
             // Megnézzük Razor-rel, hogy Admin-e
-            var isAdmin = @(_CurrentUserService.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin) ? "true" : "false");
 
             // HA ADMIN: Kikapcsoljuk a validációt JS-ből (így nem kell a form tag-be írni semmit!)
-            if (isAdmin) {
+            if (@isAdmin) {
                 $('#editProfileForm').attr('novalidate', 'novalidate');
             }
 
