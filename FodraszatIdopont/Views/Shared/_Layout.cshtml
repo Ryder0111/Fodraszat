@@ -1,5 +1,4 @@
-﻿@* Ezek a fájl legtetejére menjenek! *@
-@using FodraszatIdopont.Services.Interface
+﻿@using FodraszatIdopont.Services.Interface
 @inject ICurrentUserService _UserService
 
 @* Egy fő C# blokkban előkészítjük az adatokat *@
@@ -28,18 +27,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
-        #timeSlotsContainer {
-            min-height: 220px;
-        }
+            #timeSlotsContainer {
+                min-height: 220px;
+            }
     </style>
 </head>
 <body>
     
     <header>
-        <nav class="navbar navbar-expand-lg navbar-custom navbar-dark fixed-top">
+        <nav class="navbar navbar-expand-xl navbar-custom navbar-dark fixed-top">
             <div class="container-fluid">
-                <img src="~/fodraszikon.png" class="navbar-brand-img" alt="Wild Cut logo" style="height: 90px;" />
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Wild Cut</a>
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/fodraszikon.png" class="navbar-brand-img me-2" alt="Wild Cut logo" />
+                    <span class="fs-4 fw-bold">Wild Cut</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -68,7 +69,7 @@
                         @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
                         {
                             <li class="nav-item mx-2">
-                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments">Beosztás</a>
+                                <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments" asp-route-offset="0">Beosztás</a>
                             </li>
                         }
 
@@ -79,18 +80,17 @@
                         <li class="nav-item mx-2">
                             <a class="nav-link" asp-controller="Account" asp-action="MAAppointment">Időpontfoglalás</a>
                         </li>
+                        
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-
                             <li class="nav-item dropdown mx-2">
                                 <a class="nav-link dropdown-toggle fw-bold d-flex align-items-center py-0"
-                                   href="#"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false"
-                                   style="height: 40px;">
+                                       href="#"
+                                       role="button"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
+                                       style="height: 40px;">
 
-                                    <!-- AVATAR LOGIKA KEZDŐDIK -->
                                     @if (!string.IsNullOrEmpty(profilePicUrl))
                                     {
                                         <img src="@profilePicUrl" alt="Profilkép" class="rounded-circle shadow-sm me-2" style="width: 32px; height: 32px; object-fit: cover;" />
@@ -101,31 +101,30 @@
                                             @initial
                                         </div>
                                     }
-                                    <!-- AVATAR LOGIKA VÉGE -->
                                     @userName
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-end shadow">
                                     <li>
                                         <a asp-controller="User" asp-action="EditProfile" class="dropdown-item">
-                                            <i class="bi bi-person-gear me-2"></i> <!-- Ide egy profilhoz illőbb ikont raktam -->
+                                            <i class="fas fa-user-cog me-2"></i>
                                             Profilom
                                         </a>
                                     </li>
                                     <li>
-                                        <form asp-controller="Account"
-                                              asp-action="Logout"
-                                              method="post">
+                                        <form asp-controller="Account" asp-action="Logout" method="post">
                                             @Html.AntiForgeryToken()
                                             <button type="submit" class="dropdown-item text-danger">
-                                                <i class="bi bi-box-arrow-right me-2"></i>
+                                                <i class="fas fa-sign-out-alt me-2"></i>
                                                 Kijelentkezés
                                             </button>
                                         </form>
                                     </li>
                                 </ul>
                             </li>
-                         } else {
+                        }
+                        else
+                        {
                             <li class="nav-item mx-2">
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">Bejelentkezés</a>
                             </li>
@@ -151,12 +150,12 @@
                 <div class="list-group list-group-flush">
                     <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">👥 Felhasználók kezelése</a>
                     <a asp-controller="Admin" asp-action="Services" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">✂️ Szolgáltatások</a>
-                    <a asp-controller="User" asp-action="Index" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Saját Iőpontjaim</a>
-                    <form asp-controller="Account"
-                          asp-action="Logout"
-                          method="post">
+                    
+                    <a asp-controller="User" asp-action="Index" class="list-group-item list-group-item-action py-3 fw-bold" style="color: var(--primary-color); background-color: transparent;">📅 Saját Időpontjaim</a>
+                    
+                    <form asp-controller="Account" asp-action="Logout" method="post">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger" style="color: var(--primary-color);">
+                        <button type="submit" class="list-group-item list-group-item-action py-3 fw-bold text-danger">
                             🚪 Kijelentkezés
                         </button>
                     </form>
@@ -173,11 +172,17 @@
             </div>
         </div>
     </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.google.com/recaptcha/api.js?render=6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> @* alertek formázhatóságához *@
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -14,14 +14,14 @@ namespace FodraszatIdopont.Services
         private readonly IUserRepository _Userrepo;
         private readonly ICurrentUserService _CurrentUser;
 
-        public AppointmentService(IAppointmentRepository repo1,IServiceRepository repo2, IUserRepository repo3, ICurrentUserService currentUser)
+        public AppointmentService(IAppointmentRepository repo1, IServiceRepository repo2, IUserRepository repo3, ICurrentUserService currentUser)
         {
             _Appointmentrepo = repo1;
             _Servicerepo = repo2;
             _Userrepo = repo3;
             _CurrentUser = currentUser;
         }
-        
+
         public async Task<Results<List<User>>> GetAllHairdressers()
         {
             var fodraszok = await _Userrepo.GetAllHairdresser();
@@ -139,7 +139,7 @@ namespace FodraszatIdopont.Services
             if (await _Appointmentrepo.ExistsInTimeRangeU(appointment.UserId, appointment.StartTime, appointment.EndTime))
                 return Results<Appointment>.Fail("Nem lehet ugyan arra az időpontra 2 foglalásod");
 
-            if (await _Appointmentrepo.ExistsInTimeRangeH(appointment.HairdresserId,appointment.StartTime,appointment.EndTime))
+            if (await _Appointmentrepo.ExistsInTimeRangeH(appointment.HairdresserId, appointment.StartTime, appointment.EndTime))
             {
                 return Results<Appointment>.Fail($"Ez az időpont({appointment.StartTime.ToString("MM. dd. HH:mm")}) már foglalt");
             }
@@ -147,7 +147,7 @@ namespace FodraszatIdopont.Services
             return Results<Appointment>.Ok(appointment);
         }
 
-        public async Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid)
+        public async Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid, int offset)
         {
             if (hairdresserid == null)
                 return Results<List<Appointment>>.Fail("Hibás id");
@@ -159,7 +159,7 @@ namespace FodraszatIdopont.Services
 
             else
             {
-                var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now));
+                var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresserBooked(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now).AddDays(offset));
                 return Results<List<Appointment>>.Ok(idopontok);
             }
         }
@@ -183,7 +183,7 @@ namespace FodraszatIdopont.Services
                 return Results<List<DateTime>>.Fail("Vasárnap zárva vagyunk.");
 
             DateOnly cDay = DateOnly.FromDateTime(DateTime.Now);
-            if (date<cDay)
+            if (date < cDay)
                 return Results<List<DateTime>>.Fail("Erre az időpontra már nem lehet foglalni!.");
 
             var appointments = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(hairdresserId, date);
@@ -193,15 +193,26 @@ namespace FodraszatIdopont.Services
 
             var slots = new List<DateTime>();
             DateTime current;
-            if(cDay == date)
+            int nyitasOra = 8;
+            int zarasOra = 18;
+
+            if (cDay == date)
             {
-                current = date.ToDateTime(new TimeOnly(DateTime.Now.Hour+1, 0));
+                int kovetkezoOra = Math.Max(nyitasOra, DateTime.Now.Hour + 1);
+
+                if (kovetkezoOra >= zarasOra)
+                {
+                    return Results<List<DateTime>>.Fail("Mára már nincs több szabad időpont.");
+                }
+
+                current = date.ToDateTime(new TimeOnly(kovetkezoOra, 0));
             }
             else
             {
-                current = date.ToDateTime(new TimeOnly(10, 0));
+                current = date.ToDateTime(new TimeOnly(nyitasOra, 0));
             }
-            var closing = date.ToDateTime(new TimeOnly(18, 0));
+
+            var closing = date.ToDateTime(new TimeOnly(zarasOra, 0));
 
             while (current + TimeSpan.FromMinutes(serviceDurationInMinutes) <= closing)
             {
@@ -221,7 +232,7 @@ namespace FodraszatIdopont.Services
                 if (!conflict)
                 {
                     slots.Add(current);
-                    current += TimeSpan.FromMinutes(60);
+                    current += TimeSpan.FromMinutes(serviceDurationInMinutes);
                 }
             }
 
@@ -334,12 +345,74 @@ namespace FodraszatIdopont.Services
         {
             var appointment = await _Appointmentrepo.GetById(id);
 
-            if(appointment == null)
+            if (appointment == null)
             {
                 return Results<Appointment>.Fail("Nincs ilyen időpont!");
             }
 
             return Results<Appointment>.Ok(appointment);
+        }
+
+        public async Task<Results<List<Appointment>>> CancelAllAppointments(int? hairdresserid, int offset)
+        {
+            if (hairdresserid == null)
+                return Results<List<Appointment>>.Fail("Hibás id");
+
+            var fodrasz = await _Userrepo.GetById(hairdresserid.Value);
+
+            if (fodrasz == null || !fodrasz.Role.HasFlag(UserRole.Hairdresser))
+                return Results<List<Appointment>>.Fail("Nincs ilyen fodrász");
+
+            var idopontok = await _Appointmentrepo.GetAppointmentsByDateAndHairdresser(fodrasz.UserId, DateOnly.FromDateTime(DateTime.Now).AddDays(offset));
+
+            if (idopontok.Any())
+            {
+                try
+                {
+                    foreach (var idopont in idopontok)
+                    {
+                        if (idopont.AppointmentStatus != AppointmentStatus.Completed)
+                        {
+                            idopont.AppointmentStatus = AppointmentStatus.Cancelled;
+                            _Appointmentrepo.UpdateWithoutSave(idopont);
+                        }
+                    }
+                    await _Appointmentrepo.SaveAsync();
+
+                    return Results<List<Appointment>>.Ok(idopontok);
+                }
+                catch (Exception ex)
+                {
+                    return Results<List<Appointment>>.Fail($"Hiba történt a mentés során: {ex.Message}");
+
+                }
+            }
+
+            return Results<List<Appointment>>.Fail("Ezen a napon nincs foglalás!");
+        }
+
+        public async Task<int> AutoCompletePastAppointmentsAsync()
+        {
+            var idopontok = await _Appointmentrepo.GetPastAppointments();
+            int count = idopontok.Count();
+
+            if (count > 0)
+            {
+                try
+                {
+                    foreach (var idopont in idopontok)
+                    {
+                        idopont.AppointmentStatus = AppointmentStatus.Completed;
+                        _Appointmentrepo.UpdateWithoutSave(idopont);
+                    }
+                    await _Appointmentrepo.SaveAsync();
+                }
+                catch (Exception)
+                {
+                    throw; // Továbbdobjuk a BackgroundService-nek, hogy ott logoljuk
+                }
+            }
+            return count;
         }
     }
 }

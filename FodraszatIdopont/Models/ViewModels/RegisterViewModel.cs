@@ -22,6 +22,17 @@ namespace FodraszatIdopont.Models.ViewModels
         [Compare("Password", ErrorMessage = "A két jelszó nem egyezik!")]
         public string ConfirmPassword { get; set; } = null!;
 
+        private string _phone = null!;
+
+        [Required(ErrorMessage = "A telefonszám megadása kötelező!")]
+        [Phone(ErrorMessage = "Nem megfelelő telefonszám formátum!")]
+        [DisplayFormat(DataFormatString = "{0:+## (##) ###-####}")]
+        public string Phone
+        {
+            get => _phone;
+            set => _phone = value != null ? new string(value.Where(char.IsDigit).ToArray()) : null!;
+        }
+
         [Required(ErrorMessage = "Válaszd ki a nemed!")]
         public Gender Sex { get; set; }
     }

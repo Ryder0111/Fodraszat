@@ -1,4 +1,5 @@
-﻿using FodraszatIdopont.Data;
+﻿using FodraszatIdopont.BackgroundServices;
+using FodraszatIdopont.Data;
 using FodraszatIdopont.Models;
 using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
@@ -46,6 +47,8 @@ namespace FodraszatIdopont
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            builder.Services.AddHostedService<AppointmentCleanupService>();
 
             var app = builder.Build();
 

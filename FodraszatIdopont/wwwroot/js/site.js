@@ -40,28 +40,6 @@ function setOffcanvasOffset() {
 window.addEventListener("load", setOffcanvasOffset);
 window.addEventListener("resize", setOffcanvasOffset);
 
-// ==========================================
-// 3. RECAPTCHA LOGIKA
-// ==========================================
-if (typeof grecaptcha !== 'undefined') {
-    grecaptcha.ready(function () {
-        const form = document.querySelector("form");
-        if (form) { // Csak akkor kössük rá a formra, ha van is form az oldalon!
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-
-                grecaptcha.execute('SITE_KEY', { action: 'login' })
-                    .then(function (token) {
-                        const tokenInput = document.getElementById("recaptchaToken");
-                        if (tokenInput) {
-                            tokenInput.value = token;
-                        }
-                        e.target.submit();
-                    });
-            });
-        }
-    });
-}
 
 // ==========================================
 // 4. JELSZÓ LOGIKA
@@ -85,4 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.toggle('fa-eye-slash');
         });
     });
+});
+
+$(document).ready(function () {
+    // Csak akkor maszkolunk, ha van ilyen elem az oldalon
+    if ($('#phoneInput').length > 0) {
+        $('#phoneInput').mask('+36 (00) 000-0000');
+    }
 });
