@@ -273,6 +273,22 @@ namespace FodraszatIdopont.Controllers
             return result.success == "true" && result.score >= 0.5;
         }
 
+        private void WriteToLog(string message)
+        {
+            var rootPath = _env.ContentRootPath; //a projekt gyökere
+
+            var logDirectory = Path.Combine(rootPath, "Log");
+
+            if (!Directory.Exists(logDirectory))
+            {
+                Directory.CreateDirectory(logDirectory);
+            }
+
+            var filePath = Path.Combine(logDirectory, "Logs.txt");
+
+            var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}";
+
+            System.IO.File.AppendAllText(filePath, logEntry);
         public async Task SignInUserAsync(User user, bool rememberMe)
         {
             var claims = new List<Claim>

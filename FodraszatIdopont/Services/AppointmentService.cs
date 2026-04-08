@@ -97,7 +97,7 @@ namespace FodraszatIdopont.Services
                 return Results<Appointment>.Fail("Ez az időpontfoglalás már le van mondva");
             }
 
-            if (!_CurrentUser.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser))
+            if (!_CurrentUser.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser) && !_CurrentUser.Roles.HasFlag(UserRole.Admin))
             {
                 if (DateTime.Now.AddDays(1) > idopont.StartTime)
                 {

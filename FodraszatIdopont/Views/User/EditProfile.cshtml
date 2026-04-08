@@ -10,6 +10,14 @@
     var isAdmin = _CurrentUserService.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin);
 }
 
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #28a745;">
+        <strong>Sikeres!</strong> @TempData["msg"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
 @if (TempData["error_msg"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show floating-alert shadow-lg" role="alert" style="border-left: 5px solid #dc3545;">
@@ -123,16 +131,17 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
+    @if (!isAdmin) //Így az adminnak nem jelenek mg a modelsate hibák
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }
     <script>
         $(document).ready(function () {
-            $('#phoneInput').mask('+36 (00) 000-0000');
+            // Megnézzük Razor-rel, hogy Admin-e
 
-            var isAdmin = @(_CurrentUserService.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin) ? "true" : "false");
-
-            if (isAdmin) {
+            // HA ADMIN: Kikapcsoljuk a validációt JS-ből (így nem kell a form tag-be írni semmit!)
+            if (@isAdmin) {
                 $('#editProfileForm').attr('novalidate', 'novalidate');
             }
 
