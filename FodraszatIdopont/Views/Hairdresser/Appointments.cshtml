@@ -107,11 +107,11 @@
                     <div class="schedule-actions">
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
-                            <form asp-action="CompleteAppointment" id="completeForm_@item.AppointmentId" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
+                            <form asp-action="CompleteAppointment" id="completeForm_@item.AppointmentId" asp-route-id="@item.AppointmentId" asp-route-offset="@offset" method="post" class="d-inline">
                                 <input type="button" class="btn-action btn-complete" title="Teljesítve" value="Kész" onclick="confirmComplete(this.form)">
                             </form>
 
-                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
+                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" asp-route-offset="@offset" method="post" class="d-inline">
                                 <input type="button" value="X" class="btn-action btn-delete" title="Lemondás" onclick="confirmCancel('cancelForm_@item.AppointmentId')">
                             </form>
                         }

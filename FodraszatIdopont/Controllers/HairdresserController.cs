@@ -22,7 +22,7 @@ namespace FodraszatIdopont.Controllers
             return View("Indexh");
         }
 
-        public async Task<IActionResult> Appointments(int offset = 0)
+        public async Task<IActionResult> Appointments(int offset)
         {
             if (offset < 0) offset = 0;
             if (offset > 6) offset = 6;
@@ -41,17 +41,17 @@ namespace FodraszatIdopont.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompleteAppointment(int id)
+        public async Task<IActionResult> CompleteAppointment(int id, int offset)
         {
             var idopont = await _AppointmentService.CompleteAppointment(id);
             if (!idopont.Success)
             {
                 TempData["error_msg"] = idopont.Error;
-                return RedirectToAction("Appointments");
+                return RedirectToAction("Appointments", new { offset = offset });
             }
 
             TempData["msg"] = "Befejezve";
-            return RedirectToAction("Appointments");
+            return RedirectToAction("Appointments", new { offset = offset });
         }
 
         [HttpPost]
