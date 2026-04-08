@@ -1,4 +1,6 @@
 ﻿@model List<FodraszatIdopont.Models.Entities.Appointment>
+@using FodraszatIdopont.Services.Interface
+@inject ICurrentUserService CurrentUserService
 
 @if (TempData["error_msg"] != null)
 {
@@ -63,6 +65,21 @@
         }
     </div>
     <p class="intro-text text-center">Itt láthatod a hozzád beírt időpontokat és a szolgáltatásokat.</p>
+
+    @if (Model != null && Model.Any(x => x.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked))
+    {
+        <div class="d-flex justify-content-center mb-4">
+            <form asp-action="CancelAllAppointments"
+                  asp-route-offset="@offset"
+                  asp-route-id="@CurrentUserService.UserId"
+                  method="post" id="cancelAllForm">
+                <button type="button" class="btn btn-outline-danger shadow-sm px-4"
+                        onclick="confirmBulkAction('cancelAllForm', 'lemondod az összes mai időpontot', true)">
+                    <i class="fas fa-trash-alt me-2"></i>Összes lemondása
+                </button>
+            </form>
+        </div>
+    }
 
     @{
         bool isClosedDay = ViewBag.TargetDate != null && ((DateOnly)ViewBag.TargetDate).DayOfWeek == DayOfWeek.Sunday;
@@ -156,19 +173,36 @@
     }
 
     function confirmComplete(clickedForm) {
-    Swal.fire({
-        title: 'Biztosan késznek nyilvánítod?',
-        text: "Ezt a műveletet később nem vonhatod vissza!",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745', // Ez lesz a zöld gombod
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Igen, kész van!',
-        cancelButtonText: 'Mégsem'
-    }).then((result) => {
-        if (result && result.isConfirmed) {
-            clickedForm.submit();
-        }
-    });
-}
+        Swal.fire({
+            title: 'Biztosan késznek nyilvánítod?',
+            text: "Ezt a műveletet később nem vonhatod vissza!",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745', // Ez lesz a zöld gombod
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Igen, kész van!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            if (result && result.isConfirmed) {
+                clickedForm.submit();
+            }
+        });
+    }
+
+    function confirmBulkAction(formId, message, isDanger = false) {
+        Swal.fire({
+            title: 'Biztos vagy benne?',
+            text: `Ezzel a művelettel ${message}!`,
+            icon: isDanger ? 'warning' : 'question',
+            showCancelButton: true,
+            confirmButtonColor: isDanger ? '#dc3545' : '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Igen, mehet!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+      }  
 </script>

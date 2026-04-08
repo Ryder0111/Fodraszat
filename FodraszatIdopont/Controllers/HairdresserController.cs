@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 namespace FodraszatIdopont.Controllers
 {
     [Authorize(Roles = "Hairdresser")]
-    public class HairdresserController : Controller
+    public class HairdresserController : BaseController
     {
         public readonly IAppointmentService _AppointmentService;
         public readonly ICurrentUserService _CurrentUserService;
+        private readonly IWebHostEnvironment _env;
 
-        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService)
+        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IWebHostEnvironment env)
         {
             _AppointmentService = appointmentService;
             _CurrentUserService = currentUserService;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -66,6 +68,21 @@ namespace FodraszatIdopont.Controllers
 
             TempData["msg"] = "Lemondva";
             return RedirectToAction("Appointments");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelAllAppointments(int id, int offset)
+        {
+            var idopontok = await _AppointmentService.CancelAllAppointments(id, offset);
+            if (!idopontok.Success)
+            {
+                TempData["error_msg"] = idopontok.Error;
+                WriteToLog($"Hiba a tömeges lemondásnál: {idopontok.Error}", _env.ContentRootPath);
+                return RedirectToAction("Appointments", new { offset = offset });
+            }
+
+            TempData["msg"] = "Befejezve";
+            return RedirectToAction("Appointments", new { offset = offset });
         }
     }
 }
