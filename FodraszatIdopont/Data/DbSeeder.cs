@@ -47,9 +47,10 @@ public static class DbSeeder
                     Sex = Gender.Male
                 },
                 new User
-                {
+                {   
                     Name = "Nagy Gábor",
                     Email = "gabor.fodrasz@gmail.com",
+                    ProfileImageUrl = "/images/profiles/091f0e39-a2a9-4345-90fc-a4a6e5f60b36.jpg",
                     Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("gabor123"),
                     Role = UserRole.Hairdresser,
@@ -131,7 +132,7 @@ public static class DbSeeder
                 {
                     Name = "Varga Máté",
                     Email = "mate.varga@gmail.com",
-                    Phone ="36204444444",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("mate123"),
                     Role = UserRole.User,
                     Sex = Gender.Male,

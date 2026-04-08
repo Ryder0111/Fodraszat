@@ -86,29 +86,37 @@ namespace FodraszatIdopont.Controllers
 
             if (model.ProfileImage != null && model.ProfileImage.Length > 0)
             {
-                // Készítünk egy egyedi fájlnevet (pl: a4b1-9c... + .jpg)
+                // 1. RÉGI KÉP TÖRLÉSE (ÚJ RÉSZ)
+                if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+                {
+                    // Megkeressük a régi fájl fizikai útvonalát
+                    // A TrimStart('/') azért kell, hogy a "/images/..."-ból "images/..." legyen a Path.Combine-hoz
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.ProfileImageUrl.TrimStart('/'));
+
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                // 2. ÚJ KÉP MENTÉSE (Ami már megvolt nálatok)
                 var fileExtension = Path.GetExtension(model.ProfileImage.FileName);
                 var uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
 
-                // Meghatározzuk, hova mentse. A wwwroot mappán belül egy images/profiles mappába.
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
 
-                // Ha nem létezik még ez a mappa, létrehozzuk
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
                 }
 
-                // A teljes mentési útvonal
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                // Kimásoljuk a szerverre a képet
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await model.ProfileImage.CopyToAsync(fileStream);
                 }
 
-                // És végül beállítjuk a felhasználónál az elérési utat, amit a HTML-ben használni fogunk
                 user.ProfileImageUrl = "/images/profiles/" + uniqueFileName;
             }
 

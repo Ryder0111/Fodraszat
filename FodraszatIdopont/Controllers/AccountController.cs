@@ -72,7 +72,6 @@ namespace FodraszatIdopont.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -229,7 +228,6 @@ namespace FodraszatIdopont.Controllers
             model.Services = services.Data;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAvailableSlots(int hairdresserId, string date, int serviceId)
         {
@@ -255,7 +253,6 @@ namespace FodraszatIdopont.Controllers
             return Json(result.Data);
         }
 
-
         public async Task<bool> VerifyRecaptcha(string token)
         {
             var secret = "6LcZrYUsAAAAAKmqf7smog4u8Uw_M7b65sA90RDK";
@@ -273,22 +270,6 @@ namespace FodraszatIdopont.Controllers
             return result.success == "true" && result.score >= 0.5;
         }
 
-        private void WriteToLog(string message)
-        {
-            var rootPath = _env.ContentRootPath; //a projekt gyökere
-
-            var logDirectory = Path.Combine(rootPath, "Log");
-
-            if (!Directory.Exists(logDirectory))
-            {
-                Directory.CreateDirectory(logDirectory);
-            }
-
-            var filePath = Path.Combine(logDirectory, "Logs.txt");
-
-            var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}";
-
-            System.IO.File.AppendAllText(filePath, logEntry);
         public async Task SignInUserAsync(User user, bool rememberMe)
         {
             var claims = new List<Claim>
