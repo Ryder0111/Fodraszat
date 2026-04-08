@@ -8,6 +8,10 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task Update(Appointment appointment);
 
+        Task SaveAsync();
+
+        void UpdateWithoutSave(Appointment appointment);
+
         Task<Appointment?> GetById(int id);
 
         Task<List<Appointment>> GetByUserId(int id);
@@ -16,11 +20,15 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<List<Appointment>> GetFutureAppointmentsByHairdresserId(int id);
 
+        Task<List<Appointment>> GetPastAppointments();
+
         Task<List<Appointment>> GetAppointmentsByHairdresserInTimeRange(int id, DateTime start, DateTime end);
 
         Task<List<Appointment>> GetFutureAppointmentsByUser(int id);
 
         Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date);
+
+        Task<List<Appointment>> GetAppointmentsByDateAndHairdresserBooked(int id, DateOnly date);
 
         Task<bool> ExistsInTimeRangeH(int id, DateTime start, DateTime end);
 

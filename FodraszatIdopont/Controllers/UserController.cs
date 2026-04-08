@@ -36,7 +36,7 @@ namespace FodraszatIdopont.Controllers
                 return View();
             }
             
-            return View(idopontok.Data);
+            return View("Indexu",idopontok.Data);
         }
 
         [HttpGet]
@@ -50,6 +50,7 @@ namespace FodraszatIdopont.Controllers
                 Name = user.Name,
                 Email = user.Email,
                 Sex = user.Sex,
+                Phone = user.Phone,
                 CurrentProfileImageUrl = user.ProfileImageUrl
             };
 
@@ -80,6 +81,7 @@ namespace FodraszatIdopont.Controllers
             // Csak akkor írjuk át, ha nem üres a mező
             if (!string.IsNullOrWhiteSpace(model.Name)) user!.Name = model.Name;
             if (!string.IsNullOrWhiteSpace(model.Email)) user!.Email = model.Email;
+            if (!string.IsNullOrWhiteSpace(model.Phone)) user!.Phone = model.Phone;
             user!.Sex = model.Sex;
 
             if (model.ProfileImage != null && model.ProfileImage.Length > 0)

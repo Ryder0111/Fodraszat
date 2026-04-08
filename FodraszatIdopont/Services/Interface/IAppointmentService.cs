@@ -17,9 +17,13 @@ namespace FodraszatIdopont.Services.Interface
 
         Task<Results<Appointment>> CompleteAppointment(int appointmentid);
 
+        Task<int> AutoCompletePastAppointmentsAsync();
+
+        Task<Results<List<Appointment>>> CancelAllAppointments(int? hairdresserid, int offset);
+
         Task<Results<List<Appointment>>> GetUserAppointments(int? userid);
 
-        Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid);
+        Task<Results<List<Appointment>>> GetHairdresserSchedule(int? hairdresserid, int offset);
 
         Task<Results<List<DateTime>>> GetAvailableSlots(int hairdresserId, DateOnly date, int serviceDurationInMinutes);
 

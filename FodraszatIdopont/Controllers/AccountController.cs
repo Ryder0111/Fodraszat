@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
@@ -47,7 +47,7 @@ namespace FodraszatIdopont.Controllers
             if (!isHuman)
             {
                 ModelState.AddModelError("", "Robot ellenőrzés sikertelen.");
-                WriteToLog($"! Sikertelen robot bejelentkezlsés {model.Email} fiókkal !");
+                WriteToLog($"! Sikertelen robot bejelentkezlsés {model.Email} fiókkal !", _env.ContentRootPath);
                 return View(model);
             }
 
@@ -66,15 +66,25 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-            await _authService.SignInUserAsync(user!, model.RememberMe);
-            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés");
+            await SignInUserAsync(user!, model.RememberMe);
+            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés", _env.ContentRootPath);
 
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            // Kijelentkeztetés a Cookie-ból
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             Response.Cookies.Delete("FodraszatAuth");
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            WriteToLog($"{userId} - kijelentkezés", _env.ContentRootPath);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -94,11 +104,13 @@ namespace FodraszatIdopont.Controllers
                 ModelState.AddModelError("", "Bot vagy!");
                 return View(felhasznalo);
             }
+;
 
             if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()
             {
                 Name = felhasznalo.Name,
+                Phone = felhasznalo.Phone,
                 Email = felhasznalo.Email,
                 PasswordHash = PasswordHelper.HashPassword(felhasznalo.Password),
                 Sex = felhasznalo.Sex,
@@ -110,8 +122,8 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            await _authService.SignInUserAsync(user, false);
-            WriteToLog($"{user.UserId} - {user.Email} - regisztráció");
+            await SignInUserAsync(user, false);
+            WriteToLog($"{user.UserId} - {user.Email} - regisztráció", _env.ContentRootPath);
 
             return RedirectToAction("Index", "Home");
         }
@@ -204,7 +216,7 @@ namespace FodraszatIdopont.Controllers
                 return View("MAAppointment", model);
             }
 
-            WriteToLog($"{model.Appointment.UserId} - időpontgolalás");
+            WriteToLog($"{model.Appointment.UserId} - időpontgolalás", _env.ContentRootPath);
             TempData["msg"] = "Sikeres időpontfoglalás";
             return RedirectToAction("Index", "Home");
         }
@@ -277,6 +289,35 @@ namespace FodraszatIdopont.Controllers
             var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}";
 
             System.IO.File.AppendAllText(filePath, logEntry);
+        public async Task SignInUserAsync(User user, bool rememberMe)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name,          user.Name),
+                new Claim(ClaimTypes.Email,         user.Email),
+                new Claim(ClaimTypes.Role,          user.Role.ToString()),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(claimsIdentity);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = rememberMe,
+
+                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
+                IssuedUtc = rememberMe ? DateTimeOffset.UtcNow : null
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                authProperties
+            );
         }
     }
 }

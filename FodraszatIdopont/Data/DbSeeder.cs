@@ -14,6 +14,7 @@ public static class DbSeeder
                 {
                     Name = "admin",
                     Email = "admin",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("admin"),
                     Role = UserRole.Admin,
                     Sex = Gender.None,
@@ -22,6 +23,7 @@ public static class DbSeeder
                 {
                     Name = "Anna Kovács",
                     Email = "anna.kovacs@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("anna123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -30,6 +32,7 @@ public static class DbSeeder
                 {
                     Name = "Péter Nagy",
                     Email = "peter.nagy@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("peter123"),
                     Role = UserRole.User,
                     Sex = Gender.Male,
@@ -38,6 +41,7 @@ public static class DbSeeder
                 {
                     Name = "Nagy Marcell Miklós",
                     Email = "marcell.nagy@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("marcell123"),
                     Role = UserRole.User,
                     Sex = Gender.Male
@@ -46,6 +50,7 @@ public static class DbSeeder
                 {
                     Name = "Nagy Gábor",
                     Email = "gabor.fodrasz@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("gabor123"),
                     Role = UserRole.Hairdresser,
                     Sex = Gender.Male,
@@ -54,6 +59,7 @@ public static class DbSeeder
                 {
                     Name = "Belák Marcell",
                     Email = "marcell.fodrasz@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("marcell123"),
                     Role = UserRole.Hairdresser,
                     Sex = Gender.Male,
@@ -62,6 +68,7 @@ public static class DbSeeder
                 {
                     Name = "Tóth Eszter",
                     Email = "eszter.toth@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("eszter123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -70,6 +77,7 @@ public static class DbSeeder
                 {
                     Name = "Szabó Zsófia",
                     Email = "zsofia.szabo@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("zsofi123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -78,6 +86,7 @@ public static class DbSeeder
                 {
                     Name = "Kiss Viktória",
                     Email = "viki.kiss@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("viki123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -86,6 +95,7 @@ public static class DbSeeder
                 {
                     Name = "Farkas Réka",
                     Email = "reka.farkas@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("reka123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -94,6 +104,7 @@ public static class DbSeeder
                 {
                     Name = "Németh Lilla",
                     Email = "lilla.nemeth@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("lilla123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -102,6 +113,7 @@ public static class DbSeeder
                 {
                     Name = "Horváth Boglárka",
                     Email = "bogi.fodrasz@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("bogi123"),
                     Role = UserRole.Hairdresser,
                     Sex = Gender.Female,
@@ -110,6 +122,7 @@ public static class DbSeeder
                 {
                     Name = "Balogh Katalin",
                     Email = "kata.balogh@gmail.com",
+                    Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("kata123"),
                     Role = UserRole.User,
                     Sex = Gender.Female,
@@ -118,6 +131,7 @@ public static class DbSeeder
                 {
                     Name = "Varga Máté",
                     Email = "mate.varga@gmail.com",
+                    Phone ="36204444444",
                     PasswordHash = PasswordHelper.HashPassword("mate123"),
                     Role = UserRole.User,
                     Sex = Gender.Male,

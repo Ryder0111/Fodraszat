@@ -1,4 +1,6 @@
 ﻿@model List<FodraszatIdopont.Models.Entities.Appointment>
+@using FodraszatIdopont.Services.Interface
+@inject ICurrentUserService CurrentUserService
 
 @if (TempData["error_msg"] != null)
 {
@@ -18,10 +20,81 @@
 
 <div class="staff-schedule-container">
     <h2>Következő Vendégeim</h2>
+    @{
+        int offset = ViewBag.CurrentOffset ?? 0;
+        DateOnly targetDate = ViewBag.TargetDate ?? DateOnly.FromDateTime(DateTime.Now);
+    
+        string formattedDate = targetDate.ToString("yyyy. MMMM dd. (dddd)");
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4 mx-auto" style="max-width: 800px;">
+    
+        @if (offset > 0)
+        {
+            <a asp-action="Appointments" asp-route-offset="@(offset - 1)" class="btn btn-outline-secondary shadow-sm">
+                &laquo; Előző nap
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-outline-secondary shadow-sm" disabled>&laquo; Előző nap</button>
+        }
+
+        <h4 class="mb-0 fw-bold" style="color: var(--primary-color);">
+            @if (offset == 0)
+            {
+                <span>Ma - </span>
+            }
+            else if (offset == 1)
+            {
+
+                <span>Holnap - </span>
+            }
+            @formattedDate
+        </h4>
+
+        @if (offset < 6)
+        {
+            <a asp-action="Appointments" asp-route-offset="@(offset + 1)" class="btn btn-primary-custom shadow-sm">
+                Következő nap &raquo;
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-secondary shadow-sm" disabled>Következő nap &raquo;</button>
+        }
+    </div>
     <p class="intro-text text-center">Itt láthatod a hozzád beírt időpontokat és a szolgáltatásokat.</p>
 
+    @if (Model != null && Model.Any(x => x.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked))
+    {
+        <div class="d-flex justify-content-center mb-4">
+            <form asp-action="CancelAllAppointments"
+                  asp-route-offset="@offset"
+                  asp-route-id="@CurrentUserService.UserId"
+                  method="post" id="cancelAllForm">
+                <button type="button" class="btn btn-outline-danger shadow-sm px-4"
+                        onclick="confirmBulkAction('cancelAllForm', 'lemondod az összes mai időpontot', true)">
+                    <i class="fas fa-trash-alt me-2"></i>Összes lemondása
+                </button>
+            </form>
+        </div>
+    }
+
+    @{
+        bool isClosedDay = ViewBag.TargetDate != null && ((DateOnly)ViewBag.TargetDate).DayOfWeek == DayOfWeek.Sunday;
+    }
+
     <div class="schedule-list">
-        @if (Model != null && Model.Any())
+        @if (isClosedDay)
+        {
+            <div class="alert alert-secondary text-center mx-auto mt-4 shadow-sm" style="max-width: 600px; border-left: 5px solid #6c757d;">
+                <i class="fas fa-calendar-times fa-3x mb-3 d-block"></i>
+                <h4 class="fw-bold">Ma zárva vagyunk</h4>
+                <p class="mb-0">Ezen a napon pihenőnap van, nincsenek foglalható időpontok.</p>
+            </div>
+        }
+        else if (Model != null && Model.Any())
         {
             foreach (var item in Model.OrderBy(x => x.StartTime))
             {
@@ -33,6 +106,16 @@
 
                     <div class="schedule-info">
                         <h4 class="client-name">@item.User!.Name</h4>
+    
+                        <p class="mb-1">
+                            <small style="color: var(--primary-color); font-weight: bold;">
+                                <i class="fas fa-phone-alt me-1"></i>
+                                <a href="tel:@item.User?.Phone" class="text-decoration-none" style="color: inherit;">
+                                    @item.User?.Phone.ToFormattedPhone()
+                                </a>
+                            </small>
+                        </p>
+
                         <p class="service-name">
                             <strong>Szolgáltatás:</strong> @item.Service!.Name
                         </p>
@@ -41,11 +124,11 @@
                     <div class="schedule-actions">
                         @if (item.AppointmentStatus == FodraszatIdopont.Models.Enums.AppointmentStatus.Booked)
                         {
-                            <form asp-action="CompleteAppointment" id="completeForm_@item.AppointmentId" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
-                                <input type="button" class="btn-action btn-complete" title="Teljesítve" value="Kész" onclick="confirmComplete(completeForm_@item.AppointmentId)">
+                            <form asp-action="CompleteAppointment" id="completeForm_@item.AppointmentId" asp-route-id="@item.AppointmentId" asp-route-offset="@offset" method="post" class="d-inline">
+                                <input type="button" class="btn-action btn-complete" title="Teljesítve" value="Kész" onclick="confirmComplete(this.form)">
                             </form>
 
-                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" method="post" class="d-inline">
+                            <form id="cancelForm_@item.AppointmentId" asp-action="CancelAppointmentStaff" asp-route-id="@item.AppointmentId" asp-route-offset="@offset" method="post" class="d-inline">
                                 <input type="button" value="X" class="btn-action btn-delete" title="Lemondás" onclick="confirmCancel('cancelForm_@item.AppointmentId')">
                             </form>
                         }
@@ -61,8 +144,10 @@
         }
         else
         {
-            <div class="alert alert-info text-center mx-auto mt-4" style="max-width: 600px;" role="alert">
-                Nincs már a mai napra vendéged.
+            <div class="alert alert-info text-center mx-auto mt-4 shadow-sm" style="max-width: 600px; border-left: 5px solid #0dcaf0;">
+                <i class="fas fa-user-clock fa-3x mb-3 d-block"></i>
+                <h4 class="fw-bold">Nincs ütemezett vendég</h4>
+                <p class="mb-0">Munkanap van, de mára még egy vendég sem foglalt hozzád időpontot.</p>
             </div>
         }
     </div>
@@ -87,21 +172,37 @@
         });
     }
 
-    function confirmComplete(formId) {
+    function confirmComplete(clickedForm) {
         Swal.fire({
             title: 'Biztosan késznek nyilvánítod?',
             text: "Ezt a műveletet később nem vonhatod vissza!",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#dc3545', // Danger piros a lemondáshoz
-            cancelButtonColor: '#6c757d',  // Szürke a mégsem gombhoz
-            confirmButtonText: 'Igen, lemondom!',
+            confirmButtonColor: '#28a745', // Ez lesz a zöld gombod
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Igen, kész van!',
             cancelButtonText: 'Mégsem'
         }).then((result) => {
-            if (result.isConfirmed) {
-                // Megkeresi a formot az egyedi ID alapján, és beküldi a szerverre
-                document.getElementById(formId).submit();
+            if (result && result.isConfirmed) {
+                clickedForm.submit();
             }
         });
     }
+
+    function confirmBulkAction(formId, message, isDanger = false) {
+        Swal.fire({
+            title: 'Biztos vagy benne?',
+            text: `Ezzel a művelettel ${message}!`,
+            icon: isDanger ? 'warning' : 'question',
+            showCancelButton: true,
+            confirmButtonColor: isDanger ? '#dc3545' : '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Igen, mehet!',
+            cancelButtonText: 'Mégsem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+      }  
 </script>
