@@ -37,7 +37,6 @@ namespace FodraszatIdopont.Repositories
             return await _db.Appointments.Where(u => u.UserId == id).AnyAsync(a => start < a.EndTime && end > a.StartTime && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked);
         }
 
-
         public async Task<List<Appointment>> GetAppointmentsByDateAndHairdresser(int id, DateOnly date)
         {
             return await _db.Appointments.Where(h => h.HairdresserId == id && h.StartTime >= date.ToDateTime(TimeOnly.MinValue) && h.StartTime < date.ToDateTime(TimeOnly.MinValue).AddDays(1)).Include(s => s.Service).Include(u => u.User).ToListAsync();
@@ -53,11 +52,11 @@ namespace FodraszatIdopont.Repositories
             return await _db.Appointments.Where(a => a.HairdresserId == id && start < a.EndTime && end > a.StartTime).ToListAsync();
         }
 
-
         public async Task<List<Appointment>> GetByHairdresserId(int id)
         {
             return await _db.Appointments.Where(h => h.HairdresserId == id).ToListAsync();
         }
+
         public async Task<List<Appointment>> GetFutureAppointmentsByHairdresserId(int id)
         {
             return await _db.Appointments.Where(u => u.HairdresserId == id && u.StartTime > DateTime.Now).ToListAsync();
@@ -92,6 +91,11 @@ namespace FodraszatIdopont.Repositories
         public void UpdateWithoutSave(Appointment appointment)
         {
             _db.Appointments.Update(appointment);
+        }
+
+        public async Task<List<Appointment>> GetPastAppointments()
+        {
+            return await _db.Appointments.Where(a => a.StartTime < DateTime.Now && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked).ToListAsync();
         }
     }
 }

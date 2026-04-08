@@ -390,5 +390,29 @@ namespace FodraszatIdopont.Services
 
             return Results<List<Appointment>>.Fail("Ezen a napon nincs foglalás!");
         }
+
+        public async Task<int> AutoCompletePastAppointmentsAsync()
+        {
+            var idopontok = await _Appointmentrepo.GetPastAppointments();
+            int count = idopontok.Count();
+
+            if (count > 0)
+            {
+                try
+                {
+                    foreach (var idopont in idopontok)
+                    {
+                        idopont.AppointmentStatus = AppointmentStatus.Completed;
+                        _Appointmentrepo.UpdateWithoutSave(idopont);
+                    }
+                    await _Appointmentrepo.SaveAsync();
+                }
+                catch (Exception)
+                {
+                    throw; // Továbbdobjuk a BackgroundService-nek, hogy ott logoljuk
+                }
+            }
+            return count;
+        }
     }
 }
