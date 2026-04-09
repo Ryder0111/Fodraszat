@@ -213,7 +213,7 @@ namespace FodraszatIdopont.Controllers
 
             var idoKulonbseg = appointment.StartTime - DateTime.Now;
 
-            if (idoKulonbseg.TotalDays <= 3.5)
+            if (idoKulonbseg.TotalDays <= 2.5)
             {
                 appointment.IsReminderSent = true;
             }

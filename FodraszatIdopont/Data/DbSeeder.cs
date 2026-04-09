@@ -12,7 +12,7 @@ public static class DbSeeder
             context.Users.AddRange(
                 new User
                 {
-                    Name = "admin",
+                    Name = "Petró Zoltán",
                     Email = "admin",
                     Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("admin"),

@@ -26,7 +26,7 @@ namespace FodraszatIdopont.BackgroundServices
                         var appointmentRepo = scope.ServiceProvider.GetRequiredService<IAppointmentRepository>();
                         var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-                        var celDatum = DateTime.Today.AddDays(3);
+                        var celDatum = DateTime.Today.AddDays(2);
 
                         var erintettFoglalasok = await appointmentRepo.GetAppointmentsForReminderAsync(celDatum);
 

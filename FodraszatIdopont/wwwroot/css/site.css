@@ -1170,3 +1170,14 @@ main[role="main"] {
         height: 300px !important;
         border-radius: 8px;
     }
+
+
+.input-validation-error {
+    border: 2px solid #dc3545 !important; /* Bootstrap piros színe */
+    background-color: #fff8f8; /* Halvány rózsaszín háttér a jobb láthatóságért */
+}
+
+/* Opcionális: Amikor a hiba után kijavítják és érvényes lesz */
+.valid {
+    border: 1px solid #198754; /* Bootstrap zöld színe */
+}

@@ -116,14 +116,26 @@
         $(document).ready(function () {
             $('#phoneInput').mask('+36 (00) 000-0000');
 
+
+            $('#registerForm').validate();
+
+
+            $('#registerForm input, #registerForm select').on('blur keyup', function () {
+                if (!$(this).valid()) {
+                    $(this).addClass('is-invalid').removeClass('is-valid');
+                } else {
+                    $(this).addClass('is-valid').removeClass('is-invalid');
+                }
+            });
+
             $('#registerForm').on('submit', function (e) {
-                e.preventDefault();
-                
                 var form = $(this);
 
                 if (!form.valid()) {
                     return;
                 }
+
+                e.preventDefault();
 
                 grecaptcha.ready(function () {
                     grecaptcha.execute('6LcZrYUsAAAAAACP_E34b7Jk6tQ998dO0969edqR', { action: 'register' }).then(function (token) {

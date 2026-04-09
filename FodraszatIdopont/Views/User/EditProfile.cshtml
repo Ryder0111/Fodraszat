@@ -143,6 +143,18 @@
             // HA ADMIN: Kikapcsoljuk a validációt JS-ből (így nem kell a form tag-be írni semmit!)
             if (@isAdmin) {
                 $('#editProfileForm').attr('novalidate', 'novalidate');
+            }else{
+
+                $('#registerForm').validate();
+
+
+                $('#registerForm input, #registerForm select').on('blur keyup', function () {
+                    if (!$(this).valid()) {
+                        $(this).addClass('is-invalid').removeClass('is-valid');
+                    } else {
+                        $(this).addClass('is-valid').removeClass('is-invalid');
+                    }
+                });
             }
 
             $('#editProfileForm').on('submit', function (e) {

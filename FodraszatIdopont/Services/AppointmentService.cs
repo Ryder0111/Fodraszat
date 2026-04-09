@@ -263,7 +263,7 @@ namespace FodraszatIdopont.Services
                         .OrderBy(a => a.StartTime)
                         .ToList();
 
-                    if (IsFullyBooked(ordered, 10, 18))
+                    if (IsFullyBooked(ordered, 8, 18))
                     {
                         bookedDays.Add(currentDate);
                     }
