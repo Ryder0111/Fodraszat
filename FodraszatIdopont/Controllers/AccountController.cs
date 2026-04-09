@@ -66,7 +66,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             var user = result.Data;
-            await SignInUserAsync(user!, model.RememberMe);
+            await _authService.SignInUserAsync(user!, model.RememberMe);
             WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés", _env.ContentRootPath);
 
             return RedirectToAction("Index", "Home");
@@ -121,7 +121,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            await SignInUserAsync(user, false);
+            await _authService.SignInUserAsync(user, false);
             WriteToLog($"{user.UserId} - {user.Email} - regisztráció", _env.ContentRootPath);
 
             return RedirectToAction("Index", "Home");
@@ -268,37 +268,6 @@ namespace FodraszatIdopont.Controllers
             dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json)!;
 
             return result.success == "true" && result.score >= 0.5;
-        }
-
-        public async Task SignInUserAsync(User user, bool rememberMe)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name,          user.Name),
-                new Claim(ClaimTypes.Email,         user.Email),
-                new Claim(ClaimTypes.Role,          user.Role.ToString()),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var principal = new ClaimsPrincipal(claimsIdentity);
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = rememberMe,
-
-                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null,
-                IssuedUtc = rememberMe ? DateTimeOffset.UtcNow : null
-            };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal,
-                authProperties
-            );
         }
     }
 }

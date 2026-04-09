@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Hairdresser, Admin")]
     public class AdminController : Controller
     {
         private readonly IUserService _userService;

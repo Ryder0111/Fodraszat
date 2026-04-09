@@ -55,14 +55,30 @@ namespace FodraszatIdopont.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name,          user.Name),
-                new Claim(ClaimTypes.Email,         user.Email),
-                new Claim(ClaimTypes.Role,          user.Role.ToString()),
+                new Claim(ClaimTypes.Name,user.Name),
+                new Claim(ClaimTypes.Email,user.Email),
             };
+
+            if (user.Role.HasFlag(Models.Enums.UserRole.Admin))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
+
+            if (user.Role.HasFlag(Models.Enums.UserRole.Hairdresser))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Hairdresser"));
+            }
+
+            if (user.Role.HasFlag(Models.Enums.UserRole.User))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "User"));
+            }
 
             var claimsIdentity = new ClaimsIdentity(
                 claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                ClaimTypes.Name,
+                ClaimTypes.Role);
 
             var principal = new ClaimsPrincipal(claimsIdentity);
 

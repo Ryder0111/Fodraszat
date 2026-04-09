@@ -16,7 +16,7 @@ public static class DbSeeder
                     Email = "admin",
                     Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("admin"),
-                    Role = UserRole.Admin,
+                    Role = UserRole.Admin | UserRole.Hairdresser,
                     Sex = Gender.None,
                 },
                 new User

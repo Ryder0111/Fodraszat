@@ -1,5 +1,5 @@
 ﻿@using FodraszatIdopont.Services.Interface
-@inject ICurrentUserService _UserService
+@inject ICurrentUserService _CurrentUserService
 
 @* Egy fő C# blokkban előkészítjük az adatokat *@
 @{
@@ -12,7 +12,7 @@
         userName = User.Identity.Name ?? "Vendég";
         initial = !string.IsNullOrEmpty(userName) ? userName.Substring(0, 1).ToUpper() : "?";
 
-        var currentUser = await _UserService.GetCurrentUserAsync();
+        var currentUser = await _CurrentUserService.GetCurrentUserAsync();
         profilePicUrl = currentUser?.ProfileImageUrl;
     }
 }
@@ -59,14 +59,14 @@
                             <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="kapcsolat">Kapcsolat</a>
                         </li>
 
-                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Admin.ToString()))
+                        @if (_CurrentUserService.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Admin))
                         {
                             <li class="nav-item mx-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
                                 <a class="nav-link" style="cursor: pointer;" @* hogy ne váltson át a kurzor szöveges módra*@>Menü megnyitása</a>
                             </li>
                         }
 
-                        @if (User.IsInRole(FodraszatIdopont.Models.Enums.UserRole.Hairdresser.ToString()))
+                        @if (_CurrentUserService.Roles.HasFlag(FodraszatIdopont.Models.Enums.UserRole.Hairdresser))
                         {
                             <li class="nav-item mx-2">
                                 <a class="nav-link" asp-controller="Hairdresser" asp-action="Appointments" asp-route-offset="0">Beosztás</a>
@@ -184,5 +184,19 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <div style="background: black; color: lime; padding: 20px; position: fixed; bottom: 0; left: 0; z-index: 9999; font-family: monospace; max-height: 300px; overflow-y: scroll;">
+            <h4>Lássuk a Sütit:</h4>
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach (var claim in User.Claims)
+                {
+                    <li><strong>@claim.Type</strong> <br /> @claim.Value</li>
+                }
+            </ul>
+        </div>
+    }
+
 </body>
 </html>
