@@ -52,7 +52,7 @@ namespace FodraszatIdopont
 
             builder.Services.AddScoped<IEmailService, EmailService>();
 
-            builder.Services.AddScoped<LoggerHelper>();
+            builder.Services.AddSingleton<LoggerHelper>();
 
 
             var app = builder.Build();

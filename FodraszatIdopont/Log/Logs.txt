@@ -297,3 +297,10 @@ Invalid column name 'IsReminderSent'.
 2026-04-09 11:52:03 - 15 - kijelentkezés
 2026-04-09 11:59:11 - 15 - marcellbelak@gmail.com - regisztráció
 2026-04-09 11:59:30 - 15 - időpontgolalás
+[2026-04-09 13:39:58] INFO UserId=15 Logout
+[2026-04-09 13:40:08] INFO UserId=5 Login success
+[2026-04-09 13:40:19] INFO UserId=5 Appointment created (ServiceId=2, Time=4/10/2026 11:00:00 AM)
+[2026-04-09 13:40:21] INFO UserId=5 Logout
+[2026-04-09 13:40:28] INFO UserId=6 Login success
+[2026-04-09 13:40:32] INFO HairdresserId=6 Appointment completed (Id=1)
+[2026-04-09 13:40:37] INFO UserId=6 Logout
