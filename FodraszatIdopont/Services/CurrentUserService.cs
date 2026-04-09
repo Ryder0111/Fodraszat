@@ -4,6 +4,7 @@ using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services.Interface;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace FodraszatIdopont.Services
 {
@@ -56,15 +57,25 @@ namespace FodraszatIdopont.Services
             {
                 var user = _Http.HttpContext?.User;
 
-                if (user == null || !user.Identity?.IsAuthenticated == true)
+                if (user == null || user.Identity?.IsAuthenticated != true)
                     return UserRole.None;
 
-                var roleClaim = user.FindFirst(ClaimTypes.Role);
+                var roleClaims = user.FindAll(ClaimTypes.Role);
 
-                if (roleClaim == null)
+                if (!roleClaims.Any())
                     return UserRole.None;
 
-                return Enum.Parse<UserRole>(roleClaim.Value);
+                UserRole combinedRoles = UserRole.None;
+
+                foreach (var claim in roleClaims)
+                {
+                    if (Enum.TryParse<UserRole>(claim.Value, out var parsedRole))
+                    {
+                        combinedRoles |= parsedRole;
+                    }
+                }
+
+                return combinedRoles;
             }
         }
     }

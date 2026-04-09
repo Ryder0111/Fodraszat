@@ -185,18 +185,5 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    @if (User.Identity != null && User.Identity.IsAuthenticated)
-    {
-        <div style="background: black; color: lime; padding: 20px; position: fixed; bottom: 0; left: 0; z-index: 9999; font-family: monospace; max-height: 300px; overflow-y: scroll;">
-            <h4>Lássuk a Sütit:</h4>
-            <ul style="list-style-type: none; padding: 0;">
-                @foreach (var claim in User.Claims)
-                {
-                    <li><strong>@claim.Type</strong> <br /> @claim.Value</li>
-                }
-            </ul>
-        </div>
-    }
-
 </body>
 </html>

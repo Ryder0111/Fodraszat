@@ -16,7 +16,7 @@ public static class DbSeeder
                     Email = "admin",
                     Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("admin"),
-                    Role = UserRole.Admin | UserRole.Hairdresser,
+                    Role = UserRole.Admin | UserRole.Hairdresser | UserRole.User,
                     Sex = Gender.None,
                 },
                 new User
@@ -53,7 +53,7 @@ public static class DbSeeder
                     ProfileImageUrl = "/images/profiles/091f0e39-a2a9-4345-90fc-a4a6e5f60b36.jpg",
                     Phone = "36204444444",
                     PasswordHash = PasswordHelper.HashPassword("gabor123"),
-                    Role = UserRole.Hairdresser,
+                    Role = UserRole.Hairdresser | UserRole.User,
                     Sex = Gender.Male,
                 },
                 new User
