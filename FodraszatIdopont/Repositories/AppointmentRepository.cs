@@ -97,5 +97,15 @@ namespace FodraszatIdopont.Repositories
         {
             return await _db.Appointments.Where(a => a.StartTime < DateTime.Now && a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked).ToListAsync();
         }
+
+        public async Task<List<Appointment>> GetAppointmentsForReminderAsync(DateTime targetDate)
+        {
+            return await _db.Appointments
+                .Include(a => a.User)
+                .Where(a => a.AppointmentStatus == Models.Enums.AppointmentStatus.Booked
+                         && a.StartTime.Date == targetDate.Date
+                         && !a.IsReminderSent)
+                .ToListAsync();
+        }
     }
 }

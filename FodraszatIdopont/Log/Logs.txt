@@ -281,3 +281,19 @@
 2026-04-09 10:18:38 - 1 - admin - bejelentkezés
 2026-04-09 10:18:57 - 1 - kijelentkezés
 2026-04-09 10:19:11 - 15 - tesztfordrasz@gmail.com - bejelentkezés
+2026-04-09 11:18:09 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:18:24 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:24:50 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:25:51 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:29:47 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:38:57 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:39:11 - HIBA az automata lezárásnál: Invalid column name 'IsReminderSent'.
+2026-04-09 11:39:11 - Váratlan hiba a háttérfolyamatban: Invalid column name 'IsReminderSent'.
+Invalid column name 'IsReminderSent'.
+2026-04-09 11:48:32 - 15 - kijelentkezés
+2026-04-09 11:48:56 - 2 - anna.kovacs@gmail.com - bejelentkezés
+2026-04-09 11:50:39 - 2 - kijelentkezés
+2026-04-09 11:51:14 - 15 - marcellbelak@gmail.com - regisztráció
+2026-04-09 11:52:03 - 15 - kijelentkezés
+2026-04-09 11:59:11 - 15 - marcellbelak@gmail.com - regisztráció
+2026-04-09 11:59:30 - 15 - időpontgolalás

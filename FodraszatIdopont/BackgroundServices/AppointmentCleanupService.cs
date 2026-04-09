@@ -1,6 +1,8 @@
 ﻿using FodraszatIdopont.Controllers;
+using FodraszatIdopont.Data;
 using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace FodraszatIdopont.BackgroundServices
 {
@@ -17,27 +19,37 @@ namespace FodraszatIdopont.BackgroundServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                using (var scope = _scopeFactory.CreateScope())
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
-
-                    try
+                    using (var scope = _scopeFactory.CreateScope())
                     {
-                        int count = await appointmentService.AutoCompletePastAppointmentsAsync();
-                        if (count > 0)
+                        var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
+                        try
                         {
-                            LoggerHelper.WriteToLog($"Automata lezárás: {count} db időpont készre állítva.", _env.ContentRootPath);
+                            int count = await appointmentService.AutoCompletePastAppointmentsAsync();
+                            if (count > 0)
+                            {
+                                LoggerHelper.WriteToLog($"Automata lezárás: {count} db időpont készre állítva.", _env.ContentRootPath);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggerHelper.WriteToLog($"HIBA az automata lezárásnál: {ex.Message}", _env.ContentRootPath);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        LoggerHelper.WriteToLog($"HIBA az automata lezárásnál: {ex.Message}", _env.ContentRootPath);
-                    }
-                }
 
-                await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
+                    await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
+                }
+            }
+            catch (OperationCanceledException) when(stoppingToken.IsCancellationRequested)
+                {
+                    
+                }
+            catch (Exception ex)
+            {
+                LoggerHelper.WriteToLog($"Váratlan hiba a háttérfolyamatban: {ex.Message}", _env.ContentRootPath);
             }
         }
     }

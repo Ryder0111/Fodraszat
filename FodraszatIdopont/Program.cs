@@ -43,12 +43,15 @@ namespace FodraszatIdopont
 
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-            builder.Services.AddScoped<IUserRepository,UserRepository>();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             builder.Services.AddHostedService<AppointmentCleanupService>();
+            builder.Services.AddHostedService<AppointmentReminderService>();
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
+
 
             var app = builder.Build();
 

@@ -24,5 +24,7 @@ namespace FodraszatIdopont.Models.Entities
 
         public string? Notes { get; set; }
 
+        public bool IsReminderSent { get; set; } = false;
+
     }
 }

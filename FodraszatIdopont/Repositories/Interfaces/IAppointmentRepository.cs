@@ -36,5 +36,6 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task<int> CountBookedByUserId(int userId);
 
+        Task<List<Appointment>> GetAppointmentsForReminderAsync(DateTime targetDate);
     }
 }

@@ -23,15 +23,18 @@ namespace FodraszatIdopont.Controllers
         private readonly ICurrentUserService _currentUserService;
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _env;
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IWebHostEnvironment env)
+        private readonly IEmailService _emailService;
+
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IWebHostEnvironment env, IEmailService emailService)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
             _userService = userService;
             _env = env;
+            _emailService = emailService; 
         }
-        
+
 
         public IActionResult Login()
         {
@@ -124,6 +127,16 @@ namespace FodraszatIdopont.Controllers
             await _authService.SignInUserAsync(user, false);
             WriteToLog($"{user.UserId} - {user.Email} - regisztráció", _env.ContentRootPath);
 
+            //------Email------
+            string emailTargy = "Sikeres regisztráció - Wild Cut Fodrászat";
+            string emailUzenet = $@"
+                <h3>Kedves {user.Name}!</h3>
+                <p>Köszönjük, hogy regisztráltál a Wild Cut Fodrászat időpontfoglaló rendszerébe!</p>
+                <p>Mostantól lehetőséged van online, kényelmesen időpontot foglalni szolgáltatásainkra.</p>
+                <br/>
+                <p>Várunk szeretettel!</p>";
+            await _emailService.SendEmailAsync(user.Email, emailTargy, emailUzenet);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -193,7 +206,7 @@ namespace FodraszatIdopont.Controllers
             var appointment = new Appointment
             {
                 UserId = model.Appointment.UserId,
-                HairdresserId = model.Appointment.HairdresserId, 
+                HairdresserId = model.Appointment.HairdresserId,
                 StartTime = model.Appointment.StartTime,
                 EndTime = model.Appointment.StartTime.AddMinutes(service.Data!.DurationInMinute),
                 ServiceId = service.Data.ServiceId,
@@ -201,7 +214,26 @@ namespace FodraszatIdopont.Controllers
                 Notes = model.Appointment.Notes ?? null
             };
 
-            if(user.Success && hairdresser.Success)
+            var idoKulonbseg = appointment.StartTime - DateTime.Now;
+
+            if (idoKulonbseg.TotalDays <= 3.5)
+            {
+                appointment.IsReminderSent = true;
+            }
+            else
+            {
+                appointment.IsReminderSent = false;
+            }
+
+            //-------------------------------------
+
+            if (user.Success && hairdresser.Success)
+            {
+                user.Data!.Appointments.Add(appointment);
+                hairdresser.Data!.HairdresserAppointments.Add(appointment);
+            }
+
+            if (user.Success && hairdresser.Success)
             {
                 user.Data!.Appointments.Add(appointment);
                 hairdresser.Data!.HairdresserAppointments.Add(appointment);
@@ -214,6 +246,18 @@ namespace FodraszatIdopont.Controllers
                 await PopulateListsInModel(model);
                 return View("MAAppointment", model);
             }
+
+            // --- Sikeres foglalás email ---
+            string emailTargy = "Sikeres időpontfoglalás - Wild Cut Fodrászat";
+            string emailUzenet = $@"
+                <h3>Kedves {user.Data!.Name}!</h3>
+                <p>Sikeresen rögzítettük az időpontodat!</p>
+                <p><strong>Időpont:</strong> {appointment.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
+                <p><strong>Szolgáltatás:</strong> {service.Data!.Name}</p>
+                <br/>
+                <p>Várunk szeretettel!</p>";
+
+            await _emailService.SendEmailAsync(user.Data.Email, emailTargy, emailUzenet);
 
             WriteToLog($"{model.Appointment.UserId} - időpontgolalás", _env.ContentRootPath);
             TempData["msg"] = "Sikeres időpontfoglalás";
