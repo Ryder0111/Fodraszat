@@ -1,22 +1,22 @@
-﻿using FodraszatIdopont.Services.Interface;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
     [Authorize(Roles = "Hairdresser")]
-    public class HairdresserController : BaseController
+    public class HairdresserController : Controller
     {
-        public readonly IAppointmentService _AppointmentService;
-        public readonly ICurrentUserService _CurrentUserService;
-        private readonly IWebHostEnvironment _env;
+        private readonly IAppointmentService _appointmentService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly LoggerHelper _logger;
 
-        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IWebHostEnvironment env)
+        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, LoggerHelper logger)
         {
-            _AppointmentService = appointmentService;
-            _CurrentUserService = currentUserService;
-            _env = env;
+            _appointmentService = appointmentService;
+            _currentUserService = currentUserService;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -29,7 +29,7 @@ namespace FodraszatIdopont.Controllers
             if (offset < 0) offset = 0;
             if (offset > 6) offset = 6;
 
-            var idopontok = await _AppointmentService.GetHairdresserSchedule(_CurrentUserService.UserId,offset);
+            var idopontok = await _appointmentService.GetHairdresserSchedule(_currentUserService.UserId,offset);
             if (!idopontok.Success)
             {
                 TempData["error_msg"] = idopontok.Error;
@@ -45,7 +45,7 @@ namespace FodraszatIdopont.Controllers
         [HttpPost]
         public async Task<IActionResult> CompleteAppointment(int id, int offset)
         {
-            var idopont = await _AppointmentService.CompleteAppointment(id);
+            var idopont = await _appointmentService.CompleteAppointment(id);
             if (!idopont.Success)
             {
                 TempData["error_msg"] = idopont.Error;
@@ -53,13 +53,14 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = "Befejezve";
+            _logger.Log("INFO", $"HairdresserId={_currentUserService.UserId} Appointment completed (Id={id})");
             return RedirectToAction("Appointments", new { offset = offset });
         }
 
         [HttpPost]
         public async Task<IActionResult> CancelAppointmentStaff(int id)
         {
-            var idopontok = await _AppointmentService.CancelAppointment(id);
+            var idopontok = await _appointmentService.CancelAppointment(id);
             if (!idopontok.Success)
             {
                 TempData["error_msg"] = idopontok.Error;
@@ -67,17 +68,18 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = "Lemondva";
+            _logger.Log("INFO", $"HairdresserId={_currentUserService.UserId} Appointment cancel (Id={id})");
             return RedirectToAction("Appointments");
         }
 
         [HttpPost]
         public async Task<IActionResult> CancelAllAppointments(int id, int offset)
         {
-            var idopontok = await _AppointmentService.CancelAllAppointments(id, offset);
+            var idopontok = await _appointmentService.CancelAllAppointments(id, offset);
             if (!idopontok.Success)
             {
                 TempData["error_msg"] = idopontok.Error;
-                WriteToLog($"Hiba a tömeges lemondásnál: {idopontok.Error}", _env.ContentRootPath);
+                _logger.Log("ERROR",$"HairdresserId={_currentUserService.UserId} Bulk cancel failed (Error={idopontok.Error})");
                 return RedirectToAction("Appointments", new { offset = offset });
             }
 

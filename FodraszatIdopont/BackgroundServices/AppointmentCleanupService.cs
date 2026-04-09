@@ -9,12 +9,12 @@ namespace FodraszatIdopont.BackgroundServices
     public class AppointmentCleanupService : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IWebHostEnvironment _env;
+        private readonly LoggerHelper _logger;
 
-        public AppointmentCleanupService(IServiceScopeFactory scopeFactory, IWebHostEnvironment env)
+        public AppointmentCleanupService(IServiceScopeFactory scopeFactory, LoggerHelper logger)
         {
             _scopeFactory = scopeFactory;
-            _env = env;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,12 +31,12 @@ namespace FodraszatIdopont.BackgroundServices
                             int count = await appointmentService.AutoCompletePastAppointmentsAsync();
                             if (count > 0)
                             {
-                                LoggerHelper.WriteToLog($"Automata lezárás: {count} db időpont készre állítva.", _env.ContentRootPath);
+                                _logger.Log("INFO", $"Auto complete: {count} appointments updated");
                             }
                         }
                         catch (Exception ex)
                         {
-                            LoggerHelper.WriteToLog($"HIBA az automata lezárásnál: {ex.Message}", _env.ContentRootPath);
+                            _logger.Log("ERROR", $"Auto complete failed (Error={ex.Message})");
                         }
                     }
 
@@ -49,7 +49,7 @@ namespace FodraszatIdopont.BackgroundServices
                 }
             catch (Exception ex)
             {
-                LoggerHelper.WriteToLog($"Váratlan hiba a háttérfolyamatban: {ex.Message}", _env.ContentRootPath);
+                _logger.Log("ERROR", $"Cleanup service crashed (Error={ex.Message})");
             }
         }
     }

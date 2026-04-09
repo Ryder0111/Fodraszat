@@ -1,20 +1,27 @@
-﻿namespace FodraszatIdopont.Helpers
+﻿using Microsoft.Extensions.Hosting;
+
+namespace FodraszatIdopont.Helpers
 {
-    public static class LoggerHelper
+    public class LoggerHelper
     {
-        public static void WriteToLog(string message, string rootPath)
+        private readonly string _logFilePath;
+
+        public LoggerHelper(IHostEnvironment env)
         {
-            var logDirectory = Path.Combine(rootPath, "Log");
+            var logDirectory = Path.Combine(env.ContentRootPath, "Log");
 
             if (!Directory.Exists(logDirectory))
             {
                 Directory.CreateDirectory(logDirectory);
             }
 
-            var filePath = Path.Combine(logDirectory, "Logs.txt");
-            var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}";
+            _logFilePath = Path.Combine(logDirectory, "Logs.txt");
+        }
 
-            System.IO.File.AppendAllText(filePath, logEntry);
+        public void Log(string level, string message)
+        {
+            var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {level} {message}{Environment.NewLine}";
+            File.AppendAllText(_logFilePath, logEntry);
         }
     }
 }

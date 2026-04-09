@@ -8,30 +8,26 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System.Diagnostics.Metrics;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly IAuthService _authService;
         private readonly IAppointmentService _appointService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IUserService _userService;
-        private readonly IWebHostEnvironment _env;
+        private readonly LoggerHelper _logger;
         private readonly IEmailService _emailService;
 
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IWebHostEnvironment env, IEmailService emailService)
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IEmailService emailService, LoggerHelper logger)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
             _userService = userService;
-            _env = env;
+            _logger = logger;
             _emailService = emailService; 
         }
 
@@ -50,7 +46,7 @@ namespace FodraszatIdopont.Controllers
             if (!isHuman)
             {
                 ModelState.AddModelError("", "Robot ellenőrzés sikertelen.");
-                WriteToLog($"! Sikertelen robot bejelentkezlsés {model.Email} fiókkal !", _env.ContentRootPath);
+                _logger.Log("WARNING", $"Login bot detected Email={model.Email}");
                 return View(model);
             }
 
@@ -65,12 +61,13 @@ namespace FodraszatIdopont.Controllers
             if (!result.Success)
             {
                 TempData["error_msg"] = result.Error ?? "Hibás email vagy jelszó";
+                _logger.Log("WARNING", $"Login failed Email={model.Email}");
                 return View(model);
             }
 
             var user = result.Data;
             await _authService.SignInUserAsync(user!, model.RememberMe);
-            WriteToLog($"{user!.UserId} - {user.Email} - bejelentkezés", _env.ContentRootPath);
+            _logger.Log("INFO", $"UserId={user!.UserId} Login success");
 
             return RedirectToAction("Index", "Home");
         }
@@ -85,7 +82,7 @@ namespace FodraszatIdopont.Controllers
             Response.Cookies.Delete("FodraszatAuth");
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            WriteToLog($"{userId} - kijelentkezés", _env.ContentRootPath);
+            _logger.Log("INFO", $"UserId={userId} Logout");
 
             return RedirectToAction("Index", "Home");
         }
@@ -125,7 +122,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             await _authService.SignInUserAsync(user, false);
-            WriteToLog($"{user.UserId} - {user.Email} - regisztráció", _env.ContentRootPath);
+            _logger.Log("INFO", $"UserId={user.UserId} Email={user.Email} Registration success");
 
             //------Email------
             string emailTargy = "Sikeres regisztráció - Wild Cut Fodrászat";
@@ -193,7 +190,7 @@ namespace FodraszatIdopont.Controllers
             // 3) Service betöltése DB-ből (NE model.Services-ből)
             var service = await _appointService.GetServiceById(model.Appointment.ServiceId);
 
-            if (service == null)
+            if (!service.Success)
             {
                 TempData["error_msg"] = "A választott szolgáltatás nem található.";
                 await PopulateListsInModel(model);
@@ -231,13 +228,7 @@ namespace FodraszatIdopont.Controllers
             {
                 user.Data!.Appointments.Add(appointment);
                 hairdresser.Data!.HairdresserAppointments.Add(appointment);
-            }
-
-            if (user.Success && hairdresser.Success)
-            {
-                user.Data!.Appointments.Add(appointment);
-                hairdresser.Data!.HairdresserAppointments.Add(appointment);
-            }
+            } 
 
             var result = await _appointService.CreateAppointment(appointment);
             if (!result.Success)
@@ -259,7 +250,7 @@ namespace FodraszatIdopont.Controllers
 
             await _emailService.SendEmailAsync(user.Data.Email, emailTargy, emailUzenet);
 
-            WriteToLog($"{model.Appointment.UserId} - időpontgolalás", _env.ContentRootPath);
+            _logger.Log("INFO",$"UserId={model.Appointment.UserId} Appointment created (ServiceId={model.Appointment.ServiceId}, Time={model.Appointment.StartTime})");
             TempData["msg"] = "Sikeres időpontfoglalás";
             return RedirectToAction("Index", "Home");
         }

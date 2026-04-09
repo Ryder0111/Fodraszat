@@ -7,12 +7,12 @@ namespace FodraszatIdopont.BackgroundServices
     public class AppointmentReminderService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IWebHostEnvironment _env;
+        private readonly LoggerHelper _logger;
 
-        public AppointmentReminderService(IServiceProvider serviceProvider, IWebHostEnvironment env)
+        public AppointmentReminderService(IServiceProvider serviceProvider, LoggerHelper logger)
         {
             _serviceProvider = serviceProvider;
-            _env = env;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -49,11 +49,13 @@ namespace FodraszatIdopont.BackgroundServices
 
                                 app.IsReminderSent = true;
 
+                                _logger.Log("INFO", $"Reminder sent (AppointmentId={app.AppointmentId})");
+
                                 await appointmentRepo.Update(app);
                             }
                             catch (Exception ex)
                             {
-                                LoggerHelper.WriteToLog($"Hiba az emlékeztető küldésekor ({app.AppointmentId}): {ex.Message}", _env.ContentRootPath);
+                                _logger.Log("ERROR", $"Reminder failed (AppointmentId={app.AppointmentId}, Error={ex.Message})");
                             }
                         }
                     }
@@ -75,7 +77,7 @@ namespace FodraszatIdopont.BackgroundServices
             }
             catch (Exception ex)
             {
-                LoggerHelper.WriteToLog($"Váratlan hiba a háttérfolyamatban: {ex.Message}", _env.ContentRootPath);
+                _logger.Log("ERROR", $"Reminder service crashed (Error={ex.Message})");
             }
         }
     }

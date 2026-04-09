@@ -1,4 +1,5 @@
-﻿using FodraszatIdopont.Models;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models;
 using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services.Interface;
@@ -14,11 +15,14 @@ namespace FodraszatIdopont.Controllers
         private readonly IUserService _userService;
         private readonly IAdminService _adminService;
         private readonly IAppointmentService _appointmentService;
-        public AdminController(IUserService userService, IAdminService adminService, IAppointmentService appointmentService)
+        private readonly LoggerHelper _logger;
+
+        public AdminController(IUserService userService, IAdminService adminService, IAppointmentService appointmentService, LoggerHelper logger)
         {
             _userService = userService;
             _adminService = adminService;
             _appointmentService = appointmentService;
+            _logger = logger;
         }
 
         
@@ -53,9 +57,11 @@ namespace FodraszatIdopont.Controllers
                 if (!response.Success)
                 {
                     TempData["error_msg"] = response.Error;
+                    _logger.Log("ERROR", $"Role change failed (Email={userEmail}, Error={response.Error})");
                     return RedirectToAction("Users");
                 }
                 TempData["msg"] = $"{response.Data!.Name} mostmár fodrász!";
+                _logger.Log("INFO", $"Admin changed role (Email={userEmail}, NewRole={newRole})");
                 return RedirectToAction("Details", new { id = response.Data.UserId });
             }
             else
@@ -64,9 +70,11 @@ namespace FodraszatIdopont.Controllers
                 if (!response.Success)
                 {
                     TempData["error_msg"] = response.Error;
+                    _logger.Log("ERROR", $"Role change failed (Email={userEmail}, Error={response.Error})");
                     return RedirectToAction("Users");
                 }
                 TempData["msg"] = $"{response.Data!.Name} mostmár csak vendég!";
+                _logger.Log("INFO", $"Admin changed role (Email={userEmail}, NewRole={newRole})");
                 return RedirectToAction("Details", new { id = response.Data.UserId });
             }
         }
@@ -113,6 +121,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = $"{response.Data!.Name} szolgáltatás létrehozva!";
+            _logger.Log("INFO", $"Service created (Name={service.Name}, Price={service.Price})");
             return View("Services", await PopulateListsInModel());
         }
         private async Task<ServiceDTO> PopulateListsInModel()
@@ -180,6 +189,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = $"A {updated.Data!.Name} sikeresen módosítva lett!";
+            _logger.Log("INFO", $"Service updated (ServiceId={model.ServiceId})");
             return RedirectToAction("serviceDetails", new { id = model.ServiceId });
         }
 
@@ -196,6 +206,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = "Sikeresen lemondtad az időpontot!";
+            _logger.Log("INFO", $"Admin cancelled appointment (AppointmentId={appointmentId}, UserId={userId})");
             return RedirectToAction("Details", new { id = userId });
         }
 

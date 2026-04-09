@@ -1,5 +1,6 @@
 ﻿using FodraszatIdopont.BackgroundServices;
 using FodraszatIdopont.Data;
+using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Models;
 using FodraszatIdopont.Repositories;
 using FodraszatIdopont.Repositories.Interfaces;
@@ -7,7 +8,6 @@ using FodraszatIdopont.Services;
 using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace FodraszatIdopont
 {
@@ -52,16 +52,21 @@ namespace FodraszatIdopont
 
             builder.Services.AddScoped<IEmailService, EmailService>();
 
+            builder.Services.AddScoped<LoggerHelper>();
+
 
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<BarberDbContext>();
-                db.Database.EnsureDeleted();
-                db.Database.Migrate();
 
-                DbSeeder.Seed(db);
+                if (app.Environment.IsDevelopment())
+                {
+                    db.Database.EnsureDeleted();
+                    db.Database.Migrate();
+                    DbSeeder.Seed(db);
+                }
             }
 
             // Configure the HTTP request pipeline.

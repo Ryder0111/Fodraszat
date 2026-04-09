@@ -1,4 +1,5 @@
-﻿using FodraszatIdopont.Models.Entities;
+﻿using FodraszatIdopont.Helpers;
+using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Models.Enums;
 using FodraszatIdopont.Models.ViewModels;
 using FodraszatIdopont.Services;
@@ -18,13 +19,15 @@ namespace FodraszatIdopont.Controllers
         public readonly ICurrentUserService _CurrentUserService;
         private readonly IUserService _UserService;
         private readonly IAuthService _AutService;
+        private readonly LoggerHelper _logger;
 
-        public UserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IUserService userService, IAuthService autService)
+        public UserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, IUserService userService, IAuthService autService, LoggerHelper logger)
         {
             _AppointmentService = appointmentService;
             _CurrentUserService = currentUserService;
             _UserService = userService;
             _AutService = autService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -72,7 +75,8 @@ namespace FodraszatIdopont.Controllers
             var response = await _UserService.GetUserById(model.UserId);
             if (!response.Success)
             {
-                TempData["error_msg"] = "Nincs ilyen felhasználó!"; // Ez jött fel nálad pirossal
+                TempData["error_msg"] = "Nincs ilyen felhasználó!";
+                _logger.Log("ERROR", $"UserId={model.UserId} Profile update failed");
                 return View(model);
             }
 
@@ -125,6 +129,7 @@ namespace FodraszatIdopont.Controllers
             var updateResult = await _UserService.UpdateUser(user);
 
             TempData["msg"] = "A profilod sikeresen frissült!";
+            _logger.Log("INFO", $"UserId={user.UserId} Profile updated");
             return RedirectToAction("EditProfile");
         } 
 
@@ -135,11 +140,13 @@ namespace FodraszatIdopont.Controllers
             if (!idopont.Success)
             {
                 TempData["error_msg"] = idopont.Error;
+                _logger.Log("ERROR", $"UserId={_CurrentUserService.UserId} Cancel failed (Id={id}, Error={idopont.Error})");
                 return RedirectToAction("Index");
             }
             else
             {
                 TempData["msg"] = "Sikeres törlés";
+                _logger.Log("INFO", $"UserId={_CurrentUserService.UserId} Appointment cancelled (Id={id})");
                 return RedirectToAction("Index");
             }
         }

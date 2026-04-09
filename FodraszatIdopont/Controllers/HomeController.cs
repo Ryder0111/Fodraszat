@@ -1,19 +1,19 @@
 using Azure;
+using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Models;
-using FodraszatIdopont.Services;
+using FodraszatIdopont.Models.Entities;
 using FodraszatIdopont.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace FodraszatIdopont.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly LoggerHelper _logger;
         private readonly IAppointmentService _appointmentService;
 
-        public HomeController(ILogger<HomeController> logger,IAppointmentService appointmentService)
+        public HomeController(LoggerHelper logger,IAppointmentService appointmentService)
         {
             _logger = logger;
             _appointmentService = appointmentService;
@@ -22,6 +22,12 @@ namespace FodraszatIdopont.Controllers
         public async Task<IActionResult> Index()
         {
             var response = await _appointmentService.GetAllServices();
+
+            if (!response.Success)
+            {
+                _logger.Log("ERROR", $"GetAllServices failed: {response.Error}");
+                return View(new List<Service>());
+            }
 
             var services = response.Data;
             return View(services);
