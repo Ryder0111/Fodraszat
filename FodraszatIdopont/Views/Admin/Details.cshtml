@@ -98,12 +98,19 @@
                     <input type="hidden" name="userEmail" value="@Model.Email" />
                     <label class="form-label fw-bold text-muted small">Jogosultság módosítása</label>
                     <div class="input-group">
-                        <select name="newRole" class="form-select" asp-for="Role">
-                            @foreach (var role in Enum.GetValues(typeof(FodraszatIdopont.Models.Enums.UserRole)).Cast<FodraszatIdopont.Models.Enums.UserRole>().Where(r => r != FodraszatIdopont.Models.Enums.UserRole.Admin && r != FodraszatIdopont.Models.Enums.UserRole.None))
-                            {
-                                <option value="@role">@role</option>
-                            }
-                        </select>
+                            <select name="newRole" class="form-select">
+                                @foreach (var role in Enum.GetValues(typeof(FodraszatIdopont.Models.Enums.UserRole)).Cast<FodraszatIdopont.Models.Enums.UserRole>().Where(r => r != FodraszatIdopont.Models.Enums.UserRole.Admin && r != FodraszatIdopont.Models.Enums.UserRole.None))
+                                {
+                                    @if (Model.Role.HasFlag(role))
+                                    {
+                                        <option value="@role" selected>@role</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                }
+                            </select>
                         <button type="submit" class="btn btn-outline-primary">Mentés</button>
                     </div>
                 </form>

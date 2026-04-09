@@ -29,7 +29,65 @@ html {
     :root {
         --navbar-height: 80px;
     }
+    /* Asztali fejléc elrejtése, mert mobilon nincs rá szükség */
+    .users-table thead {
+        display: none;
+    }
+
+    /* Sorokból kis kártyákat csinálunk */
+    .users-table tbody tr {
+        display: block;
+        margin-bottom: 20px;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        background-color: white;
+    }
+
+    /* Cellákat egymás alá tesszük, bal oldalon a címsor, jobb oldalon az érték */
+    .users-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f5f5f5;
+        padding: 15px !important;
+        text-align: right;
+    }
+
+        /* Az utolsó cella (Bővebben gomb) kinézete */
+        .users-table tbody td:last-child {
+            border-bottom: none;
+            justify-content: center;
+            background-color: var(--bg-light); 
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Címkék (Label) automatikus beszúrása CSS-ből! */
+        .users-table tbody td:nth-child(1)::before {
+            content: "ID:";
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .users-table tbody td:nth-child(2)::before {
+            content: "Név:";
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .users-table tbody td:nth-child(3)::before {
+            content: "Email:";
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .users-table tbody td:nth-child(4)::before {
+            content: "Nem:";
+            font-weight: bold;
+            color: var(--text-muted);
+        }
 }
+
 
 /* --- TISZTÍTOTT LAYOUT (FLEXBOX STICKY FOOTER) --- */
 body {
@@ -1099,3 +1157,16 @@ main[role="main"] {
     overflow: hidden; 
     box-sizing: border-box; 
 }
+
+
+.map-container {
+    width: 100%;
+    min-height: 300px;
+    margin-top: 20px;
+}
+
+    .map-container iframe {
+        width: 100% !important;
+        height: 300px !important;
+        border-radius: 8px;
+    }

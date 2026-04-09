@@ -185,5 +185,28 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const offcanvasToggleButtons = document.querySelectorAll('[data-bs-toggle="offcanvas"]');
+        
+            const navbarCollapse = document.querySelector('.navbar-collapse');
+
+            if (offcanvasToggleButtons.length > 0 && navbarCollapse) {
+                offcanvasToggleButtons.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+
+                        if (navbarCollapse.classList.contains('show')) {
+
+                            const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                            if (bsCollapse) {
+                                bsCollapse.hide();
+                            }
+                        }}
+                    );
+                });
+            }
+        });
+    </script>
 </body>
 </html>

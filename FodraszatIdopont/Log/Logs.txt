@@ -304,3 +304,26 @@ Invalid column name 'IsReminderSent'.
 [2026-04-09 13:40:28] INFO UserId=6 Login success
 [2026-04-09 13:40:32] INFO HairdresserId=6 Appointment completed (Id=1)
 [2026-04-09 13:40:37] INFO UserId=6 Logout
+[2026-04-09 15:29:55] INFO UserId=15 Email=marcellbelak@gmail.com Registration success
+[2026-04-09 15:30:21] INFO UserId=15 Appointment created (ServiceId=2, Time=4/13/2026 11:00:00 AM)
+[2026-04-09 15:31:24] INFO UserId=15 Logout
+[2026-04-09 15:31:34] INFO UserId=1 Login success
+[2026-04-09 15:32:07] INFO Service created (Name=Festés, Price=7000)
+[2026-04-09 15:32:23] INFO UserId=1 Logout
+[2026-04-09 15:32:39] INFO UserId=5 Login success
+[2026-04-09 15:32:58] INFO HairdresserId=5 Appointment cancel (Id=1)
+[2026-04-09 15:33:04] INFO UserId=5 Logout
+[2026-04-09 15:34:18] INFO UserId=1 Login success
+[2026-04-09 15:47:36] INFO UserId=1 Logout
+[2026-04-09 15:47:45] INFO UserId=1 Login success
+[2026-04-09 15:48:33] INFO UserId=1 Logout
+[2026-04-09 15:48:43] INFO UserId=1 Login success
+[2026-04-09 15:49:30] INFO UserId=1 Login success
+[2026-04-09 15:56:04] INFO UserId=1 Login success
+[2026-04-09 15:56:26] INFO Admin changed role (Email=eszter.toth@gmail.com, NewRole=Hairdresser)
+[2026-04-09 15:56:36] ERROR Role change failed (Email=eszter.toth@gmail.com, Error=A felhasználó már fodrász)
+[2026-04-09 15:56:50] INFO Admin changed role (Email=eszter.toth@gmail.com, NewRole=User)
+[2026-04-09 15:56:53] INFO UserId=1 Logout
+[2026-04-09 15:58:57] INFO UserId=1 Login success
+[2026-04-09 16:02:12] INFO UserId=1 Logout
+[2026-04-09 16:02:59] INFO UserId=1 Logout
