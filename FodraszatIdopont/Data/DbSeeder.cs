@@ -28,6 +28,17 @@ public static class DbSeeder
                     Role = UserRole.User,
                     Sex = Gender.Female,
                 },
+
+                new User
+                {
+                    Name = "gaborvendeg",
+                    Email = "gabornagy428@gmail.com",
+                    Phone = "36204444444",
+                    PasswordHash = PasswordHelper.HashPassword("gabor123"),
+                    Role = UserRole.User,
+                    Sex = Gender.Male,
+                },
+
                 new User
                 {
                     Name = "Péter Nagy",
