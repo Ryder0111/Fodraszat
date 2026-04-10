@@ -33,26 +33,37 @@
         <input type="hidden" id="startTimeInput" asp-for="Appointment.StartTime" />
 
         <div class="row g-4">
-            <div class="col-md-6">
+            <div class="col-md-12 mb-4">
                 <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz fodrászt</label>
-                <select id="hairdresserSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.HairdresserId" style="border-color: #eee;">
-                    <option value="">-- Kérlek válassz --</option>
+                <div class="row g-3 custom-selection-grid">
                     @foreach (var item in Model.Hairdressers!)
                     {
-                        <option value="@item.UserId">@item.Name</option>
+                        <div class="col-6 col-md-4">
+                            <input type="radio" name="Appointment.HairdresserId" id="hd_@item.UserId" value="@item.UserId" class="d-none selection-radio">
+                
+                            <label for="hd_@item.UserId" class="selection-card w-100 shadow-sm">
+                                <div class="avatar-placeholder mb-2"><i class="fas fa-user"></i></div>
+                                <span class="fw-bold d-block">@item.Name</span>
+                            </label>
+                        </div>
                     }
-                </select>
+                </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12 mb-4">
                 <label class="form-label fw-bold" style="color: var(--primary-color);">Válassz szolgáltatást</label>
-                <select id="serviceSelect" class="form-select form-select-lg shadow-sm" asp-for="Appointment.ServiceId" style="border-color: #eee;">
-                    <option value="">-- Kérlek válassz --</option>
+                <div class="d-flex flex-wrap gap-2 mt-2">
                     @foreach (var item in Model.Services!)
                     {
-                        <option data-duration="@item.DurationInMinute" value="@item.ServiceId">@item.Name</option>
+                        <div>
+                            <input type="radio" name="Appointment.ServiceId" id="srv_@item.ServiceId" value="@item.ServiceId" class="d-none pill-radio" data-duration="@item.DurationInMinute">
+                
+                            <label for="srv_@item.ServiceId" class="pill-label shadow-sm">
+                                @item.Name
+                            </label>
+                        </div>
                     }
-                </select>
+                </div>
             </div>
         </div>
 
