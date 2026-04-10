@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FodraszatIdopont.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreate0 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,7 +52,9 @@ namespace FodraszatIdopont.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sex = table.Column<int>(type: "int", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
+                    EmailVerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +73,8 @@ namespace FodraszatIdopont.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentStatus = table.Column<int>(type: "int", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsReminderSent = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

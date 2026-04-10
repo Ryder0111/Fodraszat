@@ -50,5 +50,10 @@ namespace FodraszatIdopont.Repositories
             _db.Update(felhasznalo);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<User?> GetByToken(string verificationToken)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u=>u.EmailVerificationToken == verificationToken);
+        }
     }
 }

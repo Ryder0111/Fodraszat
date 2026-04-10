@@ -18,5 +18,7 @@ namespace FodraszatIdopont.Repositories.Interfaces
 
         Task Update(User felhasznalo);
 
+        Task<User?> GetByToken(string verificationToken);
+
     }
 }

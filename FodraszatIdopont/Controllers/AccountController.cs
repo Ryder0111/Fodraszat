@@ -20,15 +20,17 @@ namespace FodraszatIdopont.Controllers
         private readonly IUserService _userService;
         private readonly LoggerHelper _logger;
         private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IEmailService emailService, LoggerHelper logger)
+        public AccountController(IAuthService authService, IAppointmentService appointService, ICurrentUserService currentUserService, IUserService userService, IEmailService emailService, LoggerHelper logger, IHttpContextAccessor httpContextAccessor)
         {
             _authService = authService;
             _appointService = appointService;
             _currentUserService = currentUserService;
             _userService = userService;
             _logger = logger;
-            _emailService = emailService; 
+            _emailService = emailService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -104,6 +106,7 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 ;
+            var verificationToken = Guid.NewGuid().ToString();
 
             if (!ModelState.IsValid) return View(model: felhasznalo);
             User user = new User()
@@ -113,6 +116,8 @@ namespace FodraszatIdopont.Controllers
                 Email = felhasznalo.Email,
                 PasswordHash = PasswordHelper.HashPassword(felhasznalo.Password),
                 Sex = felhasznalo.Sex,
+                EmailVerificationToken = verificationToken,
+                IsEmailVerified = false
             };
             var result = await _authService.RegisterAsync(user, felhasznalo.Password);
             if (!result.Success)
@@ -121,18 +126,41 @@ namespace FodraszatIdopont.Controllers
                 return View(felhasznalo);
             }
 
-            await _authService.SignInUserAsync(user, false);
+            var scheme = _httpContextAccessor.HttpContext!.Request.Scheme; // http vagy https
+            var host = _httpContextAccessor.HttpContext.Request.Host;     // localhost:7294 vagy localhost:5001 stb.
+
+            string baseUrl = $"{scheme}://{host}";
+            string verifyUrl = $"{baseUrl}/Account/Verify/{verificationToken}";
             _logger.Log("INFO", $"UserId={user.UserId} Email={user.Email} Registration success");
 
             //------Email------
-            string emailTargy = "Sikeres regisztráció - Wild Cut Fodrászat";
-            string emailUzenet = $@"
-                <h3>Kedves {user.Name}!</h3>
-                <p>Köszönjük, hogy regisztráltál a Wild Cut Fodrászat időpontfoglaló rendszerébe!</p>
-                <p>Mostantól lehetőséged van online, kényelmesen időpontot foglalni szolgáltatásainkra.</p>
-                <br/>
-                <p>Várunk szeretettel!</p>";
-            await _emailService.SendEmailAsync(user.Email, emailTargy, emailUzenet);
+            string subject = "Üdvözöljük a Wild Cut csapatában!";
+            string body = $@"
+            <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #333; border: 1px solid #eee; border-radius: 10px; overflow: hidden;'>
+                <div style='background-color: #4b2c61; padding: 25px; text-align: center;'>
+                    <h1 style='color: #ffffff; margin: 0; font-size: 24px;'>Üdv a fedélzeten!</h1>
+                </div>
+                <div style='padding: 30px; line-height: 1.6;'>
+                    <h3 style='color: #4b2c61;'>Kedves {user.Name}!</h3>
+                    <p>Örömmel értesítünk, hogy regisztrációd sikeres volt a <strong>Wild Cut Fodrászat</strong> online rendszerébe.</p>
+                    <p>Mostantól bármikor egyszerűen és gyorsan foglalhatsz időpontot kedvenc fodrászodhoz, nyomon követheted korábbi látogatásaidat és kezelheted profilodat.</p>
+                    
+                    <div style='background-color: #f9f4fb; border-left: 4px solid #4b2c61; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0;'><strong>Regisztrált e-mail cím:</strong> {user.Email}</p>
+                    </div>
+
+                    <p style='text-align: center; margin-top: 30px;'>
+                        <a href='{verifyUrl}' style='display: inline-block; padding: 14px 25px; background-color: #4b2c61; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>Belépés és Időpontfoglalás</a>
+                    </p>
+                    
+                    <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
+                    <p style='font-size: 13px; color: #777; text-align: center;'>
+                        Ha bármilyen kérdésed van, keress minket bizalommal!<br>
+                        Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
+                    </p>
+                </div>
+            </div>";
+            await _emailService.SendEmailAsync(user.Email, subject, body);
 
             return RedirectToAction("Index", "Home");
         }
@@ -261,6 +289,19 @@ namespace FodraszatIdopont.Controllers
             model.Hairdressers = hairdressers.Data;
             var services = await _appointService.GetAllServices();
             model.Services = services.Data;
+        }
+
+        public async Task<IActionResult> Verify(string verificationToken)
+        {
+            var result = await _authService.VerifyByToken(verificationToken);
+            if (!result.Success)
+            {
+                TempData["error_msg"] = result.Error;
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["msg"] = result.Data;
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

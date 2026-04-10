@@ -141,14 +141,15 @@
             // Megnézzük Razor-rel, hogy Admin-e
 
             // HA ADMIN: Kikapcsoljuk a validációt JS-ből (így nem kell a form tag-be írni semmit!)
-            if (@isAdmin) {
+            var isAdmin = @isAdmin.ToString().ToLower();
+            if (isAdmin) {
                 $('#editProfileForm').attr('novalidate', 'novalidate');
             }else{
 
-                $('#registerForm').validate();
+                $('#editProfileForm').validate();
 
 
-                $('#registerForm input, #registerForm select').on('blur keyup', function () {
+                $('#editProfileForm input, #editProfileForm select').on('blur keyup', function () {
                     if (!$(this).valid()) {
                         $(this).addClass('is-invalid').removeClass('is-valid');
                     } else {

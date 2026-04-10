@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FodraszatIdopont.Migrations
 {
     [DbContext(typeof(BarberDbContext))]
-    [Migration("20260402224149_Initial Create")]
-    partial class InitialCreate
+    [Migration("20260410173054_InitialCreate0")]
+    partial class InitialCreate0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace FodraszatIdopont.Migrations
 
                     b.Property<int>("HairdresserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsReminderSent")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -118,6 +121,12 @@ namespace FodraszatIdopont.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmailVerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

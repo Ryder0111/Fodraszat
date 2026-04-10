@@ -10,5 +10,7 @@ namespace FodraszatIdopont.Services.Interface
         Task<Results<User>> RegisterAsync(User felhasznalo, string password);
 
         Task SignInUserAsync(User user, bool rememberMe);
+
+        Task<Results<string>> VerifyByToken(string verificationToken);
     }
 }

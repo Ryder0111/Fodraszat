@@ -30,5 +30,8 @@ namespace FodraszatIdopont.Models.Entities
 
         public string? ProfileImageUrl { get; set; }
 
+        public bool IsEmailVerified { get; set; } = false;
+        public string? EmailVerificationToken { get; set; }
     }
+
 }

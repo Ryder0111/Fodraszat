@@ -96,5 +96,21 @@ namespace FodraszatIdopont.Services
                 authProperties
             );
         }
+
+        public async Task<Results<string>> VerifyByToken(string verificationToken)
+        {
+            var validate = await _user.GetByToken(verificationToken);
+
+            if (validate == null)
+            {
+                return Results<string>.Fail("Érvénytelen vagy lejárt token!");
+            }
+
+            validate.IsEmailVerified = true;
+            validate.EmailVerificationToken = null;
+            await _user.Update(validate);
+
+            return Results<string>.Ok("Sikeres email megerősítés!");
+        }
     }
 }

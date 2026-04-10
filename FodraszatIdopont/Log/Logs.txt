@@ -341,3 +341,28 @@ Invalid column name 'IsReminderSent'.
 [2026-04-10 01:30:10] INFO UserId=1 Login success
 [2026-04-10 01:34:29] INFO UserId=1 Logout
 [2026-04-10 01:37:22] INFO UserId=2 Login success
+[2026-04-10 16:24:39] INFO UserId=2 Appointment created (ServiceId=2, Time=2026. 04. 10. 17:00:00)
+[2026-04-10 16:25:30] INFO UserId=2 Logout
+[2026-04-10 16:26:21] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-10 16:26:29] INFO UserId=15 Profile updated
+[2026-04-10 16:28:52] INFO UserId=15 Logout
+[2026-04-10 16:29:02] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-10 16:29:11] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-10 16:32:07] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-10 16:32:27] INFO UserId=15 Login success
+[2026-04-10 16:32:47] INFO UserId=15 Appointment created (ServiceId=1, Time=2026. 04. 10. 17:00:00)
+[2026-04-10 16:38:47] ERROR UserId=15 Cancel failed (Id=1, Error=Ezt az időpontot már nem lehet lemondani.)
+[2026-04-10 16:39:12] INFO UserId=15 Profile updated
+[2026-04-10 16:39:15] INFO UserId=15 Logout
+[2026-04-10 16:39:22] INFO UserId=5 Login success
+[2026-04-10 16:41:54] INFO UserId=5 Logout
+[2026-04-10 16:42:02] INFO UserId=15 Login success
+[2026-04-10 16:42:12] INFO UserId=15 Appointment created (ServiceId=2, Time=2026. 04. 16. 10:15:00)
+[2026-04-10 16:42:15] INFO UserId=15 Logout
+[2026-04-10 16:42:25] INFO UserId=5 Login success
+[2026-04-10 16:42:45] INFO HairdresserId=5 Appointment cancel (Id=2)
+[2026-04-10 17:00:41] INFO UserId=5 Logout
+[2026-04-10 17:00:51] INFO UserId=15 Login success
+[2026-04-10 18:09:27] INFO UserId=15 Logout
+[2026-04-10 19:34:37] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-10 20:00:40] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
