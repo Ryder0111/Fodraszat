@@ -1,7 +1,6 @@
 ﻿// ==========================================
-// 3. OKOS NAPTÁR LOGIKA
+// 3. OKOS NAPTÁR LOGIKA (Rádiógombokkal frissítve)
 // ==========================================
-
 
 document.addEventListener("DOMContentLoaded", function () {
     let currentDate = new Date();
@@ -13,8 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const monthYearDisplay = document.getElementById('currentMonthYear');
     const messageDisplay = document.getElementById('calendarMessage');
 
-    const hairdresserSelect = document.getElementById('hairdresserSelect');
-    const serviceSelect = document.getElementById('serviceSelect');
+    // ÚJ: Rádiógombok lekérdezése a Select-ek helyett
+    const hairdresserRadios = document.querySelectorAll('input[name="Appointment.HairdresserId"]');
+    const serviceRadios = document.querySelectorAll('input[name="Appointment.ServiceId"]');
 
     let monthChangeCount = 0;
 
@@ -22,20 +22,40 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnNextMonth = document.getElementById('btnNextMonth');
 
     // Biztonsági kilépés, ha nem a foglalás oldalon vagyunk
-    if (!calendarBody || !hairdresserSelect || !serviceSelect) return;
+    if (!calendarBody || hairdresserRadios.length === 0 || serviceRadios.length === 0) return;
 
-    // Csak akkor mutatjuk a naptárat, ha mindkét legördülőből választottak
+    // Segédfüggvények az éppen kiválasztott értékek lekérésére
+    function getSelectedHairdresser() {
+        const selected = document.querySelector('input[name="Appointment.HairdresserId"]:checked');
+        return selected ? selected.value : null;
+    }
+
+    function getSelectedService() {
+        const selected = document.querySelector('input[name="Appointment.ServiceId"]:checked');
+        return selected ? selected.value : null;
+    }
+
+    // Csak akkor mutatjuk a naptárat, ha mindkét opció (fodrász és szolgáltatás) ki van választva
     function checkSelectionsAndRender() {
-        if (hairdresserSelect.value !== "" && serviceSelect.value !== "") {
+        if (getSelectedHairdresser() && getSelectedService()) {
             calendarSection.style.display = 'block';
             renderCalendar(currentYear, currentMonth);
+
+            // Ha változtatnak a fodrászon/szolgáltatáson, a foglalás gombot újra letiltjuk, amíg nem választanak új időpontot
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+            submitBtn.style.cursor = "not-allowed";
+            document.getElementById('submitHelperText').style.display = "block";
+            document.getElementById('startTimeInput').value = ""; // Töröljük a korábbi időpontot
         } else {
             calendarSection.style.display = 'none';
         }
     }
 
-    hairdresserSelect.addEventListener('change', checkSelectionsAndRender);
-    serviceSelect.addEventListener('change', checkSelectionsAndRender);
+    // Eseményfigyelők hozzáadása minden egyes rádiógombhoz
+    hairdresserRadios.forEach(radio => radio.addEventListener('change', checkSelectionsAndRender));
+    serviceRadios.forEach(radio => radio.addEventListener('change', checkSelectionsAndRender));
 
     function renderCalendar(year, month) {
         if (monthChangeCount <= 0) {
@@ -105,14 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchBookedDays(year, month) {
-        let hairdresserId = hairdresserSelect.value;
+        let hairdresserId = getSelectedHairdresser();
         if (!hairdresserId) return;
 
         let start = `${year}-${String(month + 1).padStart(2, '0')}-01`;
         let end = `${year}-${String(month + 1).padStart(2, '0')}-${new Date(year, month + 1, 0).getDate()}`;
 
         try {
-            // Fetch hívás az Account controllerre!
             let response = await fetch(`/Account/GetBookedDays?hairdresserId=${hairdresserId}&start=${start}&end=${end}`);
             if (response.ok) {
                 let bookedDates = await response.json();
@@ -162,11 +181,10 @@ document.addEventListener("DOMContentLoaded", function () {
         slotsRow.appendChild(slotsCell);
         tr.parentNode.insertBefore(slotsRow, tr.nextSibling);
 
-        let hairdresserId = hairdresserSelect.value;
-        let serviceId = serviceSelect.value;
+        let hairdresserId = getSelectedHairdresser();
+        let serviceId = getSelectedService();
 
         try {
-            // Fetch hívás az Account controllerre!
             let response = await fetch(`/Account/GetAvailableSlots?hairdresserId=${hairdresserId}&date=${date}&serviceId=${serviceId}`);
             let container = document.getElementById('slotsContainer');
 
@@ -179,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         let btn = document.createElement('button');
                         btn.className = 'slot-btn';
 
-                        // IDŐPONT FORMÁZÁSA (csak Óra:Perc maradjon)
                         let rawTime = slot.time || slot;
                         let displayTime = rawTime;
 
@@ -187,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (rawTime.includes('T')) {
                                 rawTime = rawTime.split('T')[1];
                             }
-                            displayTime = rawTime.substring(0, 5); // Pl. "10:00"
+                            displayTime = rawTime.substring(0, 5);
                         }
 
                         btn.innerText = displayTime;
@@ -195,10 +212,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         btn.onclick = (e) => {
                             e.preventDefault();
 
-                            // Rejtett input értékének beállítása ISO formátumban C# számára (YYYY-MM-DDTHH:mm:00)
                             document.getElementById('startTimeInput').value = `${date}T${displayTime}:00`;
 
-                            // Gomb engedélyezése és vizuális formázása
                             const submitBtn = document.getElementById('submitBtn');
                             submitBtn.disabled = false;
                             submitBtn.style.opacity = "1";
@@ -222,7 +237,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         } catch (error) {
             console.error("Hiba az időpontok lekérésekor:", error);
-
             document.getElementById('slotsContainer').innerHTML = '<p class="text-danger m-0">Erre a napra már nem lehet időpontot foglalni!</p>';
         }
     }
@@ -233,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
             existingRow.remove();
         }
     }
-
 
     if (btnPrevMonth && btnNextMonth) {
         btnPrevMonth.addEventListener('click', () => {
@@ -259,6 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Inicializálás: Ellenőrizzük, hogy kell-e már mutatni a naptárat
+    // Inicializálás: Ellenőrizzük, hogy kell-e már mutatni a naptárat (pl. ha visszalépett az oldalra)
     checkSelectionsAndRender();
 });

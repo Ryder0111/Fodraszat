@@ -11,12 +11,22 @@ namespace FodraszatIdopont.Controllers
         private readonly IAppointmentService _appointmentService;
         private readonly ICurrentUserService _currentUserService;
         private readonly LoggerHelper _logger;
+        private readonly IEmailService _emailService;
 
-        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, LoggerHelper logger)
+        private string BaseUrl
+        {
+            get
+            {
+                return $"{Request.Scheme}://{Request.Host}";
+            }
+        }
+
+        public HairdresserController(IAppointmentService appointmentService, ICurrentUserService currentUserService, LoggerHelper logger, IEmailService emailService)
         {
             _appointmentService = appointmentService;
             _currentUserService = currentUserService;
             _logger = logger;
+            _emailService = emailService;   
         }
 
         public IActionResult Index()
@@ -60,14 +70,27 @@ namespace FodraszatIdopont.Controllers
         [HttpPost]
         public async Task<IActionResult> CancelAppointmentStaff(int id)
         {
-            var idopontok = await _appointmentService.CancelAppointment(id);
-            if (!idopontok.Success)
+            var idopont = await _appointmentService.CancelAppointment(id);
+            if (!idopont.Success)
             {
-                TempData["error_msg"] = idopontok.Error;
+                TempData["error_msg"] = idopont.Error;
                 return RedirectToAction("Appointments");
             }
 
             TempData["msg"] = "Lemondva";
+
+            string subject = "Időpont törlése a Wild Cut Fodrászatnál";
+            string message = $@"
+                <div style='font-family: Arial, sans-serif; color: #333;'>
+                    <h3 style='color: #4b2c61;'>Kedves {idopont.Data!.User!.Name}!</h3>
+                    <p>Sajnálattal értesítünk, hogy a(z) <strong>{idopont.Data!.StartTime.ToString("yyyy. MM. dd. HH:mm")}</strong> időpontra szóló foglalásodat fodrászod, <strong>{idopont.Data!.Hairdresser!.Name}</strong> váratlan okok miatt lemondta.</p>
+                    <p>Elnézést kérünk az okozott kellemetlenségért! Reméljük, hamarosan újra vendégeink között tudhatunk. Kérjük, látogass el weboldalunkra, és foglalj egy új időpontot.</p>
+                    <br/>
+                    <a href='{BaseUrl}' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Új időpont foglalása</a>
+                </div>";
+
+            await _emailService.SendEmailAsync(idopont.Data!.User!.Email,subject,message);
+
             _logger.Log("INFO", $"HairdresserId={_currentUserService.UserId} Appointment cancel (Id={id})");
             return RedirectToAction("Appointments");
         }
@@ -81,6 +104,24 @@ namespace FodraszatIdopont.Controllers
                 TempData["error_msg"] = idopontok.Error;
                 _logger.Log("ERROR",$"HairdresserId={_currentUserService.UserId} Bulk cancel failed (Error={idopontok.Error})");
                 return RedirectToAction("Appointments", new { offset = offset });
+            }
+
+            string subject;
+            string message;
+
+            foreach (var idopont in idopontok.Data!)
+            {
+                subject = "Időpont törlése a Wild Cut Fodrászatnál";
+                message = $@"
+                <div style='font-family: Arial, sans-serif; color: #333;'>
+                    <h3 style='color: #4b2c61;'>Kedves {idopont.User!.Name}!</h3>
+                    <p>Sajnálattal értesítünk, hogy a(z) <strong>{idopont.StartTime.ToString("yyyy. MM. dd. HH:mm")}</strong> időpontra szóló foglalásodat fodrászod, <strong>{idopont.Hairdresser!.Name}</strong> váratlan okok miatt lemondta.</p>
+                    <p>Elnézést kérünk az okozott kellemetlenségért! Reméljük, hamarosan újra vendégeink között tudhatunk. Kérjük, látogass el weboldalunkra, és foglalj egy új időpontot.</p>
+                    <br/>
+                    <a href='{BaseUrl}' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Új időpont foglalása</a>
+                </div>";
+
+                await _emailService.SendEmailAsync(idopont.User!.Email, subject, message);
             }
 
             TempData["msg"] = "Befejezve";

@@ -64,7 +64,7 @@ namespace FodraszatIdopont.Repositories
 
         public async Task<Appointment?> GetById(int id)
         {
-            return await _db.Appointments.SingleOrDefaultAsync(a => a.AppointmentId == id);
+            return await _db.Appointments.Include(u => u.User).Include(h => h.Hairdresser).SingleOrDefaultAsync(a => a.AppointmentId == id);
         }
 
         public async Task<List<Appointment>> GetByUserId(int id)

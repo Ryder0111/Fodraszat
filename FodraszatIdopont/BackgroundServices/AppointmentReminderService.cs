@@ -1,6 +1,8 @@
-﻿using FodraszatIdopont.Helpers;
+﻿using Azure.Core;
+using FodraszatIdopont.Helpers;
 using FodraszatIdopont.Repositories.Interfaces;
 using FodraszatIdopont.Services.Interface;
+using Microsoft.Extensions.Configuration; // Erre szükség van az IConfiguration miatt!
 
 namespace FodraszatIdopont.BackgroundServices
 {
@@ -9,10 +11,16 @@ namespace FodraszatIdopont.BackgroundServices
         private readonly IServiceProvider _serviceProvider;
         private readonly LoggerHelper _logger;
 
-        public AppointmentReminderService(IServiceProvider serviceProvider, LoggerHelper logger)
+        private readonly IConfiguration _configuration;
+        private readonly string _baseUrl;
+
+        public AppointmentReminderService(IServiceProvider serviceProvider, LoggerHelper logger, IConfiguration configuration)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
+            _configuration = configuration;
+
+            _baseUrl = _configuration["BaseUrl"] ?? "https://localhost:7294"; //biztonsági okból ha nem lenne benne az appsettingsben 
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -35,6 +43,7 @@ namespace FodraszatIdopont.BackgroundServices
                             try
                             {
                                 string subject = "Közeledő időpontod a Wild Cut Fodrászatnál!";
+
                                 string body = $@"
                                     <div style='font-family: Arial, sans-serif; color: #333;'>
                                         <h3 style='color: #4b2c61;'>Kedves {app.User!.Name}!</h3>
@@ -42,7 +51,7 @@ namespace FodraszatIdopont.BackgroundServices
                                         <p><strong>Időpont:</strong> {app.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
                                         <p>Ha esetleg mégsem tudsz eljönni, kérjük mondd le az időpontot, hogy más átvehesse!</p>
                                         <br/>
-                                        <a href='https://localhost:7294/User' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Időpontjaim megtekintése / Lemondás</a>
+                                        <a href='{_baseUrl}/User' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Időpontjaim megtekintése / Lemondás</a>
                                     </div>";
 
                                 await emailService.SendEmailAsync(app.User.Email, subject, body);
@@ -73,7 +82,6 @@ namespace FodraszatIdopont.BackgroundServices
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
-
             }
             catch (Exception ex)
             {
