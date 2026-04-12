@@ -67,6 +67,7 @@ namespace FodraszatIdopont.Controllers
                 return View(model);
             }
 
+
             var user = result.Data;
             await _authService.SignInUserAsync(user!, model.RememberMe);
             _logger.Log("INFO", $"UserId={user!.UserId} Login success");
@@ -161,6 +162,7 @@ namespace FodraszatIdopont.Controllers
                 </div>
             </div>";
             await _emailService.SendEmailAsync(user.Email, subject, body);
+            TempData["msg"] = "Kérlek erősítsd meg az email címed!";
 
             return RedirectToAction("Index", "Home");
         }
@@ -291,6 +293,7 @@ namespace FodraszatIdopont.Controllers
             model.Services = services.Data;
         }
 
+        [HttpGet("/Account/Verify/{verificationToken}")]
         public async Task<IActionResult> Verify(string verificationToken)
         {
             var result = await _authService.VerifyByToken(verificationToken);
@@ -301,7 +304,7 @@ namespace FodraszatIdopont.Controllers
             }
 
             TempData["msg"] = result.Data;
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]

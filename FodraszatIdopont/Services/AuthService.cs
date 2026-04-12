@@ -26,9 +26,17 @@ namespace FodraszatIdopont.Services
             var user = await _user.GetUserByEamil(email);
             if (user != null)
             {
-                if (PasswordHelper.VerifyPassword(password, user.PasswordHash))
+                Console.WriteLine($"\n\n ---> BELÉPÉS TESZT: Keresett email: {email} | Megtalált ID: {user.UserId} | Verified: {user.IsEmailVerified} | Token maradt: {user.EmailVerificationToken ?? "NULL"} <---\n\n");
+                if (user.IsEmailVerified)
                 {
-                    return Results<User>.Ok(user);
+                    if (PasswordHelper.VerifyPassword(password, user.PasswordHash))
+                    {
+                        return Results<User>.Ok(user);
+                    }
+                }
+                else
+                {
+                    return Results<User>.Fail("Előbb meg kell erősítened az email címed!");
                 }
             }
             return Results<User>.Fail("Hibás jelszó vagy email cím");
@@ -99,6 +107,11 @@ namespace FodraszatIdopont.Services
 
         public async Task<Results<string>> VerifyByToken(string verificationToken)
         {
+            if (string.IsNullOrWhiteSpace(verificationToken))
+            {
+                return Results<string>.Fail("Érvénytelen link: Hiányzik a token!");
+            }
+
             var validate = await _user.GetByToken(verificationToken);
 
             if (validate == null)
@@ -108,9 +121,18 @@ namespace FodraszatIdopont.Services
 
             validate.IsEmailVerified = true;
             validate.EmailVerificationToken = null;
-            await _user.Update(validate);
-
-            return Results<string>.Ok("Sikeres email megerősítés!");
+            try
+            {
+                // Megpróbáljuk menteni az adatbázisba
+                await _user.Update(validate);
+                Console.WriteLine($"\n\n ---> Mentés TESZT: Keresett email: {validate.Email} | Megtalált ID: {validate.UserId} | Verified: {validate.IsEmailVerified} | Token maradt: {validate.EmailVerificationToken ?? "NULL"} <---\n\n");
+                return Results<string>.Ok("Sikeres email megerősítés!");
+            }
+            catch (Exception ex)
+            {
+                // HA IGAZÁBÓL NEM MENTI EL, ITT FOG KIDERÜLNI A VALÓDI OK!
+                return Results<string>.Fail($"Adatbázis hiba: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
     }
 }

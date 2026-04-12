@@ -366,3 +366,40 @@ Invalid column name 'IsReminderSent'.
 [2026-04-10 18:09:27] INFO UserId=15 Logout
 [2026-04-10 19:34:37] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
 [2026-04-10 20:00:40] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:10:31] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:15:21] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:22:42] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:24:10] INFO UserId=15 Login success
+[2026-04-12 21:25:02] INFO UserId=15 Appointment created (ServiceId=3, Time=2026. 04. 16. 14:00:00)
+[2026-04-12 21:27:54] INFO UserId=15 Logout
+[2026-04-12 21:28:01] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:28:23] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:28:37] INFO UserId=15 Login success
+[2026-04-12 21:38:25] INFO UserId=15 Logout
+[2026-04-12 21:38:42] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:39:12] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:39:21] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:39:42] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:41:56] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:42:11] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:42:19] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:54:12] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:54:26] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:54:56] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 21:56:13] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 21:56:59] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:01:25] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 22:07:30] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 22:07:49] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:10:42] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 22:11:04] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:14:40] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:14:53] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:18:20] WARNING Login bot detected Email=gabornagy428@gmail.com
+[2026-04-12 22:18:28] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:20:48] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 22:21:28] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-12 22:25:11] WARNING Login bot detected Email=gabornagy428@gmail.com
+[2026-04-12 22:30:48] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-12 22:31:30] INFO UserId=15 Login success
+[2026-04-12 22:31:51] INFO UserId=15 Profile updated
