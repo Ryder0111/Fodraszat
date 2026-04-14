@@ -17,7 +17,7 @@ namespace FodraszatIdopont.Services
         public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
         {
             string senderEmail = _config["EmailSettings:SenderEmail"]!;
-            string senderPassword = _config["EmailSettings:EmailPassword"]!;
+            string senderPassword = _config["EmailSettings:SenderPassword"]!;
 
             using var smtpClient = new SmtpClient("smtp.gmail.com")
             {

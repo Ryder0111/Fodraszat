@@ -466,3 +466,8 @@ Invalid column name 'IsReminderSent'.
 [2026-04-14 10:29:26] INFO UserId=1 Logout
 [2026-04-14 10:29:42] INFO UserId=6 Login success
 [2026-04-14 10:29:49] INFO HairdresserId=6 Appointment cancel (Id=16)
+[2026-04-14 19:59:37] INFO UserId=15 Logout
+[2026-04-14 20:00:01] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 20:06:22] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 20:08:52] INFO UserId=15 Login success
+[2026-04-14 20:09:05] INFO UserId=15 Appointment created (ServiceId=1, Time=2026. 04. 15. 10:00:00)
