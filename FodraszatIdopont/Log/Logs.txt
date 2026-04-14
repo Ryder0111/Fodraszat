@@ -422,3 +422,47 @@ Invalid column name 'IsReminderSent'.
 [2026-04-12 22:30:48] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
 [2026-04-12 22:31:30] INFO UserId=15 Login success
 [2026-04-12 22:31:51] INFO UserId=15 Profile updated
+[2026-04-14 09:09:24] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 09:17:39] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 09:17:53] INFO UserId=15 Login success
+[2026-04-14 09:18:03] INFO UserId=15 Appointment created (ServiceId=1, Time=2026.04.14. 12:00:00)
+[2026-04-14 09:18:10] ERROR UserId=15 Cancel failed (Id=15, Error=Ezt az időpontot már nem lehet lemondani.)
+[2026-04-14 09:18:14] INFO UserId=15 Logout
+[2026-04-14 09:18:23] INFO UserId=1 Login success
+[2026-04-14 09:18:44] INFO Admin cancelled appointment (AppointmentId=15, UserId=15)
+[2026-04-14 09:34:49] INFO UserId=15 Login success
+[2026-04-14 09:34:59] INFO UserId=15 Appointment created (ServiceId=2, Time=2026.04.14. 10:45:00)
+[2026-04-14 09:35:16] INFO UserId=15 Logout
+[2026-04-14 09:35:23] INFO UserId=1 Login success
+[2026-04-14 09:36:15] INFO HairdresserId=1 Appointment cancel (Id=16)
+[2026-04-14 09:38:00] INFO UserId=1 Profile updated
+[2026-04-14 09:47:14] INFO UserId=1 Logout
+[2026-04-14 09:49:06] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 09:49:35] INFO UserId=15 Login success
+[2026-04-14 09:51:00] INFO UserId=15 Appointment created (ServiceId=2, Time=2026.04.30. 15:30:00)
+[2026-04-14 09:58:14] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 09:58:23] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-14 10:00:12] INFO UserId=15 Logout
+[2026-04-14 10:00:21] INFO UserId=15 Login success
+[2026-04-14 10:00:29] INFO UserId=15 Appointment created (ServiceId=1, Time=2026.04.14. 12:00:00)
+[2026-04-14 10:02:21] INFO UserId=15 Logout
+[2026-04-14 10:02:37] INFO UserId=6 Login success
+[2026-04-14 10:02:44] INFO HairdresserId=6 Appointment cancel (Id=15)
+[2026-04-14 10:10:17] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 10:10:28] WARNING Login failed Email=gabornagy428@gmail.com
+[2026-04-14 10:14:24] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 10:20:12] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 10:26:36] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
+[2026-04-14 10:26:51] INFO UserId=15 Login success
+[2026-04-14 10:27:00] INFO UserId=15 Appointment created (ServiceId=1, Time=2026.04.14. 13:00:00)
+[2026-04-14 10:27:27] INFO UserId=15 Logout
+[2026-04-14 10:27:39] INFO UserId=1 Login success
+[2026-04-14 10:27:46] INFO HairdresserId=1 Appointment cancel (Id=15)
+[2026-04-14 10:28:31] INFO UserId=1 Logout
+[2026-04-14 10:28:38] INFO UserId=15 Login success
+[2026-04-14 10:28:48] INFO UserId=15 Appointment created (ServiceId=2, Time=2026.04.14. 12:30:00)
+[2026-04-14 10:28:54] INFO UserId=15 Logout
+[2026-04-14 10:28:59] INFO UserId=1 Login success
+[2026-04-14 10:29:26] INFO UserId=1 Logout
+[2026-04-14 10:29:42] INFO UserId=6 Login success
+[2026-04-14 10:29:49] INFO HairdresserId=6 Appointment cancel (Id=16)

@@ -45,14 +45,42 @@ namespace FodraszatIdopont.BackgroundServices
                                 string subject = "Közeledő időpontod a Wild Cut Fodrászatnál!";
 
                                 string body = $@"
-                                    <div style='font-family: Arial, sans-serif; color: #333;'>
-                                        <h3 style='color: #4b2c61;'>Kedves {app.User!.Name}!</h3>
-                                        <p>Szeretnénk emlékeztetni, hogy 3 nap múlva időpontod van nálunk!</p>
-                                        <p><strong>Időpont:</strong> {app.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
-                                        <p>Ha esetleg mégsem tudsz eljönni, kérjük mondd le az időpontot, hogy más átvehesse!</p>
-                                        <br/>
-                                        <a href='{_baseUrl}/User' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Időpontjaim megtekintése / Lemondás</a>
-                                    </div>";
+                                <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid # eee;     border-     radius:      10px;        overflow: hidden; background-color: #ffffff;'>
+                                    <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
+                                        <h2 style='color: #FDFBF7; margin: 0; font-size: 22px;'>Közeledik az időpontod!</h2>
+                                    </div>
+                                    <div style='padding: 30px; line-height: 1.6;'>
+                                        <h3 style='color: #4A3018;'>Kedves {app.User!.Name}!</h3>
+                                        <p>Szeretnénk emlékeztetni, hogy hamarosan várunk szeretettel a <strong>Wild Cut Fodrászatban</strong>.</p>
+                                        
+                                        <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
+                                            <p style='margin: 0;'><strong>Időpont:</strong> {app.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
+                                        </div>
+                                
+                                        <p>Ha esetleg mégsem tudsz eljönni, kérjük, mondd le az időpontot, hogy más átvehesse a helyedet!</p>
+
+                                        <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin-top: 30px; margin-bottom: 30px;'>
+                                            <tr>
+                                                <td align='center'>
+                                                    <table border='0' cellspacing='0' cellpadding='0'>
+                                                        <tr>
+                                                            <td align='center' bgcolor='#B89151' style='padding: 14px 25px; border-radius: 5px;'>
+                                                                <a href='{_baseUrl}/User/Indexu' target='_blank' style='font-family: Arial, sans-serif; font-size: 16px;    text-decoration: none;font-weight: bold; display: block;'>
+                                                                    <span style='color: #ffffff;'>Időpontjaim kezelése</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
+                                        <p style='font-size: 13px; color: #666666; text-align: center;'>
+                                            Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
+                                        </p>
+                                    </div>
+                                </div>";
 
                                 await emailService.SendEmailAsync(app.User.Email, subject, body);
 

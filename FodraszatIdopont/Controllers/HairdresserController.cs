@@ -81,13 +81,42 @@ namespace FodraszatIdopont.Controllers
 
             string subject = "Időpont törlése a Wild Cut Fodrászatnál";
             string message = $@"
-                <div style='font-family: Arial, sans-serif; color: #333;'>
-                    <h3 style='color: #4b2c61;'>Kedves {idopont.Data!.User!.Name}!</h3>
-                    <p>Sajnálattal értesítünk, hogy a(z) <strong>{idopont.Data!.StartTime.ToString("yyyy. MM. dd. HH:mm")}</strong> időpontra szóló foglalásodat fodrászod, <strong>{idopont.Data!.Hairdresser!.Name}</strong> váratlan okok miatt lemondta.</p>
-                    <p>Elnézést kérünk az okozott kellemetlenségért! Reméljük, hamarosan újra vendégeink között tudhatunk. Kérjük, látogass el weboldalunkra, és foglalj egy új időpontot.</p>
-                    <br/>
-                    <a href='{BaseUrl}' style='display: inline-block; padding: 12px 20px; background-color: #4b2c61; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;'>Új időpont foglalása</a>
-                </div>";
+            <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid #eee; border-radius:  10px;        overflow: hidden; background-color: #ffffff;'>
+                <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
+                    <h2 style='color: #FDFBF7; margin: 0; font-size: 22px;'>Időpont lemondva</h2>
+                </div>
+                <div style='padding: 30px; line-height: 1.6;'>
+                    <h3 style='color: #4A3018;'>Kedves {idopont.Data!.User!.Name}!</h3>
+                    <p>Sajnálattal értesítünk, hogy a lenti időpontra szóló foglalásodat fodrászod, <strong>{idopont.Data!.Hairdresser!.Name}</strong> váratlan     okok    miatt  kénytelen volt lemondani.</p>
+                    
+                    <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0;'><strong>Érintett időpont:</strong> <span style='color: #d9534f; font-weight: bold;'>{idopont.Data!.StartTime.ToString     ("yyyy.  MM. dd. HH:mm")}</span></p>
+                    </div>
+                    
+                    <p>Elnézést kérünk az okozott kellemetlenségért! Reméljük, hamarosan újra a vendégeink között tudhatunk. Kérjük, látogass el weboldalunkra, és      foglalj  egy új időpontot.</p>
+
+                    <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin-top: 30px; margin-bottom: 30px;'>
+                        <tr>
+                            <td align='center'>
+                                <table border='0' cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                        <td align='center' bgcolor='#B89151' style='padding: 14px 25px; border-radius: 5px;'>
+                                            <a href='{BaseUrl}/Account/MAAppointment' target='_blank' style='font-family: Arial, sans-serif; fontsize: 16px;    text-decoration: none;font-weight: bold; display: block;'>
+                                                <span style='color: #ffffff;'>Új időpont foglalása</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
+                    <p style='font-size: 13px; color: #666666; text-align: center;'>
+                        Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
+                    </p>
+                </div>
+            </div>";
 
             await _emailService.SendEmailAsync(idopont.Data!.User!.Email,subject,message);
 
