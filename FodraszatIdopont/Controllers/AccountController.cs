@@ -137,42 +137,42 @@ namespace FodraszatIdopont.Controllers
             //------Email------
             string subject = "Üdvözöljük a Wild Cut csapatában!";
             string body = $@"
-<div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid #eee; border-radius: 10px; overflow: hidden; background-color: #ffffff;'>
-    <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
-        <h1 style='color: #FDFBF7; margin: 0; font-size: 24px;'>Üdv a fedélzeten!</h1>
-    </div>
-    <div style='padding: 30px; line-height: 1.6;'>
-        <h3 style='color: #4A3018;'>Kedves {user.Name}!</h3>
-        <p>Örömmel értesítünk, hogy regisztrációd sikeres volt a <strong>Wild Cut Fodrászat</strong> online rendszerébe.</p>
-        <p>Mostantól bármikor egyszerűen és gyorsan foglalhatsz időpontot kedvenc fodrászodhoz, nyomon követheted korábbi látogatásaidat és kezelheted profilodat.</p>
+                <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid #eee; border-radius: 10px; overflow: hidden; background-color: #ffffff;'>
+                    <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
+                        <h1 style='color: #FDFBF7; margin: 0; font-size: 24px;'>Üdv a fedélzeten!</h1>
+                    </div>
+                    <div style='padding: 30px; line-height: 1.6;'>
+                        <h3 style='color: #4A3018;'>Kedves {user.Name}!</h3>
+                        <p>Örömmel értesítünk, hogy regisztrációd sikeres volt a <strong>Wild Cut Fodrászat</strong> online rendszerébe.</p>
+                        <p>Mostantól bármikor egyszerűen és gyorsan foglalhatsz időpontot kedvenc fodrászodhoz, nyomon követheted korábbi látogatásaidat és kezelheted profilodat.</p>
         
-        <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
-            <p style='margin: 0;'><strong>Regisztrált e-mail cím:</strong> {user.Email}</p>
-        </div>
+                        <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
+                            <p style='margin: 0;'><strong>Regisztrált e-mail cím:</strong> {user.Email}</p>
+                        </div>
 
-        <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin-top: 30px; margin-bottom: 30px;'>
-            <tr>
-                <td align='center'>
-                    <table border='0' cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td align='center' bgcolor='#B89151' style='padding: 14px 25px; border-radius: 5px;'>
-                                <a href='{verifyUrl}' target='_blank' style='font-family: Arial, sans-serif; font-size: 16px; text-decoration: none; font-weight: bold; display: block;'>
-                                    <span style='color: #ffffff;'>Belépés és Időpontfoglalás</span>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                        <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin-top: 30px; margin-bottom: 30px;'>
+                            <tr>
+                                <td align='center'>
+                                    <table border='0' cellspacing='0' cellpadding='0'>
+                                        <tr>
+                                            <td align='center' bgcolor='#B89151' style='padding: 14px 25px; border-radius: 5px;'>
+                                                <a href='{verifyUrl}' target='_blank' style='font-family: Arial, sans-serif; font-size: 16px; text-decoration: none; font-weight: bold; display: block;'>
+                                                    <span style='color: #ffffff;'>Belépés és Időpontfoglalás</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
         
-        <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
-        <p style='font-size: 13px; color: #666666; text-align: center;'>
-            Ha bármilyen kérdésed van, keress minket bizalommal!<br>
-            Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
-        </p>
-    </div>
-</div>";
+                        <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
+                        <p style='font-size: 13px; color: #666666; text-align: center;'>
+                            Ha bármilyen kérdésed van, keress minket bizalommal!<br>
+                            Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
+                        </p>
+                    </div>
+                </div>";
             await _emailService.SendEmailAsync(user.Email, subject, body);
             TempData["msg"] = "Kérlek erősítsd meg az email címed!";
 
@@ -283,29 +283,29 @@ namespace FodraszatIdopont.Controllers
             // --- Sikeres foglalás email ---
             string emailTargy = "Sikeres időpontfoglalás - Wild Cut Fodrászat";
             string emailUzenet = $@"
-            <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid #eee; border-radius:  10px;        overflow: hidden; background-color: #ffffff;'>
-                <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
-                    <h2 style='color: #FDFBF7; margin: 0; font-size: 22px;'>Sikeres időpontfoglalás</h2>
-                </div>
-                <div style='padding: 30px; line-height: 1.6;'>
-                    <h3 style='color: #4A3018;'>Kedves {user.Data!.Name}!</h3>
-                    <p>Örömmel értesítünk, hogy a foglalásodat sikeresen rögzítettük a rendszerünkben.</p>
-                    
-                    <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
-                        <p style='margin: 0 0 10px 0;'><strong>Szolgáltatás:</strong> {service.Data!.Name}</p>
-                        <p style='margin: 0;'><strong>Időpont:</strong> {appointment.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
+                <div style='max-width: 600px; margin: 0 auto; font-family: ""Segoe UI"", Arial, sans-serif; color: #2C2C2C; border: 1px solid #eee; border-radius:  10px;        overflow: hidden; background-color: #ffffff;'>
+                    <div style='background-color: #4A3018; padding: 25px; text-align: center;'>
+                        <h2 style='color: #FDFBF7; margin: 0; font-size: 22px;'>Sikeres időpontfoglalás</h2>
                     </div>
-                    
-                    <p>Várunk szeretettel a megbeszélt időpontban!</p>
-                    
-                    <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
-                    <p style='font-size: 13px; color: #666666; text-align: center;'>
-                        Ha kérdésed van, vagy módosítanál, lépj be a profilodba!<br>
-                        Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
-                    </p>
-                </div>
-            </div>";
-
+                    <div style='padding: 30px; line-height: 1.6;'>
+                        <h3 style='color: #4A3018;'>Kedves {user.Data!.Name}!</h3>
+                        <p>Örömmel értesítünk, hogy a foglalásodat sikeresen rögzítettük a rendszerünkben.</p>
+       
+                        <div style='background-color: #FDFBF7; border-left: 4px solid #B89151; padding: 15px; margin: 20px 0;'>
+                            <p style='margin: 0 0 10px 0;'><strong>Fodrász:</strong> {hairdresser.Data!.Name}</p>
+                            <p style='margin: 0 0 10px 0;'><strong>Szolgáltatás:</strong> {service.Data!.Name}</p>
+                            <p style='margin: 0;'><strong>Időpont:</strong> {appointment.StartTime.ToString("yyyy. MM. dd. HH:mm")}</p>
+                        </div>
+       
+                        <p>Várunk szeretettel a megbeszélt időpontban!</p>
+       
+                        <hr style='border: 0; border-top: 1px solid #eee; margin: 30px 0;' />
+                        <p style='font-size: 13px; color: #666666; text-align: center;'>
+                            Ha kérdésed van, vagy módosítanál, lépj be a profilodba!<br>
+                            Wild Cut Fodrászat - 3000 Hatvan, Kazinczy u. 3.
+                        </p>
+                    </div>
+                </div>";
             await _emailService.SendEmailAsync(user.Data.Email, emailTargy, emailUzenet);
 
             _logger.Log("INFO",$"UserId={model.Appointment.UserId} Appointment created (ServiceId={model.Appointment.ServiceId}, Time={model.Appointment.StartTime})");
