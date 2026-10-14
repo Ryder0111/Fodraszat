@@ -56,7 +56,7 @@
                     @foreach (var item in Model.Services!)
                     {
                         <div>
-                            <input type="radio" name="Appointment.ServiceId" id="srv_@item.ServiceId" value="@item.ServiceId" class="d-none pill-radio" data-duration="@item.DurationInMinute">
+                            <input type="checkbox" name="Appointment.ServiceId" id="srv_@item.ServiceId" value="@item.ServiceId" class="d-none pill-radio" data-duration="@item.DurationInMinute">
                 
                             <label for="srv_@item.ServiceId" class="pill-label shadow-sm">
                                 @item.Name

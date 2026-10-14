@@ -471,3 +471,6 @@ Invalid column name 'IsReminderSent'.
 [2026-04-14 20:06:22] INFO UserId=15 Email=gabornagy428@gmail.com Registration success
 [2026-04-14 20:08:52] INFO UserId=15 Login success
 [2026-04-14 20:09:05] INFO UserId=15 Appointment created (ServiceId=1, Time=2026. 04. 15. 10:00:00)
+[2026-10-14 16:12:20] INFO Auto complete: 14 appointments updated
+[2026-10-14 16:12:43] WARNING Login failed Email=marcell.fodrasz
+[2026-10-14 16:13:13] INFO UserId=6 Login success

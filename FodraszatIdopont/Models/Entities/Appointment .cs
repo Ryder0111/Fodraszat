@@ -14,8 +14,7 @@ namespace FodraszatIdopont.Models.Entities
         public int HairdresserId { get; set; }
         public User? Hairdresser { get; set; }
 
-        public int ServiceId { get; set; }
-        public Service? Service { get; set; }
+        public List<Service> Services { get; set; } = new();
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
